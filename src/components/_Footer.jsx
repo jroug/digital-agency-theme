@@ -4,7 +4,14 @@ import logo from '../assets/images/logo-wis.png';
 import bg4 from '../assets/images/background/4.jpg';
 import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
  
-const _Footer = () => {
+const _Footer = (props) => {
+
+    const footerName1 = props.footerMenu1_name;
+    const footerName2 = props.footerMenu2_name;
+
+    const footerMenuNodes1 = props.footerMenuNodes1;
+    const footerMenuNodes2 = props.footerMenuNodes2;
+
     return (
         <footer className="main-footer margin-top" style={{ "backgroundColor" : "var(--blueDarkColor)", "marginTop":"100px"}} >
             <div className="auto-container">
@@ -31,14 +38,15 @@ const _Footer = () => {
                                 {/* <!--Footer Column--> */}
                                 <div className="footer-column col-lg-5 col-md-6 col-sm-12">
                                     <div className="footer-widget links-widget">
-                                        <h4>Links</h4>
+                                        <h4>{footerName1}</h4>
                                         <ul className="list-link">
-                                            <li><a href="">Contact Us</a></li>
-                                            <li><a href="">Submit a Ticket</a></li>
-                                            <li><a href="">Visit Knowledge Base</a></li>
-                                            <li><a href="">Support System</a></li>
-                                            <li><a href="">Refund Policy</a></li>
-                                            <li><a href="">Professional Services</a></li>
+                                            {
+                                                footerMenuNodes1.map( (menuItem, index) => {
+                                                    return (
+                                                        <li key={"footerMenuNode2" + index}><a href={menuItem.uri}>{menuItem.label}</a></li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -50,14 +58,15 @@ const _Footer = () => {
                                 {/* <!--Footer Column--> */}
                                 <div className="footer-column col-lg-6 col-md-6 col-sm-12">
                                     <div className="footer-widget links-widget">
-                                        <h4>Support</h4>
+                                        <h4>{footerName2}</h4>
                                         <ul className="list-link">
-                                            <li><a href="">Home</a></li>
-                                            <li><a href="">Services</a></li>
-                                            <li><a href="">About us</a></li>
-                                            <li><a href="">Testimonials</a></li>
-                                            <li><a href="">News</a></li>
-                                            <li><a href="">Contact</a></li>
+                                            {
+                                                footerMenuNodes2.map( (menuItem, index) => {
+                                                    return (
+                                                        <li key={"footerMenuNode2" + index}><a href={menuItem.uri}>{menuItem.label}</a></li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                 </div>

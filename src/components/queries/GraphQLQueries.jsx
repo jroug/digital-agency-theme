@@ -33,7 +33,6 @@ const getGenericPageQuery = (genericPage_SLUG) => {
 // for TemplateServiceInner.jsx
 const getServiceTemplateQuery = (servicePage_SLUG) => {
   const correctServicePageSlug = servicePage_SLUG.replace('services/', 'cpt_services/');
-  console.log('slugs=', servicePage_SLUG, correctServicePageSlug);
   return `serviceTemplate: service( id: "${correctServicePageSlug}", idType: URI ) {
       id
       title
@@ -41,6 +40,25 @@ const getServiceTemplateQuery = (servicePage_SLUG) => {
   }`;
 }
 
+// for TemplateBlogInner.jsx
+const getBlogPostTemplateQuery = (postPage_SLUG) => {
+  const correctPostSlug = postPage_SLUG.replace('blog/', '');
+  return `blogPost: post( id: "${correctPostSlug}", idType: URI ) {
+      id
+      title
+      content
+  }`;
+}
+
+// for TemplateBlogInner.jsx
+const getProjectTemplateQuery = (projectPage_SLUG) => {
+  const correctProjectSlug = projectPage_SLUG.replace('blog/', '');
+  return `portfolioProject: project( id: "${correctProjectSlug}", idType: URI ) {
+      id
+      title
+      content
+  }`;
+}
 
 const GraphQLQueries = {
     queries : {
@@ -95,7 +113,7 @@ const GraphQLQueries = {
                   }
             }
         }`,
-        footerMenuItems: `footerMenuItems:menuItems(where: {location: FOOTER_MENU}, first:100)  
+        footerMenuItems1: `footerMenuItems1:menuItems(where: {location: FOOTER_MENU_1}, first:100)  
             {
                 nodes {
                   databaseId
@@ -103,7 +121,27 @@ const GraphQLQueries = {
                   label
                   parentDatabaseId
                 }
-            }`,
+            }
+            menuName1:menus(where: {location: FOOTER_MENU_1} ) {
+              nodes {
+                name
+              }
+            }
+            `,
+        footerMenuItems2: `footerMenuItems2:menuItems(where: {location: FOOTER_MENU_2}, first:100)  
+        {
+            nodes {
+              databaseId
+              uri
+              label
+              parentDatabaseId
+            }
+        }
+        menuName2:menus(where: {location: FOOTER_MENU_2} ) {
+          nodes {
+            name
+          }
+        }`,
         homePage:`homePage: page( id: "${homePage_SLUG}", idType: URI ) {
             id
             title
@@ -323,5 +361,7 @@ const GraphQLQueries = {
 export {
     GraphQLQueries,
     getGenericPageQuery,
-    getServiceTemplateQuery
+    getServiceTemplateQuery,
+    getBlogPostTemplateQuery,
+    getProjectTemplateQuery
 } 

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { _BannerTop } from "./";
 import news10 from '../assets/images/resource/news-10.jpg';
 import news14 from '../assets/images/resource/news-14.jpg';
@@ -8,34 +9,48 @@ import author3 from '../assets/images/resource/author-3.jpg';
 // import author7 from '../assets/images/resource/author-7.png';
 // import author8 from '../assets/images/resource/author-8.png';
 import { useQuery, gql } from '@apollo/client';
-import { logVar } from "./utils/Utils";
-import { GraphQLQueries } from "./queries/GraphQLQueries";
-
+import { logVar, isValidSlug } from "./utils/Utils";
+import { getBlogPostTemplateQuery } from "./queries/GraphQLQueries";
+ 
 
 const PageBlogInner = (props) => {
 
-    const GET_MENUS_QUERY = gql`query GET_MENUS_QUERY
+	const navigate = useNavigate();
+	let postTemplateData;
+
+	useEffect(() => {
+		if (postTemplateData === null ){
+			navigate('/404');
+		}
+	});
+
+
+	const pagePathName = window.location.pathname;
+	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
+    // const pageSlug = pagePathName.slice(1, -1);
+	// chech for sql injection in the pageSlug variable
+	const GET_POST_QUERY = gql`query GET_POST_QUERY
     {
-      ${GraphQLQueries.queries.sitemapMenuItems}
-      ${GraphQLQueries.queries.primaryMenuItems}
-      ${GraphQLQueries.queries.footerMenuItems}
+      ${getBlogPostTemplateQuery(pageSlug)}
     }`;
 
-    const { data, loading, error } = useQuery(GET_MENUS_QUERY);
+    const { data, loading, error } = useQuery(GET_POST_QUERY);
 
-    if (loading) { logVar('loading from TemplateBlogInner'); return }
-    if (error) { logVar('error from TemplateBlogInner'); return }
-    if (!data) { logVar('!data from TemplateBlogInner'); return }
+    if (loading) { logVar('loading from Post'); return }
+    if (error) { logVar('error from Post'); return }
+    if (!data) { logVar('!data from Post'); return }
 
-    const sitemapMenuItems = data.sitemapMenuItems.nodes;
-    const primaryMenuNodes = data.primaryMenuItems.nodes;
-    const footerMenuNodes = data.footerMenuItems.nodes;
+    postTemplateData = data.blogPost;
 
-    console.log(sitemapMenuItems);
+	// if service not found redirect to 404
+	if (postTemplateData === null ){
+		// return in order to be faster
+		return;
+	}
 
     return (
         <>
-            <_BannerTop title={props.title} />  
+            <_BannerTop title={postTemplateData!=null ? postTemplateData.title : '' } />  
             <div className="sidebar-page-container">
                 <div className="auto-container">
                     <div className="row clearfix">

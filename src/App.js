@@ -18,7 +18,6 @@ import {
 import { gql, useQuery } from '@apollo/client';
 import { GraphQLQueries } from './components/queries/GraphQLQueries';
 import { logVar } from './components/utils/Utils';
-
 import ToolEditPage from './components/utils/ToolEditPage';
 
 
@@ -48,11 +47,14 @@ import './assets/css/custom.css';
 
 const App = () => {
 
+ 
+
     const GET_MENUS_QUERY = gql`query GET_MENUS_QUERY
     {
       ${GraphQLQueries.queries.sitemapMenuItems}
       ${GraphQLQueries.queries.primaryMenuItems}
-      ${GraphQLQueries.queries.footerMenuItems}
+      ${GraphQLQueries.queries.footerMenuItems1}
+      ${GraphQLQueries.queries.footerMenuItems2}
     }`;
 
     const { data, loading, error } = useQuery(GET_MENUS_QUERY);
@@ -63,9 +65,12 @@ const App = () => {
 
     const sitemapMenuItems = data.sitemapMenuItems.nodes;
     const primaryMenuNodes = data.primaryMenuItems.nodes;
-    const footerMenuNodes = data.footerMenuItems.nodes;
+    const footerMenuNodes1 = data.footerMenuItems1.nodes;
+    const footerMenu1_name = data.menuName1.nodes[0].name;
+    const footerMenuNodes2 = data.footerMenuItems2.nodes;
+    const footerMenu2_name = data.menuName2.nodes[0].name;
 
-    // console.log(sitemapMenuItems);
+    console.log(data.menuName1);
 
     return (
         <BrowserRouter>
@@ -89,14 +94,14 @@ const App = () => {
                                 )
                             })
                         }
-                        <Route key={"404"} path="*" element={<Page404 title={"404"} />} />
+                        <Route key={"page404"} path="*" element={<Page404 title={"404"} />} />
                         {/* They have been entered to sitemap menu */}
                         {/* <Route key={"post"} path="/blog/:slug" element={<TemplateBlogInner title={"Post"} />} />
                         <Route key={"portfolio"} path="/services/:slug" element={<TemplatePortfolioInner title={"Ιστοσελίδα"} />} /> */}
                     </Route>
                 </Routes>
             </Suspense>
-            <_Footer />
+            <_Footer footerMenu1_name={footerMenu1_name} footerMenuNodes1={footerMenuNodes1} footerMenu2_name={footerMenu2_name} footerMenuNodes2={footerMenuNodes2} />
         </BrowserRouter>
     );
 }; 

@@ -4,18 +4,26 @@ import service from '../assets/images/resource/service.jpg';
 import { _BannerTop } from "./";
 
 import { useQuery, gql } from '@apollo/client';
-import { logVar } from "./utils/Utils";
+import { logVar, isValidSlug } from "./utils/Utils";
 import { getServiceTemplateQuery } from "./queries/GraphQLQueries";
 
 
-const TemplateServiceInner = (props) => {
+const TemplateServiceInner = () => {
 
 	const navigate = useNavigate();
- 
+	let serviceTemplateData;
+
+	useEffect(() => {
+		if (serviceTemplateData === null ){
+			navigate('/404');
+		}
+	});
+
 
 	const pagePathName = window.location.pathname;
-	const pageSlug = pagePathName.slice(1, -1); // trim slash from the beginning and the end
+	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
 
+	// chech for sql injection in the pageSlug variable
 	const GET_SERVICE_QUERY = gql`query GET_SERVICE_QUERY
     {
       ${getServiceTemplateQuery(pageSlug)}
@@ -27,11 +35,11 @@ const TemplateServiceInner = (props) => {
     if (error) { logVar('error from TemplateServiceInner'); return }
     if (!data) { logVar('!data from TemplateServiceInner'); return }
 
-    const serviceTemplateData = data.serviceTemplate;
+    serviceTemplateData = data.serviceTemplate;
 
 	// if service not found redirect to 404
 	if (serviceTemplateData === null ){
-		navigate('/404');
+		// return in order to be faster
 		return;
 	}
 

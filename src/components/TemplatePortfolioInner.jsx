@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQuery, gql } from '@apollo/client';
+import { logVar, isValidSlug } from "./utils/Utils";
+import { getProjectTemplateQuery } from "./queries/GraphQLQueries";
 
 // import all images resources
 import img17 from '../assets/images/gallery/17.jpg';
@@ -10,10 +14,44 @@ import img13 from '../assets/images/gallery/13.jpg';
 
 import { _BannerTop, SectionSubscribeToNL } from "./";
 
-const TemplatePortfolioInner = (props) => {
+const TemplatePortfolioInner = () => {
+
+    const navigate = useNavigate();
+	let projectTemplateData;
+
+	useEffect(() => {
+		if (projectTemplateData === null ){
+			navigate('/404');
+		}
+	});
+
+
+	const pagePathName = window.location.pathname;
+	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
+
+	// chech for sql injection in the pageSlug variable
+	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
+    {
+      ${getProjectTemplateQuery(pageSlug)}
+    }`;
+
+    const { data, loading, error } = useQuery(GET_PROJECT_QUERY);
+
+    if (loading) { logVar('loading from TemplatePortfolioInner'); return }
+    if (error) { logVar('error from TemplatePortfolioInner'); return }
+    if (!data) { logVar('!data from TemplatePortfolioInner'); return }
+
+    projectTemplateData = data.portfolioProject;
+
+	// if service not found redirect to 404
+	if (projectTemplateData === null ){
+		// return in order to be faster
+		return;
+	}
+
     return (
         <>
-            <_BannerTop title={props.title} />   
+            <_BannerTop title={projectTemplateData!=null ? projectTemplateData.title : '' } />   
 
             { /* <!-- Projects Detail Section --> */ }
             <section className="projects-detail-section">
