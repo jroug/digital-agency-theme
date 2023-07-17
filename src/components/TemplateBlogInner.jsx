@@ -4,12 +4,35 @@ import news10 from '../assets/images/resource/news-10.jpg';
 import news14 from '../assets/images/resource/news-14.jpg';
 import news15 from '../assets/images/resource/news-15.jpg';
 import author3 from '../assets/images/resource/author-3.jpg';
-import author6 from '../assets/images/resource/author-6.png';
-import author7 from '../assets/images/resource/author-7.png';
-import author8 from '../assets/images/resource/author-8.png';
+// import author6 from '../assets/images/resource/author-6.png';
+// import author7 from '../assets/images/resource/author-7.png';
+// import author8 from '../assets/images/resource/author-8.png';
+import { useQuery, gql } from '@apollo/client';
+import { logVar } from "./utils/Utils";
+import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 
 const PageBlogInner = (props) => {
+
+    const GET_MENUS_QUERY = gql`query GET_MENUS_QUERY
+    {
+      ${GraphQLQueries.queries.sitemapMenuItems}
+      ${GraphQLQueries.queries.primaryMenuItems}
+      ${GraphQLQueries.queries.footerMenuItems}
+    }`;
+
+    const { data, loading, error } = useQuery(GET_MENUS_QUERY);
+
+    if (loading) { logVar('loading from TemplateBlogInner'); return }
+    if (error) { logVar('error from TemplateBlogInner'); return }
+    if (!data) { logVar('!data from TemplateBlogInner'); return }
+
+    const sitemapMenuItems = data.sitemapMenuItems.nodes;
+    const primaryMenuNodes = data.primaryMenuItems.nodes;
+    const footerMenuNodes = data.footerMenuItems.nodes;
+
+    console.log(sitemapMenuItems);
+
     return (
         <>
             <_BannerTop title={props.title} />  
@@ -66,58 +89,6 @@ const PageBlogInner = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                { /* <!--Comments Area--> */ }
-                                <div className="comments-area">
-                                    <div className="group-title">
-                                        <h4>2 Comments</h4>
-                                    </div>
-                                    <div className="comment-box">
-                                        <div className="comment">
-                                            <div className="author-thumb"><img src={author6} alt="" /></div>
-                                            <div className="comment-info clearfix"><strong>Tamoc Morala</strong><div className="comment-time">13 June, 2018      at 07:30</div></div>
-                                            <div className="text">One touch of a red-hot stove is usually all we need to avoid that kind of discomfort in future. The same true we experience the emotional sensation.</div>
-                                            <a className="theme-btn reply-btn" href="#">Reply</a>
-                                        </div>
-                                    </div>
-                                    <div className="comment-box reply-comment">
-                                        <div className="comment">
-                                            <div className="author-thumb"><img src={author7} alt="" /></div>
-                                            <div className="comment-info clearfix"><strong>Rosta Barsr</strong><div className="comment-time">13 June, 2018      at 07:30</div></div>
-                                            <div className="text">One touch of a red-hot stove is usually all we need to avoid that kind of discomfort in future.</div>
-                                            <a className="theme-btn reply-btn" href="#">Reply</a>
-                                        </div>
-                                    </div>
-                                    <div className="comment-box">
-                                        <div className="comment">
-                                            <div className="author-thumb"><img src={author8} alt="" /></div>
-                                            <div className="comment-info clearfix"><strong>Morala Tamoc</strong><div className="comment-time">13 June, 2018      at 07:30</div></div>
-                                            <div className="text">One touch of a red-hot stove is usually all we need to avoid that kind of discomfort in future. The same true we experience the emotional sensation.</div>
-                                            <a className="theme-btn reply-btn" href="#">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                { /* <!-- Comment Form --> */ }
-                                <div className="comment-form">
-                                    <div className="group-title"><h4>Leave A Comment</h4></div>
-                                    { /* <!--Comment Form--> */ }
-                                    <form method="post" action="blog.html">
-                                        <div className="row clearfix">
-                                            <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                                                <input type="text" name="username" placeholder="Full Name" required="" />
-                                            </div>
-                                            <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                                                <input type="email" name="email" placeholder="Email" required="" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                                                <textarea className="darma" name="message" placeholder="Your Message"></textarea>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                                                <button className="theme-btn submit-btn" type="submit" name="submit-form">SEND MESSAGE</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                { /* <!--End Comment Form --> */ }
                             </div>
                         </div>
 
@@ -126,9 +97,9 @@ const PageBlogInner = (props) => {
                             <aside className="sidebar">
                                 { /* <!-- Search --> */ }
                                 <div className="sidebar-widget search-box">
-                                    <form method="post" action="contact.html">
+                                    <form method="post" action="">
                                         <div className="form-group">
-                                            <input type="search" name="search-field" value="" placeholder="Search Now" required="" />
+                                            <input type="search" name="search-field" value="" placeholder="Search Now" required="" readOnly />
                                             <button type="submit"><span className="icon fa fa-search"></span></button>
                                         </div>
                                     </form>

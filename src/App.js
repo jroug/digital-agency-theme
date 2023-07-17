@@ -4,15 +4,21 @@ import {
     _Header,
     _BannerHome, 
     _Footer,
-    PageHome,
-    PagePortfolio,
-    PageContact,
-    TemplatePortfolioInner,
-    TemplateServiceInner,
-    TemplateBlogInner,
-    TemplatePage,
-    PageBlog,
+    Page404,
+    // PageHome,
+    // PagePortfolio,
+    // PageContact,
+    // TemplatePortfolioInner,
+    // TemplateServiceInner,
+    // TemplateBlogInner,
+    // TemplatePage,
+    // PageBlog,
 } from "./components";
+
+import { gql, useQuery } from '@apollo/client';
+import { GraphQLQueries } from './components/queries/GraphQLQueries';
+import { logVar } from './components/utils/Utils';
+
 import ToolEditPage from './components/utils/ToolEditPage';
 
 
@@ -29,7 +35,6 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-
 // const ToolEditPage = lazy(() => import('./components/utils/ToolEditPage'));
 
 // const PageHome = lazy(() => import('./components/PageHome'));
@@ -41,13 +46,30 @@ import './assets/css/custom.css';
 // const TemplatePage = lazy(() => import('./components/TemplatePage'));
 // const PageBlog = lazy(() => import('./components/PageBlog'));
 
-
-
-
 const App = () => {
+
+    const GET_MENUS_QUERY = gql`query GET_MENUS_QUERY
+    {
+      ${GraphQLQueries.queries.sitemapMenuItems}
+      ${GraphQLQueries.queries.primaryMenuItems}
+      ${GraphQLQueries.queries.footerMenuItems}
+    }`;
+
+    const { data, loading, error } = useQuery(GET_MENUS_QUERY);
+
+    if (loading) { logVar('menus query'); return }
+    if (error) { logVar('menus query'); return }
+    if (!data) { logVar('menus query'); return }
+
+    const sitemapMenuItems = data.sitemapMenuItems.nodes;
+    const primaryMenuNodes = data.primaryMenuItems.nodes;
+    const footerMenuNodes = data.footerMenuItems.nodes;
+
+    // console.log(sitemapMenuItems);
+
     return (
         <BrowserRouter>
-            <_Header />
+            <_Header menuNodes={primaryMenuNodes} />
             {
                 (process.env.NODE_ENV == 'development') 
                 ?
@@ -55,28 +77,25 @@ const App = () => {
                 :
                 <></>
             }
-            {/* <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} > */}
+            <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
                 <Routes >
                     <Route>
-                        <Route key={"0"} path="/" exact element={<PageHome />} />
-
                         {
-                            ["about", "testimonials", "services", "faq"].map((pageSlug, index) => {
+                            sitemapMenuItems.map((page, index) => {
+                                let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));;
+                                let pageSlug = page.uri.slice(1);
                                 return (
-                                    <Route key={pageSlug} path={"/"+pageSlug} element={<TemplatePage pageSlug={pageSlug} />} />
+                                    <Route key={page.id} exact path={page.uri} element={<PageComponent pageSlug={pageSlug} title={page.label} />} />
                                 )
                             })
                         }
-              
-                            <Route key={"5"} path="/service-inner" element={<TemplateServiceInner title={"Υπηρεσία"} />}   />
-                        <Route key={"6"} path="/portfolio" element={<PagePortfolio title={"Ιστοσελίδες"} />}   />
-                            <Route key={"7"} path="/portfolio-inner" element={<TemplatePortfolioInner title={"Ιστοσελίδα"} />}   />
-                        <Route key={"8"} path="/blog" element={<PageBlog title={"Blog"} />}   />
-                            <Route key={"9"} path="/blog-inner" element={<TemplateBlogInner title={"Post"} />}   />
-                        <Route key={"10"} path="/contact" element={<PageContact title={"Επικοινωνία"} />}   />
+                        <Route key={"404"} path="*" element={<Page404 title={"404"} />} />
+                        {/* They have been entered to sitemap menu */}
+                        {/* <Route key={"post"} path="/blog/:slug" element={<TemplateBlogInner title={"Post"} />} />
+                        <Route key={"portfolio"} path="/services/:slug" element={<TemplatePortfolioInner title={"Ιστοσελίδα"} />} /> */}
                     </Route>
                 </Routes>
-            {/* </Suspense> */}
+            </Suspense>
             <_Footer />
         </BrowserRouter>
     );

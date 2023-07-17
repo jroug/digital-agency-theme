@@ -14,7 +14,7 @@ const sectionFAQ_SLUG = "sectionfaq";
 // so when adding allowed queris on backend need to add that query
 // you can find it in the ajax request header
 
-
+// for TemplatePage.jsx
 const getGenericPageQuery = (genericPage_SLUG) => {
   return `genericPage: page( id: "${genericPage_SLUG}", idType: URI ) {
       id
@@ -30,9 +30,80 @@ const getGenericPageQuery = (genericPage_SLUG) => {
   }`;
 }
 
+// for TemplateServiceInner.jsx
+const getServiceTemplateQuery = (servicePage_SLUG) => {
+  const correctServicePageSlug = servicePage_SLUG.replace('services/', 'cpt_services/');
+  console.log('slugs=', servicePage_SLUG, correctServicePageSlug);
+  return `serviceTemplate: service( id: "${correctServicePageSlug}", idType: URI ) {
+      id
+      title
+      content
+  }`;
+}
+
 
 const GraphQLQueries = {
     queries : {
+        // query for sitemap
+        sitemapMenuItems: `sitemapMenuItems:menuItems(where: {location: SITEMAP_MENU} , first:100   )  
+        {
+            nodes {
+                  id
+                  uri
+                  label
+                  menuExtraFieldsForSitemap{
+                    reactComponent
+                  }
+            }
+        }`,
+
+        // post & post types that are presented as pages with their own template
+        //   allPostSlugs: `allPostSlugs: posts(first: 10000) {
+        //     nodes {
+        //         id
+        //         uri
+        //     }
+        //   }`,
+        //   allServiceSlugs: `allServiceSlugs: services(first: 10000) {
+        //         nodes {
+        //             id
+        //             uri
+        //           }
+        //   }`,
+        //   allProjectsSlugs: `allProjectsSlugs: projects(first: 10000) {
+        //       nodes {
+        //           id
+        //           uri
+        //       }
+        //   }`,
+
+        // I get the parents and the others as children of them
+        primaryMenuItems: `primaryMenuItems:menuItems(where: {location: PRIMARY, parentDatabaseId:0} , first:100   )  
+        {
+            nodes {
+                  databaseId
+                  uri
+                  label
+                  parentDatabaseId
+                  childItems{
+                    nodes{
+                      databaseId
+                      uri
+                      label
+                      parentDatabaseId
+                    }
+                  }
+            }
+        }`,
+        footerMenuItems: `footerMenuItems:menuItems(where: {location: FOOTER_MENU}, first:100)  
+            {
+                nodes {
+                  databaseId
+                  uri
+                  label
+                  parentDatabaseId
+                }
+            }`,
         homePage:`homePage: page( id: "${homePage_SLUG}", idType: URI ) {
             id
             title
@@ -251,5 +322,6 @@ const GraphQLQueries = {
 
 export {
     GraphQLQueries,
-    getGenericPageQuery
+    getGenericPageQuery,
+    getServiceTemplateQuery
 } 

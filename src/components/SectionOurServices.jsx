@@ -71,7 +71,7 @@ const SectionOurServices = () => {
                                 <div className="icon-box">
                                     <span className={"icon " + sectionOurServicesData.box2.boxIconClass}></span>
                                 </div>
-                                <h3><Link to={sectionOurServicesData.box2.boxLink==null ? '#' : sectionOurServicesData.box2.boxLink}>Strategy &amp; Planning</Link></h3>
+                                <h3><Link to={sectionOurServicesData.box2.boxLink==null ? '#' : sectionOurServicesData.box2.boxLink}>{sectionOurServicesData.box2.boxTitle}</Link></h3>
                                 <div className="text">{sectionOurServicesData.box2.boxText}</div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ const SectionOurServices = () => {
                                 <div className="icon-box">
                                     <span className={"icon " + sectionOurServicesData.box3.boxIconClass}></span>
                                 </div>
-                                <h3><Link to={sectionOurServicesData.box3.boxLink==null ? '#' : sectionOurServicesData.box3.boxLink}>Marketing Research</Link></h3>
+                                <h3><Link to={sectionOurServicesData.box3.boxLink==null ? '#' : sectionOurServicesData.box3.boxLink}>{sectionOurServicesData.box3.boxTitle}</Link></h3>
                                 <div className="text">{sectionOurServicesData.box3.boxText}</div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ const SectionOurServices = () => {
                                 <div className="icon-box">
                                     <span className={"icon " + sectionOurServicesData.box4.boxIconClass}></span>
                                 </div>
-                                <h3><Link to={sectionOurServicesData.box4.boxLink==null ? '#' : sectionOurServicesData.box4.boxLink}>Growth Tracking</Link></h3>
+                                <h3><Link to={sectionOurServicesData.box4.boxLink==null ? '#' : sectionOurServicesData.box4.boxLink}>{sectionOurServicesData.box4.boxTitle}</Link></h3>
                                 <div className="text">{sectionOurServicesData.box4.boxText}</div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@ const SectionOurServices = () => {
                                 <div className="icon-box">
                                     <span className={"icon " + sectionOurServicesData.box5.boxIconClass}></span>
                                 </div>
-                                <h3><Link to={sectionOurServicesData.box5.boxLink==null ? '#' : sectionOurServicesData.box5.boxLink}>Enterprise Consulting</Link></h3>
+                                <h3><Link to={sectionOurServicesData.box5.boxLink==null ? '#' : sectionOurServicesData.box5.boxLink}>{sectionOurServicesData.box5.boxTitle}</Link></h3>
                                 <div className="text">{sectionOurServicesData.box5.boxText}</div>
                             </div>
                         </div>

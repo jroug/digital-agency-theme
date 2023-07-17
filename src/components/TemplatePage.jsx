@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { _BannerTop } from ".";
 
 import { useQuery, gql } from '@apollo/client';
-import {GraphQLQueries, getGenericPageQuery} from "./queries/GraphQLQueries";
+import { getGenericPageQuery} from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
 
 const TemplatePage = (props) => {

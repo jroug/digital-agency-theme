@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import logo from '../assets/images/logo-wis.png';
+import { logVar } from "./utils/Utils";
 
+const _Header = (props) => {
 
-const _Header = () => {
+    const menuNodes = props.menuNodes;
+
     return (
         <header className="main-header header-style-two">
             {/* <!--Header-Upper--> */}
@@ -25,33 +28,34 @@ const _Header = () => {
                                 </div>
                                 <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                                     <ul className="navigation clearfix">
-                                        <li className="current"><Link to="/">Αρχική</Link></li>
-                                        <li className="dropdown">
-                                            <Link to="/about">Η Ομάδα μας</Link>
-                                            <ul>
-                                                <li><Link to="/testimonials">Testimonials</Link></li>
-                                            </ul>
-                                        </li>
-                                        <li className="dropdown">
-                                            <Link to="/services">Υπηρεσίες</Link>
-                                            <ul>
-                                                <li><Link to="/service-inner">Υπηρεσία</Link></li>
-                                            </ul>
-                                        </li>
-                                        <li className="dropdown">
-                                            <Link to="/portfolio">Ιστοσελίδες</Link>
-                                            <ul>
-                                                <li><Link to="/portfolio-inner">Ιστοσελίδα</Link></li>
-                                            </ul>
-                                        </li>
-                                        <li className="dropdown">
-                                            <Link to="/blog">Blog</Link>
-                                            <ul>
-                                                <li><Link to="/blog-inner">Blog Post</Link></li>
-                                            </ul>
-                                        </li>
-                                        <li className=""><Link to="/faq">FAQ</Link></li>
-                                        <li className=""><Link to="/contact">Επικοινωνία</Link></li>
+                                        {/* <li className="current"><Link to="/">Αρχική</Link></li> */}
+                                        {
+                                            menuNodes.map( (menuItem, index) => {
+                                                return (
+                                                    <li className={menuItem.childItems.nodes.length > 0 ? "dropdown" : ""} key={"primaryMenuNode" + index}>
+                                                        <Link to={menuItem.uri}>{menuItem.label}</Link>
+                                                        {
+                                                            menuItem.childItems.nodes.length > 0 
+                                                            ?
+                                                            <ul>
+                                                                {
+                                                                    menuItem.childItems.nodes.map( (menuItemInner, idx) => {
+                                                                        if (menuItemInner.parentDatabaseId == menuItem.databaseId){
+                                                                            // map the cpt_services to services
+                                                                            // it is custom post types slug
+                                                                            let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
+                                                                            return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri}>{menuItemInner.label}</Link></li> )
+                                                                        }   
+                                                                    })
+                                                                }
+                                                            </ul>
+                                                            :
+                                                            null
+                                                        }
+                                                    </li>
+                                                )
+                                            })
+                                        }
                                     </ul>
                                 </div>
                             </nav>

@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import service from '../assets/images/resource/service.jpg';
 import { _BannerTop } from "./";
 
+import { useQuery, gql } from '@apollo/client';
+import { logVar } from "./utils/Utils";
+import { getServiceTemplateQuery } from "./queries/GraphQLQueries";
+
+
 const TemplateServiceInner = (props) => {
+
+	const navigate = useNavigate();
+ 
+
+	const pagePathName = window.location.pathname;
+	const pageSlug = pagePathName.slice(1, -1); // trim slash from the beginning and the end
+
+	const GET_SERVICE_QUERY = gql`query GET_SERVICE_QUERY
+    {
+      ${getServiceTemplateQuery(pageSlug)}
+    }`;
+
+    const { data, loading, error } = useQuery(GET_SERVICE_QUERY);
+
+    if (loading) { logVar('loading from TemplateServiceInner'); return }
+    if (error) { logVar('error from TemplateServiceInner'); return }
+    if (!data) { logVar('!data from TemplateServiceInner'); return }
+
+    const serviceTemplateData = data.serviceTemplate;
+
+	// if service not found redirect to 404
+	if (serviceTemplateData === null ){
+		navigate('/404');
+		return;
+	}
+
     return (
         <>
-            <_BannerTop title={props.title} />   
+            <_BannerTop title={serviceTemplateData!=null ? serviceTemplateData.title : '' } />   
             <div className="sidebar-page-container">
 				<div className="auto-container">
 					<div className="row clearfix">
@@ -17,8 +49,7 @@ const TemplateServiceInner = (props) => {
 								{/* <!-- Services --> */}
 								<div className="sidebar-widget">
 									<ul className="service-list">
-										<li className="current"><a href="services-detail.html">All Services</a></li>
-										<li><a href="services-detail.html">Web Develpment</a></li>
+										<li className="current" ><a href="services-detail.html">Web Develpment</a></li>
 										<li><a href="services-detail.html">Strategy &amp; Planning</a></li>
 										<li><a href="services-detail.html">Marketing Research</a></li>
 										<li><a href="services-detail.html">Growth Tracking</a></li>
@@ -27,7 +58,7 @@ const TemplateServiceInner = (props) => {
 								</div>
 
 								{/* <!-- Broucher Widget --> */}
-								<div className="sidebar-widget broucher-widget">
+								{/* <div className="sidebar-widget broucher-widget">
 									<div className="widget-content">
 										<h3>Download Our Brochures</h3>
 										<div className="content-inner">
@@ -36,7 +67,7 @@ const TemplateServiceInner = (props) => {
 											<a href="#" className="download">Click here to download</a>
 										</div>
 									</div>
-								</div>
+								</div> */}
 
 							</aside>
 						</div>

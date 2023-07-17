@@ -25,6 +25,8 @@ import SectionSubscribeToNL from "./SectionSubscribeToNL";
 // import SectionTestimonials from "./SectionTestimonials";
 import PageBlog from "./PageBlog";
 
+import Page404 from "./Page404";
+
 
 export { 
     _Header,
@@ -42,6 +44,7 @@ export {
     // PageFaq,
     // PageTestimonials,
     PageBlog,
+    Page404,
     
 
     TemplatePortfolioInner,
