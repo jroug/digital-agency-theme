@@ -79,7 +79,8 @@ const PagePortfolio = (props) => {
                                     let categories = project.projectCategories.nodes;
                                     let categoriesString = '';
                                     categories.forEach( (category, index) => {
-                                        categoriesString += category.uri.replace('/project_cat/','').replace('/','') + ' ';
+                                        categoriesString += ( index !== 0 ? ' / ' : '' );
+                                        categoriesString += category.uri.replace('/project_cat/','').replace('/','')  ;
                                     });
                                     return (
                                         <div className={"gallery-item-two mix " + categoriesString + " col-lg-4 col-md-6 col-sm-12"} data-ref="item" key={"project-" + index} >

@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import { logVar, isValidSlug } from "./utils/Utils";
-import { getProjectTemplateQuery } from "./queries/GraphQLQueries";
+import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 // import all images resources
-import img17 from '../assets/images/gallery/17.jpg';
-import img18 from '../assets/images/gallery/18.jpg';
-import img11 from '../assets/images/gallery/11.jpg';
-import img12 from '../assets/images/gallery/12.jpg';
-import img13 from '../assets/images/gallery/13.jpg';
+// import img17 from '../assets/images/gallery/17.jpg';
+// import img18 from '../assets/images/gallery/18.jpg';
+// import img11 from '../assets/images/gallery/11.jpg';
+// import img12 from '../assets/images/gallery/12.jpg';
+// import img13 from '../assets/images/gallery/13.jpg';
 
+import { Link } from 'react-router-dom';    
 
 import { _BannerTop, SectionSubscribeToNL } from "./";
 
@@ -32,7 +33,8 @@ const TemplatePortfolioInner = () => {
  
 	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
     {
-      ${getProjectTemplateQuery(pageSlug)}
+      ${GraphQLQueries.queries.getProjectTemplateQuery(pageSlug)}
+      ${GraphQLQueries.queries.getProjects(pageSlug, 3)}
     }`;
 
     const { data, loading, error } = useQuery(GET_PROJECT_QUERY);
@@ -49,11 +51,14 @@ const TemplatePortfolioInner = () => {
 		return;
 	}
 
-    logVar(projectTemplateData);
+    // logVar(projectTemplateData);
     const projectContent = projectTemplateData.content;
     const projectInfo = projectTemplateData.projectExtraFields.projectInfo.split('\n');
     const projectMainImage = projectTemplateData.projectExtraFields.mainImage.sourceUrl;
     const projectSecondImage = projectTemplateData.projectExtraFields.secondImage.sourceUrl;
+
+    const allProjects = data.allProjects;
+    // logVar(projectInfo);
 
     return (
         <>
@@ -148,83 +153,44 @@ const TemplatePortfolioInner = () => {
                         <div className="sec-title centered">
                             <div className="title">Related Work</div>
                             <div className="separator"><span></span></div>
-                            <h2>Our More Projects</h2>
+                            <h2>More Projects</h2>
                         </div>
 
                         <div className="row clearfix">
+                            {
+                                allProjects.nodes.map( (project, index) => {
+                                    let categories = project.projectCategories.nodes;
+                                    let categoriesString = '';
+                                    categories.forEach( (category, index) => {
+                                        categoriesString += ( index !== 0 ? ' / ' : '' );
+                                        categoriesString += category.uri.replace('/project_cat/','').replace('/','')  ;
+                                    });
 
-                            { /* <!--Gallery Item--> */ }
-                            <div className="gallery-item-two col-lg-4 col-md-6 col-sm-12">
-                                <div className="inner-box">
-                                    <figure className="image-box">
-                                        <img src={img11} alt="" />
-                                        { /* <!--Overlay Box--> */ }
-                                        <div className="overlay-box">
-                                            <div className="overlay-inner">
-                                                <div className="content">
-                                                    <a href="portfolio-single.html" className="link"><span className="icon fa fa-link"></span></a>
-                                                    <a href="images/gallery/11.jpg" data-fancybox="gallery-3" data-caption="" className="link"><span className="icon flaticon-add"></span></a>
+                                    return (
+                                        <div key={"prj"+index} className="gallery-item-two col-lg-4 col-md-6 col-sm-12">
+                                            <div className="inner-box">
+                                                <figure className="image-box">
+                                                    <img src={project.projectExtraFields.listThumb.sourceUrl} alt="" />
+                                                    { /* <!--Overlay Box--> */ }
+                                                    <div className="overlay-box">
+                                                        <div className="overlay-inner">
+                                                            <div className="content">
+                                                                <Link to={project.uri} className="link"><span className="icon fa fa-link"></span></Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </figure>
+                                                { /* <!-- Lower Box --> */ }
+                                                <div className="lower-box">
+                                                    <Link className="arrow-link" to={project.uri} ><span className="icon fa fa-arrow-right"></span></Link>
+                                                    <h3><Link to={project.uri} >{project.title}</Link></h3>
+                                                    <div className="category">{categoriesString}</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </figure>
-                                    { /* <!-- Lower Box --> */ }
-                                    <div className="lower-box">
-                                        <a className="arrow-link" href="portfolio-single.html"><span className="icon fa fa-arrow-right"></span></a>
-                                        <h3><a href="portfolio-single.html">Plan Management</a></h3>
-                                        <div className="category">PLANNING</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            { /* <!--Gallery Item--> */ }
-                            <div className="gallery-item-two col-lg-4 col-md-6 col-sm-12">
-                                <div className="inner-box">
-                                    <figure className="image-box">
-                                        <img src={img12} alt="" />
-                                        { /* <!--Overlay Box--> */ }
-                                        <div className="overlay-box">
-                                            <div className="overlay-inner">
-                                                <div className="content">
-                                                    <a href="portfolio-single.html" className="link"><span className="icon fa fa-link"></span></a>
-                                                    <a href="images/gallery/12.jpg" data-fancybox="gallery-3" data-caption="" className="link"><span className="icon flaticon-add"></span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                    { /* <!-- Lower Box --> */ }
-                                    <div className="lower-box">
-                                        <a className="arrow-link" href="portfolio-single.html"><span className="icon fa fa-arrow-right"></span></a>
-                                        <h3><a href="portfolio-single.html">Technical SEO</a></h3>
-                                        <div className="category">SEO</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            { /* <!--Gallery Item--> */ }
-                            <div className="gallery-item-two col-lg-4 col-md-6 col-sm-12">
-                                <div className="inner-box">
-                                    <figure className="image-box">
-                                        <img src={img13} alt="" />
-                                        { /* <!--Overlay Box--> */ }
-                                        <div className="overlay-box">
-                                            <div className="overlay-inner">
-                                                <div className="content">
-                                                    <a href="portfolio-single.html" className="link"><span className="icon fa fa-link"></span></a>
-                                                    <a href="images/gallery/13.jpg" data-fancybox="gallery-3" data-caption="" className="link"><span className="icon flaticon-add"></span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                    { /* <!-- Lower Box --> */ }
-                                    <div className="lower-box">
-                                        <a className="arrow-link" href="portfolio-single.html"><span className="icon fa fa-arrow-right"></span></a>
-                                        <h3><a href="portfolio-single.html">Digital Analysis</a></h3>
-                                        <div className="category">STRATEGY</div>
-                                    </div>
-                                </div>
-                            </div>
-
+                                    )
+                                })
+                            }
                         </div>
 
                     </div>

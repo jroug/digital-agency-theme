@@ -44,27 +44,27 @@ const getBlogPostTemplateQuery = (postPage_SLUG) => {
   }`;
 }
 
-// for TemplateBlogInner.jsx
-const getProjectTemplateQuery = (projectPage_SLUG) => {
-  const correctProjectSlug = projectPage_SLUG.replace('blog/', '');
-  return `portfolioProject: project( id: "${correctProjectSlug}", idType: URI ) {
-      id
-      title
-      content
-      projectExtraFields{
-        listThumb{
-          sourceUrl
-        }
-        mainImage{
-          sourceUrl
-        }
-        secondImage{
-          sourceUrl
-        }
-        projectInfo
-      }
-  }`;
-}
+// // for TemplateBlogInner.jsx
+// const getProjectTemplateQuery = (projectPage_SLUG) => {
+//   const correctProjectSlug = projectPage_SLUG.replace('blog/', '');
+//   return `portfolioProject: project( id: "${correctProjectSlug}", idType: URI ) {
+//       id
+//       title
+//       content
+//       projectExtraFields{
+//         listThumb{
+//           sourceUrl
+//         }
+//         mainImage{
+//           sourceUrl
+//         }
+//         secondImage{
+//           sourceUrl
+//         }
+//         projectInfo
+//       }
+//   }`;
+// }
 
 // for TemplateBlogInner.jsx
 // const getProjects = (excludeProject_SLUG) => {
@@ -340,8 +340,8 @@ const GraphQLQueries = {
       `,
 
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
-      getProjects : (excludeId) => {
-        return `allProjects: projects( where: {notIn :"${excludeId}"}, first: 1000 ) {
+      getProjects : (excludeId, limit = 1000) => {
+        return `allProjects: projects( where: {notIn :"${excludeId}"}, first: ${limit} ) {
           nodes{
             id
             title
@@ -361,7 +361,28 @@ const GraphQLQueries = {
           }
         }`;
       },
-    }
+
+      // for template portfolio inner
+      getProjectTemplateQuery : (projectPage_SLUG) => {
+        return `portfolioProject: project( id: "${projectPage_SLUG.replace('blog/', '')}", idType: URI ) {
+            id
+            title
+            content
+            projectExtraFields{
+              listThumb{
+                sourceUrl
+              }
+              mainImage{
+                sourceUrl
+              }
+              secondImage{
+                sourceUrl
+              }
+              projectInfo
+            }
+        }`;
+      }
+  }
 };
 
 
@@ -371,5 +392,5 @@ export {
     getGenericPageQuery,
     getServiceTemplateQuery,
     getBlogPostTemplateQuery,
-    getProjectTemplateQuery,
+    // getProjectTemplateQuery,
 } 
