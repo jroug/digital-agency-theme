@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import service from '../assets/images/resource/service.jpg';
 import { _BannerTop } from "./";
-
+import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import { logVar, isValidSlug } from "./utils/Utils";
-import { getServiceTemplateQuery } from "./queries/GraphQLQueries";
+import { getServiceTemplateQuery, GraphQLQueries } from "./queries/GraphQLQueries";
 
 
 const TemplateServiceInner = () => {
@@ -26,7 +26,8 @@ const TemplateServiceInner = () => {
 	// chech for sql injection in the pageSlug variable
 	const GET_SERVICE_QUERY = gql`query GET_SERVICE_QUERY
     {
-      ${getServiceTemplateQuery(pageSlug)}
+      	${getServiceTemplateQuery(pageSlug)}
+		${GraphQLQueries.queries.allServices}
     }`;
 
     const { data, loading, error } = useQuery(GET_SERVICE_QUERY);
@@ -43,6 +44,16 @@ const TemplateServiceInner = () => {
 		return;
 	}
 
+	// console.log(data.allServices);
+	const allServices = data.allServices;
+
+	const serviceContent = serviceTemplateData.content;
+ 
+	let parser = new DOMParser();
+	let parsedDocument = parser.parseFromString(serviceTemplateData.excerpt, "text/html");
+	let serviceTitle = parsedDocument.getElementsByTagName("p")[0].innerText;
+
+
     return (
         <>
             <_BannerTop title={serviceTemplateData!=null ? serviceTemplateData.title : '' } />   
@@ -57,11 +68,15 @@ const TemplateServiceInner = () => {
 								{/* <!-- Services --> */}
 								<div className="sidebar-widget">
 									<ul className="service-list">
-										<li className="current" ><a href="services-detail.html">Web Develpment</a></li>
-										<li><a href="services-detail.html">Strategy &amp; Planning</a></li>
-										<li><a href="services-detail.html">Marketing Research</a></li>
-										<li><a href="services-detail.html">Growth Tracking</a></li>
-										<li><a href="services-detail.html">Enterprise Consulting</a></li>
+										{
+											allServices.nodes.map( (service, index) => {
+												let serviceSlug = service.uri.replace('cpt_services/', 'services/');
+												let _className = window.location.pathname === serviceSlug ? 'current' : '';
+												return (
+													<li className={_className} key={"service" + index}><Link to={serviceSlug}>{service.title}</Link></li>
+												)
+											})
+										}
 									</ul>
 								</div>
 
@@ -88,18 +103,8 @@ const TemplateServiceInner = () => {
 										<img src={service} alt="" />
 									</div>
 									<div className="lower-content">
-										<h2>Startegy and Plan</h2>
-										<div className="text">
-											<p>Having been around for over a decade, Basecamp is considered a reliable tool that excels at giving organizations a high-level view of their teams. Like Asana, Basecamp can help monitor tracking, but also offers additional features like direct messaging chats, centralized document storage, and a scheduling tool.Basecamp aims to take on Slack, Asana, Google Drive, and Dropbox by melding all of their competitors into one robust management tool.</p>
-											<h3>Features</h3>
-											<p>Designed with the harried business person in mind, Basecamp helps managers and team members stay on top of their professional lives. The app boasts that users will no longer drown in a sea of emails as that feature is already embedded into the app. Additionally, the scheduling and tracking features help ensure teams never again miss a deadline. Another interesting component of Basecamp is that managers can eliminate the need for “check-in” meetings by sending an automated message daily to employees that ask for a recap of what they accomplished that day. Then employees can “tag” teammates in their recaps to explain what they need help with or what they finished.</p>
-											<h3>Cost</h3>
-											<p>A unique feature of Basecamp is that the app doesn’t charge for an increase in the number of users or projects. So unlike some of its peers, Basecamp charges a flat-fixed fee of $99 a month for a team, no matter the size.</p>
-											<h3>Why It’s Good for SEO Pros</h3>
-											<p>Managing a client’s SEO consists of many different timelines and action items. Keeping track of client emails, meetings , and central documents is a full-time job.</p>
-											<p>By offering one of the best all-encompassing software solutions, Basecamp helps busy SEO pros stay on top of their entire business by more efficiently checking in with their team and deadlines in one easy to use the app.Casie Gillette, senior director of digital marketing at KoMarketing, uses Basecamp mainly for communicating to clients.</p>
-											<p>“Basecamp is our primary means of communication with clients,” Gillette said. “For any deliverable, it allows an easy way to track the conversation and adjust docs accordingly.”</p>
-										</div>
+										<h2>{serviceTitle}</h2>
+										<div className="text" dangerouslySetInnerHTML={{__html:serviceContent}} ></div>
 									</div>
 								</div>
 							</div>

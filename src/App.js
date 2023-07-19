@@ -70,7 +70,7 @@ const App = () => {
     const footerMenuNodes2 = data.footerMenuItems2.nodes;
     const footerMenu2_name = data.menuName2.nodes[0].name;
 
-    console.log(data.menuName1);
+    // console.log(data.menuName1);
 
     return (
         <BrowserRouter>

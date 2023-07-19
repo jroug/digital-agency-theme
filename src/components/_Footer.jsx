@@ -3,7 +3,17 @@ import React from 'react';
 import logo from '../assets/images/logo-wis.png';
 import bg4 from '../assets/images/background/4.jpg';
 import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
- 
+// github copilot is awsome !!
+// what do you say about that??
+// I think it's awsome too
+// I think it's awsome too
+// I think it's awsome too
+// I think it's awsome too
+// I think it's awsome too
+// I think it's awsome too
+// ok we agree on that
+
+
 const _Footer = (props) => {
 
     const footerName1 = props.footerMenu1_name;

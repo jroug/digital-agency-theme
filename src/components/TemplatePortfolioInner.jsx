@@ -29,7 +29,7 @@ const TemplatePortfolioInner = () => {
 	const pagePathName = window.location.pathname;
 	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
 
-	// chech for sql injection in the pageSlug variable
+ 
 	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
     {
       ${getProjectTemplateQuery(pageSlug)}
@@ -49,6 +49,12 @@ const TemplatePortfolioInner = () => {
 		return;
 	}
 
+    logVar(projectTemplateData);
+    const projectContent = projectTemplateData.content;
+    const projectInfo = projectTemplateData.projectExtraFields.projectInfo.split('\n');
+    const projectMainImage = projectTemplateData.projectExtraFields.mainImage.sourceUrl;
+    const projectSecondImage = projectTemplateData.projectExtraFields.secondImage.sourceUrl;
+
     return (
         <>
             <_BannerTop title={projectTemplateData!=null ? projectTemplateData.title : '' } />   
@@ -64,7 +70,7 @@ const TemplatePortfolioInner = () => {
                                 <div className="single-item-carousel owl-carousel owl-theme">
                                     <div className="slide">
                                         <div className="image">
-                                            <img src={img17} alt="" />
+                                            <img src={projectMainImage} alt="" />
                                         </div>
                                     </div>
                                     {/* <div className="slide">
@@ -82,7 +88,7 @@ const TemplatePortfolioInner = () => {
 
                             <div className="column col-lg-4 col-md-4 col-sm-12">
                                 <div className="image">
-                                    <img src={img18} alt="" />
+                                    <img src={projectSecondImage} alt="" />
                                 </div>
                             </div>
 
@@ -94,24 +100,27 @@ const TemplatePortfolioInner = () => {
                         <div className="row clearfix">
 
                             <div className="column col-lg-8 col-md-12 col-sm-12">
-                                <h3>Digital Analysis</h3>
-                                <p>Cast obscure badger jeep quail congenialy when changed as cat jeepers affectionate thus goodness this far like ipsum dolor sit amet, consectetur adipisicing elits sed do eiusmod tempor incididunt laboret dolore magna aliqua enim ad minim. Eveniet in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at seds eros sed et accumsan et iusto odio dignissim. Temporibus autem quibusdam et aut officiis.</p>
-                                <p>Dut perspiciatis unde omnis iste natus error sit voluptatems accusantium doloremqu laudantiums ut, totams se aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae duis autems vell eums iriure dolors in hendrerit saep.</p>
+                                <h3>Analysis</h3>
+                                <div dangerouslySetInnerHTML={{__html: projectContent}}></div>
                             </div>
                             <div className="column col-lg-4 col-md-12 col-sm-12">
                                 <h3>Project Info</h3>
                                 <ul className="project-info">
-                                    <li><span className="icon fa fa-user"></span><strong>Clients :</strong>Julia Robertson</li>
-                                    <li><span className="icon fa fa-calendar"></span><strong>Date :</strong>November 20, 2017</li>
-                                    <li><span className="icon fa fa-tag"></span><strong>Category :</strong>Strategy, Business</li>
-                                    <li><span className="icon fa fa-location-arrow"></span><strong>Location :</strong>1201 park street, Avenue, Dhaka</li>
+                                    {
+                                        projectInfo.map((info, index) => {
+                                            return (
+                                                <li key={"projectInfo" + index}>{info}</li>
+                                            )
+                                        })
+
+                                    }
                                 </ul>
                             </div>
 
                         </div>
                     </div>
 
-                    <h3>Challenge & Solutions</h3>
+                    {/* <h3>Challenge & Solutions</h3>
                     <p>Peacefully between its four familiar walls. A collection of textile samples lay spread out on the table – Samsa was a travelling salesman – and above it there hung a piture that he had recently cut out of an illustrated magazine A collection of textile samples lay spread out on the table</p>
                     <div className="row clearfix">
                         <div className="column col-lg-6 col-md-12 col-sm-12">
@@ -125,7 +134,7 @@ const TemplatePortfolioInner = () => {
                                 <li>Familiar walls a collection of textile samples</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </section>
             { /* <!-- End Projects Page Section --> */ }
