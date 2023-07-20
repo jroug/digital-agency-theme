@@ -59,10 +59,10 @@ const _Header = (props) => {
                                     </ul>
                                 </div>
                             </nav>
-                            <div className="outer-box">
-                                {/* <!--Nav Toggler--> */}
+                            {/* <!--Nav Toggler--> */}
+                            {/* <div className="outer-box">
                                 <div className="sidebar-btn hidden-bar-opener"><div className="nav-btn"><span className="flaticon-menu"></span></div></div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

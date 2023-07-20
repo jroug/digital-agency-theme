@@ -66,10 +66,8 @@ const SectionFAQ = () => {
                                     faqCases.map( (faqCase, index) => {
 
                                         let parser = new DOMParser();
-
                                         let parsedDocument = parser.parseFromString(faqCase.content, "text/html");
                                         let faq_text = parsedDocument.getElementsByTagName("p");
-
 
                                         return (
                                             <li className="accordion block" key={index}>

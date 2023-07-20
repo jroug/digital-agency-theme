@@ -34,7 +34,7 @@ const TemplatePortfolioInner = () => {
 	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
     {
       ${GraphQLQueries.queries.getProjectTemplateQuery(pageSlug)}
-      ${GraphQLQueries.queries.getProjects(pageSlug, 3)}
+      ${GraphQLQueries.queries.getProjects(4)}
     }`;
 
     const { data, loading, error } = useQuery(GET_PROJECT_QUERY);
@@ -58,7 +58,9 @@ const TemplatePortfolioInner = () => {
     const projectSecondImage = projectTemplateData.projectExtraFields.secondImage.sourceUrl;
 
     const allProjects = data.allProjects;
-    // logVar(projectInfo);
+    let countOfProjects = 0;
+    // logVar(allProjects);
+    // logVar(pageSlug);
 
     return (
         <>
@@ -158,11 +160,18 @@ const TemplatePortfolioInner = () => {
 
                         <div className="row clearfix">
                             {
+                                
                                 allProjects.nodes.map( (project, index) => {
+
+                                    if (project.uri === '/' + pageSlug + '/' || countOfProjects == 3) {
+                                        return null;
+                                    }
+                                    countOfProjects++;
+
                                     let categories = project.projectCategories.nodes;
                                     let categoriesString = '';
                                     categories.forEach( (category, index) => {
-                                        categoriesString += ( index !== 0 ? ' / ' : '' );
+                                        categoriesString += index !== 0 ? ' / ' : ''
                                         categoriesString += category.uri.replace('/project_cat/','').replace('/','')  ;
                                     });
 

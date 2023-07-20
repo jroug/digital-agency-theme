@@ -7,21 +7,7 @@ const sectionSubscribeToNL_SLUG = "sectionsubscribetonl";
 const sectionTestimonials_SLUG = "sectiontestimonials";
 const sectionFAQ_SLUG = "sectionfaq";
  
-// for TemplatePage.jsx
-const getGenericPageQuery = (genericPage_SLUG) => {
-  return `genericPage: page( id: "${genericPage_SLUG}", idType: URI ) {
-      id
-      title
-      content
-      componentsSectionsAllPages{
-        componentsSections {
-          ... on Component {
-            title
-          }
-        }
-      }
-  }`;
-}
+
 
 // for TemplateServiceInner.jsx
 const getServiceTemplateQuery = (servicePage_SLUG) => {
@@ -34,59 +20,8 @@ const getServiceTemplateQuery = (servicePage_SLUG) => {
   }`;
 }
 
-// for TemplateBlogInner.jsx
-const getBlogPostTemplateQuery = (postPage_SLUG) => {
-  const correctPostSlug = postPage_SLUG.replace('blog/', '');
-  return `blogPost: post( id: "${correctPostSlug}", idType: URI ) {
-      id
-      title
-      content
-  }`;
-}
 
-// // for TemplateBlogInner.jsx
-// const getProjectTemplateQuery = (projectPage_SLUG) => {
-//   const correctProjectSlug = projectPage_SLUG.replace('blog/', '');
-//   return `portfolioProject: project( id: "${correctProjectSlug}", idType: URI ) {
-//       id
-//       title
-//       content
-//       projectExtraFields{
-//         listThumb{
-//           sourceUrl
-//         }
-//         mainImage{
-//           sourceUrl
-//         }
-//         secondImage{
-//           sourceUrl
-//         }
-//         projectInfo
-//       }
-//   }`;
-// }
-
-// for TemplateBlogInner.jsx
-// const getProjects = (excludeProject_SLUG) => {
-//   return `allProjects: projects( first:1000 ) {
-//     nodes{
-//       id
-//       title
-//       projectCategories {
-//         nodes {
-//             id
-//             name
-//         }
-//       }
-//       projectExtraFields{
-//         listThumb{
-//           sourceUrl
-//         }
-//       }
-//     }
-//   }`;
-// }
-
+ 
  
 
 
@@ -188,9 +123,22 @@ const GraphQLQueries = {
               uri
             }
         }`,
-
-
         allProjectCategories: `allProjectCategories: projectCategories(first: 10000) {
+          nodes {
+              id
+              name
+              uri
+            }
+        }`,
+        allPostCategories: `allPostCategories: categories(first: 10000) {
+          nodes {
+              id
+              name
+              uri
+              count
+            }
+        }`,
+        allPostTags: `allPostTags: tags(first: 10000) {
           nodes {
               id
               name
@@ -340,8 +288,23 @@ const GraphQLQueries = {
       `,
 
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
-      getProjects : (excludeId, limit = 1000) => {
-        return `allProjects: projects( where: {notIn :"${excludeId}"}, first: ${limit} ) {
+      getGenericPageQuery : (genericPage_SLUG) => {
+        return `genericPage: page( id: "${genericPage_SLUG}", idType: URI ) {
+            id
+            title
+            content
+            componentsSectionsAllPages{
+              componentsSections {
+                ... on Component {
+                  title
+                }
+              }
+            }
+        }`;
+      },
+
+      getProjects : (limit = 1000) => {
+        return `allProjects: projects( first: ${limit} ) {
           nodes{
             id
             title
@@ -381,7 +344,37 @@ const GraphQLQueries = {
               projectInfo
             }
         }`;
+      },
+
+      getBlogPostTemplateQuery : (postPage_SLUG) => {
+        return `blogPost: post( id: "${postPage_SLUG.replace('blog/', '')}", idType: URI ) {
+            id
+            title
+            content
+            postExtraFields{
+              mainImage{
+                sourceUrl
+              }
+            }
+        }`
+      },
+      getBlogPosts : (limit = 1000) => {
+        return `allPosts: posts( first: ${limit} ) {
+          nodes{
+            id
+            title
+            uri
+            excerpt
+            featuredImage {
+              node {
+                id
+                 sourceUrl
+              }
+            }
+          }
+        }`;
       }
+
   }
 };
 
@@ -389,8 +382,8 @@ const GraphQLQueries = {
 
 export {
     GraphQLQueries,
-    getGenericPageQuery,
+    // getGenericPageQuery,
     getServiceTemplateQuery,
-    getBlogPostTemplateQuery,
+    // getBlogPostTemplateQuery,
     // getProjectTemplateQuery,
 } 

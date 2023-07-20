@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { _BannerTop } from ".";
 
 import { useQuery, gql } from '@apollo/client';
-import { getGenericPageQuery} from "./queries/GraphQLQueries";
+import { GraphQLQueries} from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
 
 const TemplatePage = (props) => {
@@ -10,7 +10,7 @@ const TemplatePage = (props) => {
     const pageSlug = props.pageSlug;
     const PAGE_CONTENT = gql`query PAGE_CONTENT 
     {
-      ${ getGenericPageQuery(pageSlug) }
+      ${ GraphQLQueries.queries.getGenericPageQuery(pageSlug) }
     }`;
 
     const { data, loading, error } = useQuery(PAGE_CONTENT);

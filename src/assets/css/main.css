@@ -2021,7 +2021,7 @@ img{
 	font-weight:700;
 	line-height:24px;
 	padding:28px 60px;
-	background-color:#0400b5;
+	background-color:var(--colorBlueButton3);
 	border-radius:50px;
 }
 
@@ -2239,14 +2239,14 @@ img{
 	position:relative;
 	width:35px;
 	height:35px;
-	color:#0400b5;
+	color:var(--colorBlueButton3);
 	font-size:20px;
 	text-align:center;
 	line-height:31px;
 	border-radius:50px;
 	margin-left:10px;
 	display:inline-block;
-	border:2px solid #0400b5;
+	border:2px solid var(--colorBlueButton3);
 	transition:all 300ms ease;
 	-webkit-transition:all 300ms ease;
 	-ms-transition:all 300ms ease;
@@ -2311,7 +2311,7 @@ img{
 	bottom:-30px;
 	width:60px;
 	height:60px;
-	color:#0400b5;
+	color:var(--colorBlueButton3);
 	font-size:20px;
 	line-height:60px;
 	text-align:center;
@@ -2328,7 +2328,7 @@ img{
 
 .gallery-item .inner-box .arrow-link:hover{
 	color:#ffffff;
-	background-color:#0400b5;
+	background-color:var(--colorBlueButton3);
 }
 
 .gallery-item .inner-box:hover .arrow-link{
@@ -2803,7 +2803,7 @@ img{
     -webkit-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
-	background-color:#0400b5;
+	background-color:var(--colorBlueButton3);
 }
 
 .testimonial-section .owl-nav .owl-prev:hover::before,
@@ -2890,7 +2890,7 @@ img{
 }
 
 .news-block .inner-box .lower-content h6 a:hover{
-	color:#0400b5;
+	color:var(--colorBlueButton3);
 }
 
 .news-block .inner-box .lower-content .post-date{
@@ -6543,7 +6543,7 @@ img{
 	top:-30px;
 	width:60px;
 	height:60px;
-	color:#0400b5;
+	color:var(--colorBlueButton3);
 	font-size:20px;
 	line-height:60px;
 	text-align:center;
@@ -6560,7 +6560,7 @@ img{
 
 .gallery-item-two .inner-box .lower-box .arrow-link:hover{
 	color:#ffffff;
-	background-color:#0400b5;
+	background-color:var(--colorBlueButton3);
 }
 
 .gallery-item-two .inner-box:hover .arrow-link{
@@ -7045,7 +7045,7 @@ img{
 }
 
 .news-block-two .inner-box .lower-content h6 a:hover{
-	color:#0400b5;
+	color:var(--colorBlueButton3);
 }
 
 .news-block-two .inner-box .lower-content .text{
@@ -9053,4 +9053,11 @@ input:focus{
 .main-slider-six .tp-bannertimer,
 .main-slider-six .tp-bullets{
 	display:none !important;	
+}
+
+.wp-block-heading{
+	color:black !important;
+}
+.text p{
+	color:black !important;
 }

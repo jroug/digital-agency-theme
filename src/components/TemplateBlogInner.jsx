@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { _BannerTop } from "./";
 import news10 from '../assets/images/resource/news-10.jpg';
 import news14 from '../assets/images/resource/news-14.jpg';
@@ -10,10 +10,11 @@ import author3 from '../assets/images/resource/author-3.jpg';
 // import author8 from '../assets/images/resource/author-8.png';
 import { useQuery, gql } from '@apollo/client';
 import { logVar, isValidSlug } from "./utils/Utils";
-import { getBlogPostTemplateQuery } from "./queries/GraphQLQueries";
- 
+import { GraphQLQueries } from "./queries/GraphQLQueries";
 
-const PageBlogInner = (props) => {
+const PageBlogInner = () => {
+
+    let countRecentPosts = 0;
 
 	const navigate = useNavigate();
 	let postTemplateData;
@@ -31,7 +32,10 @@ const PageBlogInner = (props) => {
 	// chech for sql injection in the pageSlug variable
 	const GET_POST_QUERY = gql`query GET_POST_QUERY
     {
-      ${getBlogPostTemplateQuery(pageSlug)}
+      ${GraphQLQueries.queries.getBlogPostTemplateQuery(pageSlug)}
+      ${GraphQLQueries.queries.allPostCategories}
+      ${GraphQLQueries.queries.allPostTags}
+      ${GraphQLQueries.queries.getBlogPosts(4)}
     }`;
 
     const { data, loading, error } = useQuery(GET_POST_QUERY);
@@ -48,6 +52,14 @@ const PageBlogInner = (props) => {
 		return;
 	}
 
+    const allPostCategories = data.allPostCategories;
+    const allPostTags = data.allPostTags;
+    const allPosts = data.allPosts;
+
+    // logVar(postTemplateData);
+    // logVar(allPostCategories);
+    // logVar(allPostTags);
+
     return (
         <>
             <_BannerTop title={postTemplateData!=null ? postTemplateData.title : '' } />  
@@ -62,42 +74,19 @@ const PageBlogInner = (props) => {
                                         <img src={news10} alt="" />
                                     </div>
                                     <div className="lower-content">
-                                        <div className="post-date">20 March, 2018</div>
-                                        <h6>Top aide possible contender forced to resign over creepy.</h6>
-                                        <div className="text">
-                                            <p>Eveniet in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at seds eros sed et accumsan et iusto odio dignissim. Temporibus autem quibusdam et aut officiis.</p>
-                                            <div className="images-column">
-                                                <div className="row clearfix">
-                                                    <div className="column col-lg-6 col-md-6 col-sm-12">
-                                                        <div className="image">
-                                                            <img src={news14} alt="" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="column col-lg-6 col-md-6 col-sm-12">
-                                                        <div className="image">
-                                                            <img src={news15} alt="" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <p>Eveniet in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at seds eros sed et accumsan et iusto odio dignissim. Temporibus autem quibusdam et aut officiis.</p>
-                                            <p>cookies are set through this site to recognise your repeat visits and preferences, serve more vant ads, facilitate social sharing, and to violanalyse traffic.Others wondered if the hand of od was at work over New York, heralding perhaps a new Pope, or the moment when Evangeli cals say true believers will be swept up, or "raptured", to heaven. When these electrons recombine with the excited atoms, returning them to their starting energy state, light is emitted.</p>
-                                            <p>When these electrons recombine with the excited atoms, returning them to their starting energy state, light is emitted. The colour of the light emitted depends on the type of atoms involved.</p>
-                                            <blockquote>
-                                                <div className="quote-icon flaticon-left-quote"></div>
-                                                <div className="quote-text">What sort of men would think it is acceptable to subject a young girl to this level of brutality and violence? an attack like this in ourcommunities and we must all work together.</div>
-                                            </blockquote>
-                                        </div>
+                                        {/* <div className="post-date">20 March, 2018</div> */}
+                                        {/* <h6>Top aide possible contender forced to resign over creepy.</h6> */}
+                                        <div className="text" dangerouslySetInnerHTML={{__html:postTemplateData.content}}></div>
                                         <div className="post-share-option clearfix">
-                                            <div className="pull-left">
+                                            {/* <div className="pull-left">
                                                 <div className="author">
                                                     <div className="image"><img src={author3} alt="" /></div>
                                                     by Jhon Kenedy
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="pull-right">
                                                 <ul className="post-info">
-                                                    <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li>
+                                                    {/* <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li> */}
                                                     <li><a href="blog-single.html"><span className="icon flaticon-share"></span></a></li>
                                                 </ul>
                                             </div>
@@ -125,37 +114,48 @@ const PageBlogInner = (props) => {
                                         <h2>Categories</h2>
                                     </div>
                                     <ul className="cat-list">
-                                        <li><a href="#">Web Design <span>(09)</span></a></li>
-                                        <li><a href="#">Graphics<span>(13)</span></a></li>
-                                        <li><a href="#">Web Development<span>(05)</span></a></li>
-                                        <li><a href="#">IOS/Android Development<span>(19)</span></a></li>
-                                        <li><a href="#">Others<span>(12)</span></a></li>
+                                        {
+                                            allPostCategories.nodes.map( (category, index) => {
+                                                let slug = category.uri.replace('/category/','').replace('/','');
+                                                return (
+                                                    <li key={"category-" + index} ><Link to={category.uri} >{category.name}<span>({category.count})</span></Link></li>
+                                                )
+                                            })
+                                        }
                                     </ul>
                                 </div>
                                 { /* <!-- Popular Posts --> */ }
                                 <div className="sidebar-widget popular-posts">
                                     <div className="sidebar-title"><h2>Recent News</h2></div>
-                                    <article className="post">
-                                        <div className="text"><a href="blog-detail.html">Best website traffice Booster with great tools.</a></div>
-                                        <div className="post-info">12 May, 2016</div>
-                                    </article>
-                                    <article className="post">
-                                        <div className="text"><a href="blog-detail.html">Google take latest step &amp; Catch the black SEO</a></div>
-                                        <div className="post-info">12 May, 2016</div>
-                                    </article>
-                                    <article className="post">
-                                        <div className="text"><a href="blog-detail.html">How to become a best sale marketer in a year!</a></div>
-                                        <div className="post-info">12 May, 2016</div>
-                                    </article>
+                                    {
+                                        allPosts.nodes.map( (post, index) => {
+
+                                            if ('/' + pageSlug + '/' == '/blog' + post.uri) return;
+                                            if (countRecentPosts++ >= 3) return;
+                                            
+                                            let parser = new DOMParser();
+                                            let parsedDocument = parser.parseFromString(post.excerpt, "text/html");
+                                            let excerptText = parsedDocument.getElementsByTagName("p")[0].innerText;
+                                            return (
+                                                <article className="post" key={"post-" + index} >
+                                                    <div className="text"><Link to={"/blog" + post.uri} >{post.title}</Link></div>
+                                                    <div className="post-info">{excerptText}</div>
+                                                </article>
+                                            )
+                                        })
+                                    }
                                 </div>
                                 { /* <!-- Popular Tags --> */ }
                                 <div className="sidebar-widget popular-tags">
                                     <div className="sidebar-title"><h2>Popular Tags</h2></div>
-                                    <a href="#">SEO Dightal</a>
-                                    <a href="#">Animation</a>
-                                    <a href="#">Ideas</a>
-                                    <a href="#">Design</a>
-                                    <a href="#">Develpment</a>
+                                    {
+                                        allPostTags.nodes.map( (tag, index) => {
+                                            let slug = tag.uri.replace('/tag/','').replace('/','');
+                                            return (
+                                                <Link to={tag.uri} key={"tag-" + index} >{tag.name}</Link>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </aside>
                         </div>

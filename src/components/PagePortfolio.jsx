@@ -35,7 +35,7 @@ const PagePortfolio = (props) => {
  
 	const GET_ALLPROJECTS_QUERY = gql`query GET_ALLPROJECTS_QUERY
     {
-      ${GraphQLQueries.queries.getProjects("")}
+      ${GraphQLQueries.queries.getProjects()}
       ${GraphQLQueries.queries.allProjectCategories}
     }`;
 
@@ -48,8 +48,8 @@ const PagePortfolio = (props) => {
     const allProjects = data.allProjects;
     const allCategories = data.allProjectCategories;
 
-    logVar(allProjects);
-    logVar(allCategories);
+    // logVar(allProjects);
+    // logVar(allCategories);
         
     return (
         <>
