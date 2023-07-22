@@ -1,11 +1,17 @@
+// in order for rendering to work properly
+// we neet to NOT lazy load header footer and PageHome
+// and put PageHome hardcode routing not in wordpress sitemap menu
+
+
 import React , { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
-    _Header,
-    _BannerHome, 
+    _Header, 
     _Footer,
-    Page404,
-    // PageHome,
+    
+    _AnimationLayout,
+
+    PageHome,
     // PagePortfolio,
     // PageContact,
     // TemplatePortfolioInner,
@@ -13,12 +19,17 @@ import {
     // TemplateBlogInner,
     // TemplatePage,
     // PageBlog,
+    // SectionOurServices,
+    // SectionSubscribeToNL,
+    Page404
+
+
 } from "./components";
 
 import { gql, useQuery } from '@apollo/client';
 import { GraphQLQueries } from './components/queries/GraphQLQueries';
 import { logVar } from './components/utils/Utils';
-import ToolEditPage from './components/utils/ToolEditPage';
+// import ToolEditPage from './components/utils/ToolEditPage';
 
 
 import './assets/css/bootstrap.css';
@@ -34,34 +45,88 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-// const ToolEditPage = lazy(() => import('./components/utils/ToolEditPage'));
+// const _Header = lazy(() => import('./components/_Header'));
+// const _Footer = lazy(() => import('./components/_Footer'));
+
+const _BannerHome = lazy(() => import('./components/_BannerHome'));
+const _BannerTop = lazy(() => import('./components/_BannerTop'));
 
 // const PageHome = lazy(() => import('./components/PageHome'));
-// const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
-// const PageContact = lazy(() => import('./components/PageContact'));
-// const TemplatePortfolioInner = lazy(() => import('./components/TemplatePortfolioInner'));
-// const TemplateServiceInner = lazy(() => import('./components/TemplateServiceInner'));
+const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
+const PageContact = lazy(() => import('./components/PageContact'));
+// const Page404 = lazy(() => import('./components/Page404'));
+
+const TemplatePage = lazy(() => import('./components/TemplatePage'));
+
+const SectionAboutUs = lazy(() => import('./components/SectionAboutUs'));
+const SectionOurServices = lazy(() => import('./components/SectionOurServices'));
+const SectionSubscribeToNL = lazy(() => import('./components/SectionSubscribeToNL'));
+const SectionFAQ = lazy(() => import('./components/SectionFAQ'));
+const SectionTestimonials = lazy(() => import('./components/SectionTestimonials'));
+const SectionWhyUs = lazy(() => import('./components/SectionWhyUs'));
+const SectionBlog = lazy(() => import('./components/SectionBlog'));
+
+const TemplatePortfolioInner = lazy(() => import('./components/TemplatePortfolioInner'));
+const TemplateServiceInner = lazy(() => import('./components/TemplateServiceInner'));
+
 // const TemplateBlogInner = lazy(() => import('./components/TemplateBlogInner'));
-// const TemplatePage = lazy(() => import('./components/TemplatePage'));
+
 // const PageBlog = lazy(() => import('./components/PageBlog'));
 
 const App = () => {
 
- 
+    console.log('--------- App --------------');
 
-    const GET_MENUS_QUERY = gql`query GET_MENUS_QUERY
+    // const GET_ALL_QUERY = gql`query GET_ALL_QUERY
+    // {
+    //   ${GraphQLQueries.queries.sitemapMenuItems}
+    //   ${GraphQLQueries.queries.primaryMenuItems}
+    //   ${GraphQLQueries.queries.footerMenuItems1}
+    //   ${GraphQLQueries.queries.footerMenuItems2}
+    // }`;
+
+
+    // promote caching
+    const GET_ALL_QUERY = gql`query GET_ALL_QUERY
     {
       ${GraphQLQueries.queries.sitemapMenuItems}
       ${GraphQLQueries.queries.primaryMenuItems}
       ${GraphQLQueries.queries.footerMenuItems1}
       ${GraphQLQueries.queries.footerMenuItems2}
+
+      ${GraphQLQueries.queries.homePage}
+
+      ${GraphQLQueries.queries.getGenericPageQuery('about/') }
+      ${GraphQLQueries.queries.getGenericPageQuery('about/testimonials/') }
+      ${GraphQLQueries.queries.getGenericPageQuery('services/') }
+      ${GraphQLQueries.queries.getGenericPageQuery('faq/') }
+
+      ${GraphQLQueries.queries.getProjects()}
+      ${GraphQLQueries.queries.allProjectCategories}
+
+      ${GraphQLQueries.queries.sectionFAQ}
+      ${GraphQLQueries.queries.sectionOurServices}
+      ${GraphQLQueries.queries.sectionSubscribeToNL}
+      ${GraphQLQueries.queries.sectionTestimonials}
+      ${GraphQLQueries.queries.sectionWhyUs}
+      ${GraphQLQueries.queries.sectionAboutUs}
+      
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/web-design-develpment/')}
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/digital-marketing/')}
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/ecommerce/')}
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/seo-optimization/')}
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/hosting/')}
+      ${GraphQLQueries.queries.allServices}
+
     }`;
+ 
+ 
 
-    const { data, loading, error } = useQuery(GET_MENUS_QUERY);
+    const { data, loading, error } = useQuery(GET_ALL_QUERY);
 
-    if (loading) { logVar('menus query'); return }
-    if (error) { logVar('menus query'); return }
-    if (!data) { logVar('menus query'); return }
+    if (loading) { logVar('menus query loading'); return }
+    if (error) { logVar(error); return }
+    if (!data) { logVar('menus query !data'); return }
 
     const sitemapMenuItems = data.sitemapMenuItems.nodes;
     const primaryMenuNodes = data.primaryMenuItems.nodes;
@@ -70,34 +135,42 @@ const App = () => {
     const footerMenuNodes2 = data.footerMenuItems2.nodes;
     const footerMenu2_name = data.menuName2.nodes[0].name;
 
-    // console.log(data.menuName1);
+    console.log('-----------------------');
 
     return (
+        
         <BrowserRouter>
             <_Header menuNodes={primaryMenuNodes} />
-            {
+            {/* {
                 (process.env.NODE_ENV == 'development') 
                 ?
                 <ToolEditPage />
                 :
                 <></>
-            }
+            } */}
             <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
                 <Routes >
-                    <Route>
+                    <Route element={<_AnimationLayout />}  >
+                        {/* we need home to be outside in order not to render for ever */}
+                        <Route key={"home"} path="/" exact element={<PageHome />} />
                         {
                             sitemapMenuItems.map((page, index) => {
-                                let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));;
-                                let pageSlug = page.uri.slice(1);
+                                let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
+                                let pUri = page.uri;
+                                if (pUri.includes('cpt_services')) {
+                                    pUri = pUri.replace('cpt_services', 'services');
+                                }
+                                let pageSlug = pUri.slice(1);
+                                
+                                // console.log(page.menuExtraFieldsForSitemap.reactComponent, pageSlug, pUri);
                                 return (
-                                    <Route key={page.id} exact path={page.uri} element={<PageComponent pageSlug={pageSlug} title={page.label} />} />
+                                    <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} />} />
                                 )
                             })
                         }
                         <Route key={"page404"} path="*" element={<Page404 title={"404"} />} />
                         {/* They have been entered to sitemap menu */}
-                        {/* <Route key={"post"} path="/blog/:slug" element={<TemplateBlogInner title={"Post"} />} />
-                        <Route key={"portfolio"} path="/services/:slug" element={<TemplatePortfolioInner title={"Ιστοσελίδα"} />} /> */}
+                        {/* <Route key={"post"} path="/blog/:slug" element={<TemplateBlogInner title={"Post"} />} /> */}
                     </Route>
                 </Routes>
             </Suspense>

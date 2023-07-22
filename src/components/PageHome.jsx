@@ -46,15 +46,19 @@ const PageHome = () => {
     
  
     console.log('home');
+ 
     return (
        <>
         <_BannerHome homeHeaderData = { homepageData } />
            {
-              componentArray.map( (Component, index) => ( 
-                <Suspense key={index} fallback={<div>Loading...</div>}>
-                  <Component  />
-                </Suspense>
-              ))
+              componentArray.map( (Component, index) => {
+                // console.log('return', index);
+                return( 
+                    <Suspense key={'aa'+index} fallback={<div>Loading...</div>}>
+                      <Component key={'idxa'+index} />
+                    </Suspense>
+                )
+              })
            }
         
        </>

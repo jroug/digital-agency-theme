@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-
+import { relayStylePagination } from "@apollo/client/utilities";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 let __uri = process.env.REACT_APP_GRAPHQL_URL;
@@ -9,11 +9,20 @@ let __uri = process.env.REACT_APP_GRAPHQL_URL;
 
 const client = new ApolloClient({
   uri: __uri,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          posts: relayStylePagination(),
+        },
+      },
+    }
+
+  })
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// test
+ 
 root.render(
     <ApolloProvider client={client}>
         <App />

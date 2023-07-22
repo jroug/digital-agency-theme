@@ -6,27 +6,21 @@ import _BannerTopElements from "./_BannerTopElements";
 import _Footer from "./_Footer";
 
 import PageHome from "./PageHome";
-// import PageAbout from "./PageAbout";
-// import PageServices from "./PageServices";
 import PagePortfolio from "./PagePortfolio";
 import PageContact from "./PageContact";
-// import PageFaq from "./PageFaq";
-// import PageTestimonials from "./PageTestimonials";
+import Page404 from "./Page404";
 
 import TemplatePortfolioInner from "./TemplatePortfolioInner";
 import TemplateServiceInner from "./TemplateServiceInner";
 import TemplateBlogInner from "./TemplateBlogInner";
 import TemplatePage from "./TemplatePage";
+import TemplateTaxonomy from "./TemplateTaxonomy";
 
 import SectionOurServices from "./SectionOurServices";
-// import SectionWhyUs from "./SectionWhyUs";
 import SectionSubscribeToNL from "./SectionSubscribeToNL";
-// import SectionAboutUs from "./SectionAboutUs";
-// import SectionTestimonials from "./SectionTestimonials";
-import PageBlog from "./PageBlog";
+import SectionBlog from "./SectionBlog";
 
-import Page404 from "./Page404";
-
+import _AnimationLayout from "./_AnimationLayout";
 
 export { 
     _Header,
@@ -37,13 +31,9 @@ export {
     _Footer,
 
     PageHome,
-    // PageAbout,
-    // PageServices,
     PagePortfolio,
     PageContact,
-    // PageFaq,
-    // PageTestimonials,
-    PageBlog,
+    // PageBlog,
     Page404,
     
 
@@ -51,10 +41,11 @@ export {
     TemplateServiceInner,
     TemplateBlogInner,
     TemplatePage,
+    TemplateTaxonomy,
 
     SectionOurServices,
-    // SectionWhyUs,
     SectionSubscribeToNL,
-    // SectionAboutUs,
-    // SectionTestimonials
+    SectionBlog,
+
+    _AnimationLayout,
 }

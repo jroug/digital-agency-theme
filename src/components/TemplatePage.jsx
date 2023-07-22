@@ -8,7 +8,8 @@ import { logVar } from "./utils/Utils";
 const TemplatePage = (props) => {
 
     const pageSlug = props.pageSlug;
-    const PAGE_CONTENT = gql`query PAGE_CONTENT 
+    const pageSlug_withoutslash = props.pageSlug.replaceAll('/', '');
+    const PAGE_CONTENT = gql`query PAGE_CONTENT_${pageSlug_withoutslash}
     {
       ${ GraphQLQueries.queries.getGenericPageQuery(pageSlug) }
     }`;
@@ -18,9 +19,9 @@ const TemplatePage = (props) => {
     if (loading) { logVar('loading From ------Template Page -----------------------------' + pageSlug + ' Page' ); return }
     if (error) { logVar('error From ' + pageSlug + ' Page' ); return }
     if (!data) { logVar('!data From ' + pageSlug + ' Page' ); return }
-    
-    const pageTitle = data.genericPage.title;
-    const componentsData = data.genericPage.componentsSectionsAllPages.componentsSections;
+
+    const pageTitle = data[ "genericPage_" + pageSlug_withoutslash ].title;
+    const componentsData = data[ "genericPage_" + pageSlug_withoutslash ].componentsSectionsAllPages.componentsSections;
     
     let componentArray = [];
     let idx = 0;

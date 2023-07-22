@@ -6,24 +6,6 @@ const sectionAboutUs_SLUG = "sectionaboutus";
 const sectionSubscribeToNL_SLUG = "sectionsubscribetonl";
 const sectionTestimonials_SLUG = "sectiontestimonials";
 const sectionFAQ_SLUG = "sectionfaq";
- 
-
-
-// for TemplateServiceInner.jsx
-const getServiceTemplateQuery = (servicePage_SLUG) => {
-  const correctServicePageSlug = servicePage_SLUG.replace('services/', 'cpt_services/');
-  return `serviceTemplate: service( id: "${correctServicePageSlug}", idType: URI ) {
-      id
-      title
-      content
-      excerpt
-  }`;
-}
-
-
- 
- 
-
 
 const GraphQLQueries = {
 
@@ -287,9 +269,11 @@ const GraphQLQueries = {
       }
       `,
 
+      emailSent: `emailSent( form_name: $form_name , form_email: $form_email, , form_phone: $form_phone, form_message: $form_message, form_google_token: $form_google_token )`,
+
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
       getGenericPageQuery : (genericPage_SLUG) => {
-        return `genericPage: page( id: "${genericPage_SLUG}", idType: URI ) {
+        return `genericPage_${genericPage_SLUG.replaceAll('/','')}: page( id: "${genericPage_SLUG}", idType: URI ) {
             id
             title
             content
@@ -358,8 +342,133 @@ const GraphQLQueries = {
             }
         }`
       },
-      getBlogPosts : (limit = 1000) => {
+      getBlogPosts : () => {
+        return `allPosts: posts( first: $first, after : $after ) {
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            endCursor
+          }
+          edges{
+            node{
+              categories {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              tags {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              id
+              title
+              uri
+              excerpt
+              featuredImage {
+                node {
+                  id
+                  sourceUrl
+                }
+              }
+            }
+          }
+        }`;
+      },
+      getBlogPostsByTag : (tag) => {
+        return `allPostsTags: posts( where : { tag:"${tag}" },first: $first, after : $after ) {
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            endCursor
+          }
+          edges{
+            node{
+              categories {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              tags {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              id
+              title
+              uri
+              excerpt
+              featuredImage {
+                node {
+                  id
+                  sourceUrl
+                }
+              }
+            }
+          }
+        }`;
+      },
+      getBlogPostsByCategory : (categoryName) => {
+        return `allPostsCategories: posts( 
+              where : { categoryName: "${categoryName}" }, 
+              first: $first, 
+              after : $after 
+            ) {
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            endCursor
+          }
+          edges{
+            node{
+              categories {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              tags {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              id
+              title
+              uri
+              excerpt
+              featuredImage {
+                node {
+                  id
+                  sourceUrl
+                }
+              }
+            }
+          }
+        }`;
+      },
+      getAllPosts : (limit = 1000) => {
         return `allPosts: posts( first: ${limit} ) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
           nodes{
             id
             title
@@ -373,8 +482,15 @@ const GraphQLQueries = {
             }
           }
         }`;
-      }
-
+      },
+      getServiceTemplateQuery : (servicePage_SLUG) => {
+        return `serviceTemplate_${servicePage_SLUG.replaceAll('/', '').replaceAll('-', '')}: service( id: "${servicePage_SLUG.replace('services/', 'cpt_services/')}", idType: URI ) {
+            id
+            title
+            content
+            excerpt
+        }`;
+      },
   }
 };
 
@@ -382,8 +498,4 @@ const GraphQLQueries = {
 
 export {
     GraphQLQueries,
-    // getGenericPageQuery,
-    getServiceTemplateQuery,
-    // getBlogPostTemplateQuery,
-    // getProjectTemplateQuery,
 } 

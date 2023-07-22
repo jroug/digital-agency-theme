@@ -1,32 +1,20 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import service from '../assets/images/resource/service.jpg';
 import { _BannerTop } from "./";
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-import { logVar, isValidSlug } from "./utils/Utils";
-import { getServiceTemplateQuery, GraphQLQueries } from "./queries/GraphQLQueries";
+import { logVar } from "./utils/Utils";
+import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 
-const TemplateServiceInner = () => {
+const TemplateServiceInner = (props) => {
 
-	const navigate = useNavigate();
-	let serviceTemplateData;
-
-	useEffect(() => {
-		if (serviceTemplateData === null ){
-			navigate('/404');
-		}
-	});
-
-
-	const pagePathName = window.location.pathname;
-	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
+	const pageSlug = props.pageSlug;
 
 	// chech for sql injection in the pageSlug variable
 	const GET_SERVICE_QUERY = gql`query GET_SERVICE_QUERY
     {
-      	${getServiceTemplateQuery(pageSlug)}
+      	${GraphQLQueries.queries.getServiceTemplateQuery(pageSlug)}
 		${GraphQLQueries.queries.allServices}
     }`;
 
@@ -36,15 +24,10 @@ const TemplateServiceInner = () => {
     if (error) { logVar('error from TemplateServiceInner'); return }
     if (!data) { logVar('!data from TemplateServiceInner'); return }
 
-    serviceTemplateData = data.serviceTemplate;
+    const serviceTemplateData = data["serviceTemplate_" + pageSlug.replaceAll('/', '').replaceAll('-', '')];
+ 
+ 
 
-	// if service not found redirect to 404
-	if (serviceTemplateData === null ){
-		// return in order to be faster
-		return;
-	}
-
-	// console.log(data.allServices);
 	const allServices = data.allServices;
 
 	const serviceContent = serviceTemplateData.content;

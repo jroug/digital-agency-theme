@@ -114,7 +114,7 @@ const _Footer = (props) => {
                         <div className="row clearfix">
                             {/* <!-- Copyright Column --> */}
                             <div className="copyright-column col-lg-6 col-md-6 col-sm-12">
-                                <div className="copyright">2023 © All rights reserved by <a href="#">Expert Themes</a></div>
+                                <div className="copyright">2023 © All rights reserved by <strong>WebInSite</strong></div>
                             </div>
                             {/* <!-- Social Column --> */}
                             <div className="social-column col-lg-6 col-md-6 col-sm-12">

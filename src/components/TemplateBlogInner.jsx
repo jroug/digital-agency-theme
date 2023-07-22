@@ -35,7 +35,7 @@ const PageBlogInner = () => {
       ${GraphQLQueries.queries.getBlogPostTemplateQuery(pageSlug)}
       ${GraphQLQueries.queries.allPostCategories}
       ${GraphQLQueries.queries.allPostTags}
-      ${GraphQLQueries.queries.getBlogPosts(4)}
+      ${GraphQLQueries.queries.getAllPosts(4)}
     }`;
 
     const { data, loading, error } = useQuery(GET_POST_QUERY);

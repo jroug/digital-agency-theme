@@ -59,3 +59,10 @@
     font-size: 15px;
   }
 
+.load-more a{
+    width: 100px !important;
+    border-radius: 5px  !important;
+    font-size: 15px !important; 
+    color: #ffffff !important; 
+    background-color: #ff9600 !important; 
+}
