@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 
 import mixitup from 'mixitup';
 
-import imgg from '../assets/images/gallery/8.jpg';
-
 import { _BannerTop, SectionSubscribeToNL } from "./";
 
 import { gql, useQuery } from '@apollo/client';
@@ -31,11 +29,9 @@ const PagePortfolio = (props) => {
         event.target.classList.add('active');
     }
 
-
- 
 	const GET_ALLPROJECTS_QUERY = gql`query GET_ALLPROJECTS_QUERY
     {
-      ${GraphQLQueries.queries.getProjects()}
+      ${GraphQLQueries.queries.getProjects(1000)}
       ${GraphQLQueries.queries.allProjectCategories}
     }`;
 
@@ -45,7 +41,7 @@ const PagePortfolio = (props) => {
     if (error) { logVar('error from PagePortfolio'); return }
     if (!data) { logVar('!data from PagePortfolio'); return }
 
-    const allProjects = data.allProjects;
+    const allProjects = data["allProjects_1000"];
     const allCategories = data.allProjectCategories;
 
     // logVar(allProjects);

@@ -5,10 +5,12 @@ import p21 from '../assets/images/background/pattern-21.png';
 import i1 from '../assets/images/icons/banner-icon-1.png';
 import i2 from '../assets/images/icons/banner-icon-2.png';
 import { _BannerTopElements } from './';
+import { logVar } from "./utils/Utils";
 
 
 const _BannerTop = (props) => {
-    console.log(props.parentLink)
+    logVar('--_BannerTop--');
+    // console.log(props.parentLink)
     return (
         <section className="page-title page-inner-top-section" style={{"backgroundImage":"url(" + p21 + ")"}} >
             <div className="patern-layer-one" style={{"backgroundImage":"url(" + i1 + ")"}} ></div>

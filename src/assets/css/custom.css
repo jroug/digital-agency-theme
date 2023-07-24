@@ -77,3 +77,22 @@
 .footer-links-wb li a:hover{
     text-decoration:underline !important;   
 }
+
+.r1{
+    text-decoration:underline;
+    text-align: center;
+}
+
+.r2{
+    text-decoration:underline;
+    text-align: center;
+}
+
+.r1 a, 
+.r2 a{
+    margin: 5px;
+}
+
+.pull-left.blog-tile{
+    width: calc(100% - 30px);
+}

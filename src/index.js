@@ -1,23 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { relayStylePagination } from "@apollo/client/utilities";
+// import { relayStylePagination } from "@apollo/client/utilities";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 let __uri = process.env.REACT_APP_GRAPHQL_URL;
 // console.log(process.env);
 
+// if I dont have fetchMore i do not need relayStylePagination
+// conflicts with the useQuery hook and fetchPolicy: 'network-only' causes rerenders
+
 const client = new ApolloClient({
   uri: __uri,
   cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          posts: relayStylePagination(),
-        },
-      },
-    }
-
+    // typePolicies: {
+    //   Query: {
+    //     fields: {
+    //       posts: relayStylePagination(),
+    //     },
+    //   },
+    // }
   })
 });
 

@@ -1,11 +1,14 @@
 import React, { Suspense, lazy } from 'react';
-import { _BannerTop } from ".";
+// import { _BannerTop } from ".";
 
 import { useQuery, gql } from '@apollo/client';
 import { GraphQLQueries} from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
+import { _BannerTop } from "./";
 
 const TemplatePage = (props) => {
+ 
+ 
 
     const pageSlug = props.pageSlug;
     const pageSlug_withoutslash = props.pageSlug.replaceAll('/', '');
@@ -36,7 +39,8 @@ const TemplatePage = (props) => {
 
     return (
         <>
-            <_BannerTop title={pageTitle} /> 
+             <_BannerTop title={pageTitle} key={"banner-top-1"} />  
+            {/* <_BannerTop title={pageTitle} key={"banner-top-2"} />  */}
             {
                 componentArray.map( (Component, index) => {
                     return ( <Suspense key={pageSlug + index} fallback={<div>Loading...</div>}><Component /></Suspense> )

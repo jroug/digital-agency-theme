@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const _Banner = (props) => {
-
+const _BannerHome = (props) => {
+    // console.log('-----------_BannerHome--------');
     const bannerData = props.homeHeaderData;
 
     return (
@@ -36,4 +36,4 @@ const _Banner = (props) => {
     );
 };
 
-export default _Banner;
+export default _BannerHome;

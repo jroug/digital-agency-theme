@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 // import logo from '../assets/images/logo-wis.png';
-// import { logVar } from "./utils/Utils";
+import { logVar } from "./utils/Utils";
 
 const _Header = (props) => {
 
     const menuNodes = props.menuNodes;
     const headerLogoUrl = props.headerLogoUrl;
-
+    logVar('--_Header--')
     return (
         <header className="main-header header-style-two">
             {/* <!--Header-Upper--> */}

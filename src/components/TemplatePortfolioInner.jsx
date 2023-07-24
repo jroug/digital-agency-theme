@@ -43,7 +43,7 @@ const TemplatePortfolioInner = () => {
     if (error) { logVar('error from TemplatePortfolioInner'); return }
     if (!data) { logVar('!data from TemplatePortfolioInner'); return }
 
-    projectTemplateData = data.portfolioProject;
+    projectTemplateData = data["portfolioProject_" + pageSlug.replaceAll('/','').replaceAll('-','')];
 
 	// if service not found redirect to 404
 	if (projectTemplateData === null ){
@@ -57,10 +57,10 @@ const TemplatePortfolioInner = () => {
     const projectMainImage = projectTemplateData.projectExtraFields.mainImage.sourceUrl;
     const projectSecondImage = projectTemplateData.projectExtraFields.secondImage.sourceUrl;
 
-    const allProjects = data.allProjects;
+    const allProjects = data["allProjects_4"];
     let countOfProjects = 0;
     // logVar(allProjects);
-    logVar(data);
+    // logVar(data);
 
     return (
         <>

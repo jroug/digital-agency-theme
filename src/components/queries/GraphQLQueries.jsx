@@ -333,7 +333,7 @@ const GraphQLQueries = {
       },
 
       getProjects : (limit = 1000) => {
-        return `allProjects: projects( first: ${limit} ) {
+        return `allProjects_${limit}: projects( first: ${limit} ) {
           nodes{
             id
             title
@@ -356,7 +356,7 @@ const GraphQLQueries = {
 
       // for template portfolio inner
       getProjectTemplateQuery : (projectPage_SLUG) => {
-        return `portfolioProject: project( id: "${projectPage_SLUG.replace('blog/', '')}", idType: URI ) {
+        return `portfolioProject_${projectPage_SLUG.replaceAll('/','').replaceAll('-','')}: project( id: "${projectPage_SLUG.replace('blog/', '')}", idType: URI ) {
             id
             title
             content
@@ -387,8 +387,23 @@ const GraphQLQueries = {
             }
         }`
       },
-      getBlogPosts : () => {
-        return `allPosts: posts( first: $first, after : $after ) {
+      getBlogPosts : (search='', cat='', tag='',  first=10000, after='') => {
+     
+        let where = '';
+        let suffix = '';
+        if (cat!=''){
+          where = `where:{ categoryName: "${cat}" }`;
+          suffix = '_cat';
+        }else if (tag!=''){
+          where = `where:{ tag: "${tag}" }`;
+          suffix = '_tag';
+        }else if (search!='') {
+          where = `where:{ search: "${search}" }`;
+          suffix = '_search';
+        }
+
+       
+        let q = `allPosts${suffix}: posts( ${where} first: ${first} ) {
           pageInfo {
             hasPreviousPage
             hasNextPage
@@ -401,6 +416,7 @@ const GraphQLQueries = {
                   node {
                     id
                     name
+                    uri
                   }
                 }
               }
@@ -409,6 +425,7 @@ const GraphQLQueries = {
                   node {
                     id
                     name
+                    uri
                   }
                 }
               }
@@ -425,88 +442,8 @@ const GraphQLQueries = {
             }
           }
         }`;
-      },
-      getBlogPostsByTag : (tag) => {
-        return `allPostsTags: posts( where : { tag:"${tag}" },first: $first, after : $after ) {
-          pageInfo {
-            hasPreviousPage
-            hasNextPage
-            endCursor
-          }
-          edges{
-            node{
-              categories {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-              tags {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-              id
-              title
-              uri
-              excerpt
-              featuredImage {
-                node {
-                  id
-                  sourceUrl
-                }
-              }
-            }
-          }
-        }`;
-      },
-      getBlogPostsByCategory : (categoryName) => {
-        return `allPostsCategories: posts( 
-              where : { categoryName: "${categoryName}" }, 
-              first: $first, 
-              after : $after 
-            ) {
-          pageInfo {
-            hasPreviousPage
-            hasNextPage
-            endCursor
-          }
-          edges{
-            node{
-              categories {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-              tags {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-              id
-              title
-              uri
-              excerpt
-              featuredImage {
-                node {
-                  id
-                  sourceUrl
-                }
-              }
-            }
-          }
-        }`;
+        // console.log(q);
+        return q;
       },
       getAllPosts : (limit = 1000) => {
         return `allPosts: posts( first: ${limit} ) {

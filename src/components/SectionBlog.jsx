@@ -5,77 +5,106 @@ import { logVar } from './utils/Utils';
 import { useQuery, gql } from '@apollo/client';
 import { GraphQLQueries } from './queries/GraphQLQueries';
 import { Link } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 
 const SectionBlog = (props) => {
 
+    const { slug } = useParams();
 
-    logVar(props.taxSlug);
-    logVar(props.taxonomyName);
+    const BLOG_POST_PER_PAGE = process.env.REACT_APP_BLOG_POST_PER_PAGE;
 
-    const BATCH_SIZE = 3;
+    //  logVar('slug');
 
     const handleMorePosts = (event) => {
         event.preventDefault();
-        logVar(allPosts.pageInfo.endCursor);
-        fetchMore({ variables: { after: allPosts.pageInfo.endCursor } });
-        logVar('handleNextPosts');
+        // logVar(allPosts.pageInfo.endCursor);
+        // fetchMore({ variables: { after: allPosts.pageInfo.endCursor } });
+        // logVar('handleNextPosts');
     }
 
     let GET_POSTS_QUERY = '';
+    let fetchPolicy = '';
 
-    if (props.taxSlug=='tag') {
 
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY1 ($first: Int!, $after: String)
+    // special functionality for search page - url structure
+    // blog/post
+    // category/term
+    // tag/term
+    // search/slug
+
+
+    if (props.taxSlug=='search') {
+        fetchPolicy = 'network-only';
+        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY0
         {
-            ${GraphQLQueries.queries.getBlogPostsByTag(props.taxonomyName)}
+            ${GraphQLQueries.queries.getBlogPosts(slug ,'' ,'' ,BLOG_POST_PER_PAGE ,'')}
+        }`;
+
+    }else if (props.taxSlug=='tag') {
+        fetchPolicy = 'network-only';
+        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY1 
+        {
+            ${GraphQLQueries.queries.getBlogPosts('' ,'' ,props.taxonomyName ,BLOG_POST_PER_PAGE ,'')}
         }`;
 
     }else if(props.taxSlug=='category'){
-
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY2 ($first: Int!, $after: String)
+        fetchPolicy = 'network-only';
+        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY2 
         {
-            ${GraphQLQueries.queries.getBlogPostsByCategory(props.taxonomyName)}
+            ${GraphQLQueries.queries.getBlogPosts('' ,props.taxonomyName ,'' ,BLOG_POST_PER_PAGE ,'')}
         }`;
         
     }else{
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY3 ($first: Int!, $after: String)
+        fetchPolicy = "cache";
+        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY3
         {
-            ${GraphQLQueries.queries.getBlogPosts()}
+            ${GraphQLQueries.queries.getBlogPosts('' ,'' ,'' ,BLOG_POST_PER_PAGE ,'')}
         }`;
     }
 
+    // cache policy network-only causes rerenders to app.js
+    // needed to remove relayStylePagination from index.js
+    // if I dont have fetchMore i do not need relayStylePagination
 
-    const { data, loading, error, fetchMore } = useQuery(GET_POSTS_QUERY, {
-        fetchPolicy: 'cache-and-network',
-        variables: { first: BATCH_SIZE, after: null },
-        notifyOnNetworkStatusChange: true,
+    const { data, loading, error } = useQuery(GET_POSTS_QUERY,{
+        fetchPolicy: fetchPolicy,
     });
 
-    if (loading) { logVar(loading); return }
-    if (error) { logVar(error); return }
-    if (!data) { logVar(data); return }
+    if (loading) { logVar('loading from SectionBlog'); return }
+    if (error) { logVar('error from SectionBlog'); return }
+    if (!data) { logVar('!data from SectionBlog'); return }
 
+    // logVar(data);
 
     let allPosts = null;
 
-    if (props.taxSlug=='tag') {
-        allPosts = data.allPostsTags;
+    if (props.taxSlug=='search') {
+        allPosts = data['allPosts_search'];
+    }else if (props.taxSlug=='tag') {
+        allPosts = data['allPosts_tag'];
     }else if(props.taxSlug=='category'){
-        allPosts = data.allPostsCategories;
+        allPosts = data['allPosts_cat'];
     }else{
         allPosts = data.allPosts;
     }
      
     const hasNextPage = allPosts.pageInfo.hasNextPage;
 
-    logVar(allPosts);
+    // logVar(allPosts);
 
     return (
         <section className="blog-page-section" key={"blog-" + props.taxSlug + "-" + props.taxonomyName}>
             <div className="auto-container">
                 <div className="row clearfix">
                     {
+                         allPosts.edges.length === 0 ? (
+                            <div className="col-lg-12 col-md-12 col-sm-12">
+                                <div className="sec-title centered">
+                                    <h2>No results found</h2>
+                                </div>
+                            </div>
+                        ) 
+                        : 
                         allPosts.edges.map( (post, index) => {
 
                             let parser = new DOMParser();
@@ -95,31 +124,34 @@ const SectionBlog = (props) => {
                                                 <h6><Link to={"/blog" + post.node.uri } >{post.node.title}</Link></h6>
                                                 <div className="post-date">{excerptText}</div>
                                                 <div className="clearfix">
-                                                    <div className="pull-left">
+                                                    <div className="pull-left blog-tile">
                                                         <div className="author">
+                                                            <div className="r1" >
                                                             {/* <div className="image"><img src={author3} alt="" /></div> */}
                                                             {
                                                                 
                                                                 postCategories.map( (category, index) => {
                                                                     return (
-                                                                        <span key={"category-" + index} > {category.node.name} </span>
+                                                                        <Link to={category.node.uri} key={"category-" + index} >{category.node.name}</Link>
                                                                     )
                                                                 })
                                                             }
-                                                            <br/>
+                                                            </div>
+                                                            <div className="r2" >
                                                             {
                                                                 postTags.map( (tag, index) => {
                                                                     return (
-                                                                        <span key={"tag-" + index} > {tag.node.name} </span>
+                                                                        <Link to={tag.node.uri} key={"tag-" + index} >{tag.node.name}</Link>
                                                                     )
                                                                 })
                                                             }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="pull-right">
                                                         <ul className="post-info">
                                                             {/* <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li> */}
-                                                            <li><a href="#"><span className="icon flaticon-share"></span></a></li>
+                                                            <li><Link to="#"><span className="icon flaticon-share"></span></Link></li>
                                                         </ul>
                                                     </div>
                                                 </div>

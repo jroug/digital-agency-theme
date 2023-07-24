@@ -48,24 +48,24 @@ import './assets/css/custom.css';
 
 
 
-// const _BannerHome = lazy(() => import('./components/_BannerHome'));
+const _BannerHome = lazy(() => import('./components/_BannerHome'));
 const _BannerTop = lazy(() => import('./components/_BannerTop'));
 
-// const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
-// const PageContact = lazy(() => import('./components/PageContact'));
+const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
+const PageContact = lazy(() => import('./components/PageContact'));
 
-// const TemplatePage = lazy(() => import('./components/TemplatePage'));
+const TemplatePage = lazy(() => import('./components/TemplatePage'));
 
-// const SectionAboutUs = lazy(() => import('./components/SectionAboutUs'));
-// const SectionOurServices = lazy(() => import('./components/SectionOurServices'));
-// const SectionSubscribeToNL = lazy(() => import('./components/SectionSubscribeToNL'));
-// const SectionFAQ = lazy(() => import('./components/SectionFAQ'));
-// const SectionTestimonials = lazy(() => import('./components/SectionTestimonials'));
-// const SectionWhyUs = lazy(() => import('./components/SectionWhyUs'));
-// const SectionBlog = lazy(() => import('./components/SectionBlog'));
+const SectionAboutUs = lazy(() => import('./components/SectionAboutUs'));
+const SectionOurServices = lazy(() => import('./components/SectionOurServices'));
+const SectionSubscribeToNL = lazy(() => import('./components/SectionSubscribeToNL'));
+const SectionFAQ = lazy(() => import('./components/SectionFAQ'));
+const SectionTestimonials = lazy(() => import('./components/SectionTestimonials'));
+const SectionWhyUs = lazy(() => import('./components/SectionWhyUs'));
+const SectionBlog = lazy(() => import('./components/SectionBlog'));
 
-// const TemplatePortfolioInner = lazy(() => import('./components/TemplatePortfolioInner'));
-// const TemplateServiceInner = lazy(() => import('./components/TemplateServiceInner'));
+const TemplatePortfolioInner = lazy(() => import('./components/TemplatePortfolioInner'));
+const TemplateServiceInner = lazy(() => import('./components/TemplateServiceInner'));
 
 // const _Footer = lazy(() => import('./components/_Footer'));
 
@@ -159,6 +159,7 @@ const App = () => {
             <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
                 <Routes >
                     <Route element={<_AnimationLayout />}  >
+                        {/* we need home to be outside in order not to render for ever */}
                         <Route key={"home"} path="/" exact element={<PageHome />} />
                         {
                             sitemapMenuItems.map((page, index) => {
@@ -169,13 +170,15 @@ const App = () => {
                                 }
                                 let pageSlug = pUri.slice(1);
                                 
-                                // console.log('<'+page.menuExtraFieldsForSitemap.reactComponent, page.id, pUri, pageSlug,  );
+                                // console.log(page.menuExtraFieldsForSitemap.reactComponent, pageSlug, pUri);
                                 return (
                                     <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} />} />
                                 )
                             })
                         }
                         <Route key={"page404"} path="*" element={<Page404 title={"404"} />} />
+                        {/* They have been entered to sitemap menu */}
+                        {/* <Route key={"post"} path="/blog/:slug" element={<TemplateBlogInner title={"Post"} />} /> */}
                     </Route>
                 </Routes>
             </Suspense>
