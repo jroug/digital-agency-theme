@@ -58,11 +58,11 @@ const PageBlogInner = () => {
 
     // logVar(postTemplateData);
     // logVar(allPostCategories);
-    // logVar(allPostTags);
+    // logVar(data);
 
     return (
         <>
-            <_BannerTop title={postTemplateData!=null ? postTemplateData.title : '' } />  
+            <_BannerTop parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData!=null ? postTemplateData.title : '' } />  
             <div className="sidebar-page-container">
                 <div className="auto-container">
                     <div className="row clearfix">

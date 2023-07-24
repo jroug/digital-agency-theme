@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+// import logo from '../assets/images/logo-wis.png';
+// import bg4 from '../assets/images/background/4.jpg';
 
-import logo from '../assets/images/logo-wis.png';
-import bg4 from '../assets/images/background/4.jpg';
 import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
+
 // github copilot is awsome !!
 // what do you say about that??
 // I think it's awsome too
@@ -22,6 +24,20 @@ const _Footer = (props) => {
     const footerMenuNodes1 = props.footerMenuNodes1;
     const footerMenuNodes2 = props.footerMenuNodes2;
 
+    const footerLogoUrl = props.footerLogoUrl;
+
+    const footerText = props.footerText;
+    const footerAddress = props.footerAddress;
+    const footerAddressLink = props.footerAddressLink;
+    const footerPhone1 = props.footerPhone1;
+    const footerPhone2 = props.footerPhone2;
+    const footerEmail = props.footerEmail;
+    const footerCopyrights = props.footerCopyrights;
+    const socialLinkFacebook = props.socialLinkFacebook;
+    const socialLinkInstagram = props.socialLinkInstagram;
+    const socialLinkTwitter = props.socialLinkTwitter;
+    const socialLinkLinkedin = props.socialLinkLinkedin;
+
     return (
         <footer className="main-footer margin-top" style={{ "backgroundColor" : "var(--blueDarkColor)", "marginTop":"100px"}} >
             <div className="auto-container">
@@ -35,13 +51,14 @@ const _Footer = (props) => {
                                 <div className="footer-column col-lg-7 col-md-6 col-sm-12">
                                     <div className="footer-widget logo-widget">
                                         <div className="logo">
-                                            <a href="index.html"><img src={logo} alt="" /></a>
+                                            <Link to="/"><img src={footerLogoUrl} alt="" /></Link>
                                         </div>
-                                        <div className="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore  aliqua.</div>
-                                        <ul className="list-style-one">
-                                            <li><span>Location: </span> Rock St 12, Newyork City, USA</li>
-                                            <li><span>Email:</span> info@example.com</li>
-                                            <li><span>Phone:</span> +000-0000-000</li>
+                                        <div className="text">{footerText}</div>
+                                        <ul className="list-style-one footer-links-wb">
+                                            <li><span>Address: </span> <Link target="_blank" to={footerAddressLink} >{footerAddress}</Link></li>
+                                            <li><span>Email:</span> <Link to={"mailto:" + footerEmail} >{footerEmail}</Link></li>
+                                            <li><span>Phone:</span> <Link to={"tel:" + footerPhone1} >{footerPhone1}</Link></li>
+                                            <li><span>Phone:</span> <Link to={"tel:" + footerPhone2} >{footerPhone2}</Link></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -114,17 +131,17 @@ const _Footer = (props) => {
                         <div className="row clearfix">
                             {/* <!-- Copyright Column --> */}
                             <div className="copyright-column col-lg-6 col-md-6 col-sm-12">
-                                <div className="copyright">2023 © All rights reserved by <strong>WebInSite</strong></div>
+                                <div className="copyright" dangerouslySetInnerHTML={{__html:footerCopyrights}}></div>
                             </div>
                             {/* <!-- Social Column --> */}
                             <div className="social-column col-lg-6 col-md-6 col-sm-12">
                                 <ul>
                                     <li className="follow">Follow us: </li>
-                                    <li><a href="#"><span className="fa fa-facebook-square"></span></a></li>
-                                    <li><a href="#"><span className="fa fa-twitter-square"></span></a></li>
-                                    <li><a href="#"><span className="fa fa-linkedin-square"></span></a></li>
-                                    <li><a href="#"><span className="fa fa-google-plus-square"></span></a></li>
-                                    <li><a href="#"><span className="fa fa-rss-square"></span></a></li>
+                                    <li><Link to={socialLinkFacebook}><span className="fa fa-facebook-square"></span></Link></li>
+                                    <li><Link to={socialLinkInstagram}><span className="fa fa-instagram"></span></Link></li>
+                                    <li><Link to={socialLinkTwitter}><span className="fa fa-twitter-square"></span></Link></li>
+                                    <li><Link to={socialLinkLinkedin}><span className="fa fa-linkedin-square"></span></Link></li>
+     
                                 </ul>
                             </div>
                         </div>
@@ -132,7 +149,7 @@ const _Footer = (props) => {
                 </div>
             </div>
 
-            <div className="scroll-to-top scroll-to-target" data-target="html" style={{"display":"block"}} ><span className="fa fa-arrow-circle-up"></span></div>
+            {/* <div className="scroll-to-top scroll-to-target" data-target="html" style={{"display":"block"}} ><span className="fa fa-arrow-circle-up"></span></div> */}
 
         </footer>
     );

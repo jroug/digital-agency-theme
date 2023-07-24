@@ -8,6 +8,7 @@ import { _BannerTopElements } from './';
 
 
 const _BannerTop = (props) => {
+    console.log(props.parentLink)
     return (
         <section className="page-title page-inner-top-section" style={{"backgroundImage":"url(" + p21 + ")"}} >
             <div className="patern-layer-one" style={{"backgroundImage":"url(" + i1 + ")"}} ></div>
@@ -22,6 +23,13 @@ const _BannerTop = (props) => {
                     <div className="pull-right">
                         <ul className="bread-crumb clearfix">
                             <li><Link to="/">Αρχική</Link></li>
+                            {
+                                props.parentTitle === undefined || props.parentLink === undefined
+                                ? 
+                                <></> 
+                                :
+                                <li><Link to={props.parentLink}>{props.parentTitle}</Link></li>
+                            }
                             <li>{props.title}</li>
                         </ul>
                     </div>

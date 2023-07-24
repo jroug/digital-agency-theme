@@ -1,46 +1,67 @@
 import React, { useEffect } from 'react';
-import contact_1 from '../assets/images/resource/contact-1.jpg';
+import { Link } from 'react-router-dom';
 import { _BannerTop } from "./";
-import { useApolloClient, gql } from '@apollo/client';
+import { useApolloClient, gql, useQuery } from '@apollo/client';
 import { validateName } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
+
+
+// key (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAGVaO98MUQVVHjKgI48l3E_5b7lh
+// secret (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAFcV_4UZHqWA8BTptROZE__msd0u
+ 
+
+let reCAPTCHA_site_key = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY; // site key - google recaptcha
+
 
 const PageContact = (props) => {
 
     // use later in button action
     const client = useApolloClient();
 
-    // useEffect( () => {
-    //     // document.body.classList.add('contact-us');
+    useEffect( () => {
+        // document.body.classList.add('contact-us');
 
-    //     // const script = document.createElement('script');
-    //     // script.src = "https://www.google.com/recaptcha/api.js?render=" + reCAPTCHA_site_key;
-    //     // script.id = "g-rec";
-    //     // script.addEventListener("load", handleLoadedScript)
-    //     // document.body.appendChild(script);
+        const script = document.createElement('script');
+        script.src = "https://www.google.com/recaptcha/api.js?render=" + reCAPTCHA_site_key;
+        script.id = "g-rec";
+        // script.addEventListener("load", handleLoadedScript)
+        document.body.appendChild(script);
 
-    //     // // clean up after unload
-    //     // return () => {
-    //     //     document.body.classList.remove('contact-us');
-    //     // }
-    // });
+        // clean up after unload
+        return () => {
+            document.getElementById('g-rec').remove();
+            if (document.getElementsByClassName('grecaptcha-badge')[0]) {
+                document.getElementsByClassName('grecaptcha-badge')[0].remove();
+            }else{
+                setTimeout(function(){
+                    if (document.getElementsByClassName('grecaptcha-badge')[0]) {
+                        document.getElementsByClassName('grecaptcha-badge')[0].remove();
+                    }
+                },1200)
+            }
+        }
+    }, []);
+
+ 
 
     const handleContactSubmit = (e) => {
         e.preventDefault();
         document.getElementById('contact_submit').disabled=true;
+        alert('code ready but deactivated');
+        return;
         logVar('button pressed');
 
-        // window.grecaptcha.ready(_ => {
-        // window.grecaptcha
-        //     .execute(reCAPTCHA_site_key, { action: "submitContact" })
-        //     .then(token => {
+        window.grecaptcha.ready(_ => {
+        window.grecaptcha
+            .execute(reCAPTCHA_site_key, { action: "submitContact" })
+            .then(token => {
 
                 let form_name = document.getElementById('form_name').value;
                 let form_email = document.getElementById('form_email').value;
                 let form_phone = document.getElementById('form_phone').value;
                 let form_message = document.getElementById('form_message').value;
-                let form_google_token = 'testgoogle';
+                let form_google_token = token;
 
                 let doSubmit = true;
                 if ( !validateName(form_name) ) {
@@ -65,7 +86,7 @@ const PageContact = (props) => {
                     'form_google_token': form_google_token,
                 } ;
 
-                const SEND_EMAIL = gql`query SEND_EMAIL($form_name: String, $form_email: String, $form_message: String, $form_google_token: String){
+                const SEND_EMAIL = gql`query SEND_EMAIL($form_name: String, $form_email: String, $form_phone: String, $form_message: String, $form_google_token: String){
                     ${GraphQLQueries.queries.emailSent}
                 } `;
 
@@ -87,7 +108,7 @@ const PageContact = (props) => {
                             document.getElementById('contact-msg').innerHTML = '';
                         }, 5000);
 
-                        document.getElementById("form_name").classList.remove("input-error");
+                        // document.getElementById("form_name").classList.remove("input-error");
                         // document.getElementById("form_email").classList.remove("input-error");
                         // document.getElementById("form_message").classList.remove("input-error");
 
@@ -103,25 +124,40 @@ const PageContact = (props) => {
                     logVar(error);
                 });
  
-        //     });
+            });
 
-        // });
+        });
 
         return false;
 
     }
 
+
+    const CONTACT_CONTENT = gql`query CONTACT_CONTENT
+    {
+      ${GraphQLQueries.queries.contactPage}
+    }`;
+
+    const { data, loading, error } = useQuery(CONTACT_CONTENT);
+
+    if (loading) { logVar('loading From Contact_Page'); return }
+    if (error) { logVar('error From Contact_Page'); return }
+    if (!data) { logVar('!data From Contact_Page'); return }
+
+    const contactData = data.contactPage;
+    const contactFields = contactData.contactFields;
+
     return (
         <>
-            <_BannerTop title={props.title} /> 
+            <_BannerTop title={contactData.title} /> 
             {/* <!-- Contact Section --> */}
             <section className="contact-page-section">
                 <div className="auto-container">
                     {/* <!-- Sec Title --> */}
                     <div className="sec-title centered">
-                        <div className="title">We Help You</div>
+                        <div className="title">{contactFields.smallTitleTop}</div>
                         <div className="separator"><span></span></div>
-                        <h2>Contact Us Now</h2>
+                        <h2>{contactFields.mainTitle}</h2>
                     </div>
 
                     {/* <!-- Contact Form --> */}
@@ -130,19 +166,19 @@ const PageContact = (props) => {
                             <div className="row clearfix">
 
                                 <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                                    <input type="text" id="form_name" name="form_name" placeholder="Name" required />
+                                    <input type="text" id="form_name" name="form_name" placeholder="Name" maxLength={100} required />
                                 </div>
 
                                 <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                                    <input type="email" id="form_email" name="form_email" placeholder="Email" required />
+                                    <input type="email" id="form_email" name="form_email" placeholder="Email" maxLength={100} required />
                                 </div>
 
                                 <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                                    <input type="text" id="form_phone" name="form_phone" placeholder="Phone" required />
+                                    <input type="text" id="form_phone" name="form_phone" placeholder="Phone" maxLength={30} required />
                                 </div>
 
                                 <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                                    <textarea name="form_message" placeholder="form_message"></textarea>
+                                    <textarea id="form_message" name="form_message" placeholder="Message" maxLength={1000} required ></textarea>
                                 </div>
 
                                 <div className="col-lg-12 col-md-12 col-sm-12 text-center form-group">
@@ -150,7 +186,8 @@ const PageContact = (props) => {
                                 </div>
 
                                 <div className="col-lg-12 col-md-12 col-sm-12 text-center form-group">
-                                    <span id="contact-msg">Test</span>
+                                    <span id="contact-msg" style={{"color":"blue"}}></span>
+                                    <span id="contact-msg-error" style={{"color":"red"}}></span>
                                 </div>
 
                             </div>
@@ -166,13 +203,11 @@ const PageContact = (props) => {
             <section className="map-contact-page-section">
                 <div className="auto-container">
                     <div className="title-box">
-                        <h2>Our Support Guys or <br /> Make Appointment With Our Consultan</h2>
-                        <div className="text">Please contact us using the information below. For additional information on our management consulting services, please visit <br /> the appropriate page on our site.</div>
+                        <h2>{contactFields.secondaryTitle}</h2>
+                        <div className="text">{contactFields.secondaryText}</div>
                     </div>
                     <div className="map-outer">
-                        <div className="map-canvas">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.27990907297!2d-74.25987368715494!3d40.697670064588735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1599163067611!5m2!1sen!2s" height="500" ></iframe>
-                        </div>
+                        <div className="map-canvas" dangerouslySetInnerHTML={{__html: contactFields.embedMapCode}}></div>
                     </div>
                 </div>
             </section>
@@ -182,33 +217,21 @@ const PageContact = (props) => {
             <section className="contact-info-section">
                 <div className="auto-container">
                     <div className="row clearfix">
-                        <div className="column col-lg-3 col-md-6 col-sm-12">
-                            <div className="image">
-                                <img src={contact_1} alt="" />
+                        <div className="column col-md-6 col-sm-12">
+                            <div className="image text-sm-center text-md-right">
+                                <img src={contactFields.contactImage.sourceUrl} alt="" />
                             </div>
                         </div>
-                        <div className="column col-lg-3 col-md-6 col-sm-12">
-                            <h3>United Kingdom</h3>
+                        <div className="column col-md-6 col-sm-12 text-sm-center text-md-left">
+                            <h3>{contactFields.contactTitle}</h3>
                             <ul>
-                                <li>49488 Avenida Obregon, La Quinta, CA 92253</li>
-                                <li>+1-(281)-813 926 <br /> +1-(281)-813 612</li>
-                                <li>support@ocean.com.uk</li>
-                            </ul>
-                        </div>
-                        <div className="column col-lg-3 col-md-6 col-sm-12">
-                            <h3>Australia</h3>
-                            <ul>
-                                <li>13/1 Dixon Street, Sydney <br /> NSW 2000</li>
-                                <li>+1-(281)-813 926 <br /> +1-(281)-813 612</li>
-                                <li>support@ocean.com.uk</li>
-                            </ul>
-                        </div>
-                        <div className="column col-lg-3 col-md-6 col-sm-12">
-                            <h3>Netherlands</h3>
-                            <ul>
-                                <li>Nieuwe Leliestraat 27-HS <br /> 101J Amsterdam</li>
-                                <li>+1-(281)-813 926 <br /> +1-(281)-813 612</li>
-                                <li>support@ocean.com.uk</li>
+                                <li><Link to={contactFields.contactAddressLink} target="_blank" >{contactFields.contactAddress}</Link></li>
+                                <li>
+                                    <Link to={"tel:" + contactFields.contactPhone1.replaceAll(' ','')} >{contactFields.contactPhone1}</Link> 
+                                    <br /> 
+                                    <Link to={"tel:" + contactFields.contactPhone2.replaceAll(' ','')}>{contactFields.contactPhone2}</Link>
+                                </li>
+                                <li><Link to={"mailto:" + contactFields.contactEmail} >{contactFields.contactEmail}</Link></li>
                             </ul>
                         </div>
                     </div>

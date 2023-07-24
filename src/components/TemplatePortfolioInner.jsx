@@ -60,11 +60,11 @@ const TemplatePortfolioInner = () => {
     const allProjects = data.allProjects;
     let countOfProjects = 0;
     // logVar(allProjects);
-    // logVar(pageSlug);
+    logVar(data);
 
     return (
         <>
-            <_BannerTop title={projectTemplateData!=null ? projectTemplateData.title : '' } />   
+            <_BannerTop title={projectTemplateData!=null ? projectTemplateData.title : '' } parentTitle={"Ιστοσελίδες"} parentLink={"/portfolio/"} />   
 
             { /* <!-- Projects Detail Section --> */ }
             <section className="projects-detail-section">

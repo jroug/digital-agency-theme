@@ -39,7 +39,7 @@ const TemplateServiceInner = (props) => {
 
     return (
         <>
-            <_BannerTop title={serviceTemplateData!=null ? serviceTemplateData.title : '' } />   
+            <_BannerTop title={serviceTemplateData!=null ? serviceTemplateData.title : '' } parentTitle={"Υπηρεσίες"} parentLink={"/services/"} />   
             <div className="sidebar-page-container">
 				<div className="auto-container">
 					<div className="row clearfix">

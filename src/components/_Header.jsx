@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import logo from '../assets/images/logo-wis.png';
-import { logVar } from "./utils/Utils";
+// import logo from '../assets/images/logo-wis.png';
+// import { logVar } from "./utils/Utils";
 
 const _Header = (props) => {
 
     const menuNodes = props.menuNodes;
+    const headerLogoUrl = props.headerLogoUrl;
 
     return (
         <header className="main-header header-style-two">
@@ -14,7 +15,7 @@ const _Header = (props) => {
                 <div className="auto-container">
                     <div className="clearfix">
                         <div className="pull-left logo-box">
-                            <div className="logo"><Link to="/"><img src={logo} alt="" title="" /></Link></div>
+                            <div className="logo"><Link to="/"><img src={headerLogoUrl} alt="" title="" /></Link></div>
                         </div>
                         <div className="nav-outer clearfix">
                             {/* <!-- Main Menu --> */}
@@ -70,15 +71,12 @@ const _Header = (props) => {
             {/* <!--End Header Upper--> */}
 
             {/* <!--Sticky Header--> */}
-            <div className="sticky-header">
+            {/* <div className="sticky-header">
                 <div className="auto-container clearfix">
-                    {/* <!--Logo--> */}
                     <div className="logo pull-left">
                         <a href="index.html" className="img-responsive"><img src={logo} alt="" title="" /></a>
                     </div>
-                    {/* <!--Right Col--> */}
                     <div className="right-col pull-right">
-                        {/* <!-- Main Menu --> */}
                         <nav className="main-menu navbar-expand-md">
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="icon-bar"></span>
@@ -106,10 +104,9 @@ const _Header = (props) => {
                             </ul>
                             </div>
                         </nav>
-                        {/* <!-- Main Menu End--> */}
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* <!--End Sticky Header--> */}
         </header>
     );

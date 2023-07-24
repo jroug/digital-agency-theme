@@ -2,7 +2,6 @@
 // we neet to NOT lazy load header footer and PageHome
 // and put PageHome hardcode routing not in wordpress sitemap menu
 
-
 import React , { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
@@ -45,16 +44,12 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-// const _Header = lazy(() => import('./components/_Header'));
-// const _Footer = lazy(() => import('./components/_Footer'));
 
 const _BannerHome = lazy(() => import('./components/_BannerHome'));
 const _BannerTop = lazy(() => import('./components/_BannerTop'));
 
-// const PageHome = lazy(() => import('./components/PageHome'));
 const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
 const PageContact = lazy(() => import('./components/PageContact'));
-// const Page404 = lazy(() => import('./components/Page404'));
 
 const TemplatePage = lazy(() => import('./components/TemplatePage'));
 
@@ -95,7 +90,8 @@ const App = () => {
       ${GraphQLQueries.queries.footerMenuItems2}
 
       ${GraphQLQueries.queries.homePage}
-
+      ${GraphQLQueries.queries.contactPage}
+      
       ${GraphQLQueries.queries.getGenericPageQuery('about/') }
       ${GraphQLQueries.queries.getGenericPageQuery('about/testimonials/') }
       ${GraphQLQueries.queries.getGenericPageQuery('services/') }
@@ -118,6 +114,8 @@ const App = () => {
       ${GraphQLQueries.queries.getServiceTemplateQuery('services/hosting/')}
       ${GraphQLQueries.queries.allServices}
 
+      ${GraphQLQueries.queries.options}
+
     }`;
  
  
@@ -135,12 +133,15 @@ const App = () => {
     const footerMenuNodes2 = data.footerMenuItems2.nodes;
     const footerMenu2_name = data.menuName2.nodes[0].name;
 
-    console.log('-----------------------');
+    const siteOptions = data.siteOptions.optionsFieds;
+
+    // console.log(siteOptions);
+    console.log('----------------------------------------');
 
     return (
         
         <BrowserRouter>
-            <_Header menuNodes={primaryMenuNodes} />
+            <_Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl}  />
             {/* {
                 (process.env.NODE_ENV == 'development') 
                 ?
@@ -174,7 +175,27 @@ const App = () => {
                     </Route>
                 </Routes>
             </Suspense>
-            <_Footer footerMenu1_name={footerMenu1_name} footerMenuNodes1={footerMenuNodes1} footerMenu2_name={footerMenu2_name} footerMenuNodes2={footerMenuNodes2} />
+            <_Footer 
+                footerLogoUrl={siteOptions.footerLogo.sourceUrl}
+                footerMenu1_name={footerMenu1_name} 
+                footerMenuNodes1={footerMenuNodes1} 
+                footerMenu2_name={footerMenu2_name} 
+                footerMenuNodes2={footerMenuNodes2} 
+
+                footerText = {siteOptions.footerText}
+                footerAddress = {siteOptions.footerAddress}
+                footerAddressLink = {siteOptions.footerAddressLink}
+                footerPhone1 = {siteOptions.footerPhone1}
+                footerPhone2 = {siteOptions.footerPhone2}
+                footerEmail = {siteOptions.footerEmail}
+                footerCopyrights = {siteOptions.footerCopyrights}
+                socialLinkFacebook = {siteOptions.socialLinkFacebook}
+                socialLinkInstagram = {siteOptions.socialLinkInstagram}
+                socialLinkTwitter = {siteOptions.socialLinkTwitter}
+                socialLinkLinkedin = {siteOptions.socialLinkLinkedin}
+
+
+                />
         </BrowserRouter>
     );
 }; 

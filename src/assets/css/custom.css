@@ -66,3 +66,14 @@
     color: #ffffff !important; 
     background-color: #ff9600 !important; 
 }
+
+.grecaptcha-badge{
+    bottom:65px !important;
+}
+
+.footer-links-wb li a{
+    color: #ff9600 !important;   
+}
+.footer-links-wb li a:hover{
+    text-decoration:underline !important;   
+}

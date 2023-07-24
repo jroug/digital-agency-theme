@@ -1,4 +1,5 @@
 const homePage_SLUG = "homepage";
+const contactPage_SLUG = "contact";
 
 const sectionOurServices_SLUG = "sectionourservices";
 const sectionWhyUs_SLUG = "sectionwhyus";
@@ -7,12 +8,33 @@ const sectionSubscribeToNL_SLUG = "sectionsubscribetonl";
 const sectionTestimonials_SLUG = "sectiontestimonials";
 const sectionFAQ_SLUG = "sectionfaq";
 
+const options_SLUG = "main-options";
+
 const GraphQLQueries = {
 
     queries : {
 
-        ///////////////////////////////////////////// menu queries /////////////////////////////////////////////
-
+        ///////////////////////////////////////////// options queries /////////////////////////////////////////////
+        options: `siteOptions: option( id: "${options_SLUG}", idType: URI ) {
+          id
+          title
+          optionsFieds{
+            headerLogo{ sourceUrl }
+            footerLogo{ sourceUrl }
+            footerText
+            footerAddress
+            footerAddressLink
+            footerPhone1
+            footerPhone2
+            footerEmail
+            footerCopyrights
+            socialLinkFacebook
+            socialLinkInstagram
+            socialLinkTwitter
+            socialLinkLinkedin
+          }
+        }
+        `,
         // query for sitemap
         sitemapMenuItems: `sitemapMenuItems:menuItems(where: {location: SITEMAP_MENU} , first:100   )  
         {
@@ -94,6 +116,29 @@ const GraphQLQueries = {
                 }
               }
             }
+        }`,
+
+        contactPage:`contactPage: page( id: "${contactPage_SLUG}", idType: URI ) {
+          id
+          title
+          content
+          contactFields{
+            smallTitleTop
+            mainTitle
+            secondaryTitle
+            secondaryText
+            embedMapCode
+            contactImage{
+              sourceUrl
+            }
+            contactTitle
+            contactAddress
+            contactAddressLink
+            contactPhone1
+            contactPhone2
+            contactEmail
+          }
+ 
         }`,
 
         ///////////////////////////////////////////// helping queries /////////////////////////////////////////////
@@ -269,7 +314,7 @@ const GraphQLQueries = {
       }
       `,
 
-      emailSent: `emailSent( form_name: $form_name , form_email: $form_email, , form_phone: $form_phone, form_message: $form_message, form_google_token: $form_google_token )`,
+      emailSent: `emailSent( form_name: $form_name ,  form_phone: $form_phone, form_email: $form_email, form_message: $form_message, form_google_token: $form_google_token )`,
 
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
       getGenericPageQuery : (genericPage_SLUG) => {
