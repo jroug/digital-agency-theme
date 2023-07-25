@@ -8,8 +8,7 @@ import { logVar } from "./utils/Utils";
 
 
 
-// key (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAGVaO98MUQVVHjKgI48l3E_5b7lh
-// secret (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAFcV_4UZHqWA8BTptROZE__msd0u
+
  
 
 let reCAPTCHA_site_key = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY; // site key - google recaptcha

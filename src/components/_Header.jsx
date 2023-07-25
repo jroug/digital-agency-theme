@@ -71,10 +71,10 @@ const _Header = (props) => {
             {/* <!--End Header Upper--> */}
 
             {/* <!--Sticky Header--> */}
-            {/* <div className="sticky-header">
+            <div className="sticky-header">
                 <div className="auto-container clearfix">
                     <div className="logo pull-left">
-                        <a href="index.html" className="img-responsive"><img src={logo} alt="" title="" /></a>
+                        <Link to="/"><img src={headerLogoUrl} alt="" title="" /></Link>
                     </div>
                     <div className="right-col pull-right">
                         <nav className="main-menu navbar-expand-md">
@@ -85,28 +85,39 @@ const _Header = (props) => {
                             </button>
                             <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent1">
                             <ul className="navigation clearfix">
-                                <li className="current"><Link to="/">Αρχική</Link></li>
-                                <li className=""><Link to="/about">Η Ομάδα μας</Link></li>
-                                <li className="dropdown">
-                                    <Link to="/services">Υπηρεσίες</Link>
-                                    <ul>
-                                        <li><Link to="/service-inner">Υπηρεσία</Link></li>
-                                    </ul>
-                                </li>
-                                <li className="dropdown">
-                                    <Link to="/portfolio">Ιστοσελίδες</Link>
-                                    <ul>
-                                        <li><Link to="/portfolio-inner">Ιστοσελίδα</Link></li>
-                                    </ul>
-                                </li>
-                                <li className=""><Link to="/faq">FAQ</Link></li>
-                                <li className=""><Link to="/contact">Επικοινωνία</Link></li>
+                                {
+                                    menuNodes.map( (menuItem, index) => {
+                                        return (
+                                            <li className={menuItem.childItems.nodes.length > 0 ? "dropdown" : ""} key={"primaryMenuNode" + index}>
+                                                <Link to={menuItem.uri}>{menuItem.label}</Link>
+                                                {
+                                                    menuItem.childItems.nodes.length > 0 
+                                                    ?
+                                                    <ul>
+                                                        {
+                                                            menuItem.childItems.nodes.map( (menuItemInner, idx) => {
+                                                                if (menuItemInner.parentDatabaseId == menuItem.databaseId){
+                                                                    // map the cpt_services to services
+                                                                    // it is custom post types slug
+                                                                    let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
+                                                                    return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri}>{menuItemInner.label}</Link></li> )
+                                                                }   
+                                                            })
+                                                        }
+                                                    </ul>
+                                                    :
+                                                    null
+                                                }
+                                            </li>
+                                        )
+                                    })
+                                }
                             </ul>
                             </div>
                         </nav>
                     </div>
                 </div>
-            </div> */}
+            </div>
             {/* <!--End Sticky Header--> */}
         </header>
     );

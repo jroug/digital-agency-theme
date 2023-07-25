@@ -49,7 +49,7 @@ const PageHome = (props) => {
  
     return (
        <>
-        <_BannerHome seoFields={props.seoFields} homeHeaderData = { homepageData } />
+           <_BannerHome seoFields={props.seoFields} homeHeaderData = { homepageData } />
            {
               componentArray.map( (Component, index) => {
                 // console.log('return', index);
@@ -60,7 +60,6 @@ const PageHome = (props) => {
                 )
               })
            }
-        
        </>
     );
 }

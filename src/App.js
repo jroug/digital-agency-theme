@@ -76,10 +76,32 @@ const BLOG_POST_PER_PAGE = process.env.REACT_APP_BLOG_POST_PER_PAGE;
 const App = () => {
 
     // logVar('--------- App --------------');
-
+ 
     useEffect(() => {
-        console.log('my useEffect')
-    })
+        window.addEventListener('scroll', handleScroll);
+    
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+    }, [])
+
+    const handleScroll = (event) => {
+ 
+
+        var mainHeader = document.querySelector('.main-header');
+        // var scrollLink = document.querySelector('.scroll-to-top'); 
+        var windowpos = window.pageYOffset || document.documentElement.scrollTop;
+        var headerHeight = mainHeader.offsetHeight;
+
+        if (windowpos >= headerHeight) {
+            mainHeader.classList.add('fixed-header');
+            // scrollLink.style.display = 'block';
+        } else {
+            mainHeader.classList.remove('fixed-header');
+            // scrollLink.style.display = 'none';
+        }
+    
+    }
 
     // promote caching
     const GET_ALL_QUERY = gql`query GET_ALL_QUERY
