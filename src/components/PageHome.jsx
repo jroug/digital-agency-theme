@@ -7,7 +7,7 @@ import { logVar } from "./utils/Utils";
 
 import { _BannerHome } from "./";
 
-const PageHome = () => {
+const PageHome = (props) => {
 
 
     const HOMEPAGE_CONTENT = gql`query HOMEPAGE_CONTENT
@@ -49,7 +49,7 @@ const PageHome = () => {
  
     return (
        <>
-        <_BannerHome homeHeaderData = { homepageData } />
+        <_BannerHome seoFields={props.seoFields} homeHeaderData = { homepageData } />
            {
               componentArray.map( (Component, index) => {
                 // console.log('return', index);

@@ -26,6 +26,8 @@ import {
 
 } from "./components";
 
+import { Helmet, HelmetProvider } from "react-helmet-async";
+
 import { gql, useQuery } from '@apollo/client';
 import { GraphQLQueries } from './components/queries/GraphQLQueries';
 import { logVar } from './components/utils/Utils';
@@ -146,59 +148,70 @@ const App = () => {
     // console.log(data);
     logVar('--------------- App.js before return -------------------------');
 
-    return (
-        <BrowserRouter>
-            <_Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl} key={"header"} />
-            {/* {
-                (process.env.NODE_ENV == 'development') 
-                ?
-                <ToolEditPage />
-                :
-                <></>
-            } */}
-            <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
-                <Routes >
-                    <Route element={<_AnimationLayout />}  >
-                        <Route key={"home"} path="/" exact element={<PageHome />} />
-                        {
-                            sitemapMenuItems.map((page, index) => {
-                                let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
-                                let pUri = page.uri;
-                                if (pUri.includes('cpt_services')) {
-                                    pUri = pUri.replace('cpt_services', 'services');
-                                }
-                                let pageSlug = pUri.slice(1);
-                                
-                                // console.log('<'+page.menuExtraFieldsForSitemap.reactComponent, page.id, pUri, pageSlug,  );
-                                return (
-                                    <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} />} />
-                                )
-                            })
-                        }
-                        <Route key={"page404"} path="*" element={<Page404 title={"404"} />} />
-                    </Route>
-                </Routes>
-            </Suspense>
-            <_Footer key={"footer"}
-                    footerLogoUrl={siteOptions.footerLogo.sourceUrl}
-                    footerMenu1_name={footerMenu1_name} 
-                    footerMenuNodes1={footerMenuNodes1} 
-                    footerMenu2_name={footerMenu2_name} 
-                    footerMenuNodes2={footerMenuNodes2} 
+    let seoFieldsHome = {title: siteOptions.seoTitleGeneric , description: siteOptions.seoDescriptionGeneric , canonical: process.env.PUBLIC_URL + '/'};
+    let seoFields404 = {title: "Page not Found" , description: siteOptions.seoDescriptionGeneric , canonical: process.env.PUBLIC_URL + '/404/'};
 
-                    footerText = {siteOptions.footerText}
-                    footerAddress = {siteOptions.footerAddress}
-                    footerAddressLink = {siteOptions.footerAddressLink}
-                    footerPhone1 = {siteOptions.footerPhone1}
-                    footerPhone2 = {siteOptions.footerPhone2}
-                    footerEmail = {siteOptions.footerEmail}
-                    footerCopyrights = {siteOptions.footerCopyrights}
-                    socialLinkFacebook = {siteOptions.socialLinkFacebook}
-                    socialLinkInstagram = {siteOptions.socialLinkInstagram}
-                    socialLinkTwitter = {siteOptions.socialLinkTwitter}
-                    socialLinkLinkedin = {siteOptions.socialLinkLinkedin}
-                />
-        </BrowserRouter>
+    return (
+        <HelmetProvider>
+            <Helmet>
+                <title>WebInSite</title>
+            </Helmet>
+            <BrowserRouter>
+                <_Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl} key={"header"} />
+                {/* {
+                    (process.env.NODE_ENV == 'development') 
+                    ?
+                    <ToolEditPage />
+                    :
+                    <></>
+                } */}
+                <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
+                    <Routes >
+                        <Route element={<_AnimationLayout />}  >
+                            <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />
+                            {
+                                sitemapMenuItems.map((page, index) => {
+                                    let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
+                                    let pUri = page.uri;
+                                    if (pUri.includes('cpt_services')) {
+                                        pUri = pUri.replace('cpt_services', 'services');
+                                    }
+                                    let pageSlug = pUri.slice(1);
+                                    let seoFields = {};
+                                    seoFields.title = page.menuExtraFieldsForSitemap.seoTitle != null ? page.menuExtraFieldsForSitemap.seoTitle : page.label + ' | ' + siteOptions.seoTitleGeneric;
+                                    seoFields.description = page.menuExtraFieldsForSitemap.seoDescription != null ? page.menuExtraFieldsForSitemap.seoDescription : siteOptions.seoDescriptionGeneric;
+                                    seoFields.canonical = page.menuExtraFieldsForSitemap.seoCanonical != null ? page.menuExtraFieldsForSitemap.seoCanonical : process.env.PUBLIC_URL + pUri;
+                                    // console.log('<'+page.menuExtraFieldsForSitemap.reactComponent, page.id, pUri, pageSlug,  );
+                                    return (
+                                        <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} seoFields={seoFields} />} />
+                                    )
+                                })
+                            }
+                            <Route key={"page404"} path="*" element={<Page404 title={"404"} seoFields={seoFields404} />} />
+                        </Route>
+                    </Routes>
+                </Suspense>
+                <_Footer key={"footer"}
+                        footerLogoUrl={siteOptions.footerLogo.sourceUrl}
+                        footerMenu1_name={footerMenu1_name} 
+                        footerMenuNodes1={footerMenuNodes1} 
+                        footerMenu2_name={footerMenu2_name} 
+                        footerMenuNodes2={footerMenuNodes2} 
+
+                        footerText = {siteOptions.footerText}
+                        footerAddress = {siteOptions.footerAddress}
+                        footerAddressLink = {siteOptions.footerAddressLink}
+                        footerPhone1 = {siteOptions.footerPhone1}
+                        footerPhone2 = {siteOptions.footerPhone2}
+                        footerEmail = {siteOptions.footerEmail}
+                        footerCopyrights = {siteOptions.footerCopyrights}
+                        socialLinkFacebook = {siteOptions.socialLinkFacebook}
+                        socialLinkInstagram = {siteOptions.socialLinkInstagram}
+                        socialLinkTwitter = {siteOptions.socialLinkTwitter}
+                        socialLinkLinkedin = {siteOptions.socialLinkLinkedin}
+                    />
+            </BrowserRouter>
+        </HelmetProvider>
     );
 }; 
 

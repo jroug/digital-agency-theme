@@ -10,7 +10,7 @@ const TemplateTaxonomy = (props) => {
 
     return (
         <>
-            <_BannerTop title={"Blog: " + title} key={"banner-top-1"} />
+            <_BannerTop seoFields={props.seoFields} title={"Blog: " + title} key={"banner-top-1"} />
             <Suspense fallback={<div>Loading...</div>} > 
                 <SectionBlog taxonomyName={title} taxSlug={taxSlug}   />
             </Suspense>

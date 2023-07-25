@@ -19,6 +19,8 @@ const GraphQLQueries = {
           id
           title
           optionsFieds{
+            seoTitleGeneric
+            seoDescriptionGeneric
             headerLogo{ sourceUrl }
             footerLogo{ sourceUrl }
             footerText
@@ -44,6 +46,9 @@ const GraphQLQueries = {
                   label
                   menuExtraFieldsForSitemap{
                     reactComponent
+                    seoTitle
+                    seoDescription
+                    seoCanonical
                   }
             }
         }`,
@@ -403,7 +408,7 @@ const GraphQLQueries = {
         }
 
        
-        let q = `allPosts${suffix}: posts( ${where} first: ${first} ) {
+        let q = `allPosts${suffix}: posts( ${where},  first: ${first}, after:"${after}" ) {
           pageInfo {
             hasPreviousPage
             hasNextPage
@@ -430,6 +435,7 @@ const GraphQLQueries = {
                 }
               }
               id
+              databaseId
               title
               uri
               excerpt

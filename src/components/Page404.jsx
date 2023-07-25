@@ -2,14 +2,14 @@ import React, { Suspense, lazy } from 'react';
 // import { _BannerTop } from "./";
 import { Link } from 'react-router-dom';
 
-const Page404 = () => {
+const Page404 = (props) => {
 
     const _BannerTop = lazy ( () => import( './_BannerTop' ) );
  
 
     return (
         <>
-            <Suspense fallback={<div>Loading...</div>}> <_BannerTop title={"404"} /></Suspense>
+            <Suspense fallback={<div>Loading...</div>}> <_BannerTop title={"404"} seoFields={props.seoFields} /></Suspense>
             <section className="error-section">
                 <div className="auto-container">
                     <div className="content">

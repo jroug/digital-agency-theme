@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 import { _BannerTop, SectionSubscribeToNL } from "./";
 
-const TemplatePortfolioInner = () => {
+const TemplatePortfolioInner = (props) => {
 
     const navigate = useNavigate();
 	let projectTemplateData;
@@ -64,7 +64,7 @@ const TemplatePortfolioInner = () => {
 
     return (
         <>
-            <_BannerTop title={projectTemplateData!=null ? projectTemplateData.title : '' } parentTitle={"Ιστοσελίδες"} parentLink={"/portfolio/"} />   
+            <_BannerTop seoFields={props.seoFields} title={projectTemplateData!=null ? projectTemplateData.title : '' } parentTitle={"Ιστοσελίδες"} parentLink={"/portfolio/"} />   
 
             { /* <!-- Projects Detail Section --> */ }
             <section className="projects-detail-section">

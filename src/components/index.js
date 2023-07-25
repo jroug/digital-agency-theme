@@ -21,6 +21,8 @@ import SectionSubscribeToNL from "./SectionSubscribeToNL";
 import SectionBlog from "./SectionBlog";
 
 import _AnimationLayout from "./_AnimationLayout";
+import _BlogBoxes from "./_BlogBoxes";
+
 
 export { 
     _Header,
@@ -48,4 +50,7 @@ export {
     SectionBlog,
 
     _AnimationLayout,
+
+    _BlogBoxes
+    
 }

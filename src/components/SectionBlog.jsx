@@ -1,13 +1,54 @@
-import React from 'react';
-
-
+import React, { useEffect, useState }   from 'react';
 import { logVar } from './utils/Utils';
-import { useQuery, gql } from '@apollo/client';
+import { useApolloClient, useQuery, gql } from '@apollo/client';
 import { GraphQLQueries } from './queries/GraphQLQueries';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
+import { _BlogBoxes } from './';
+
 const SectionBlog = (props) => {
+
+    const [allPosts, setAllPosts] = useState({});
+    const [endCursor, setEndCursor] = useState('');
+    const [hasNextPage, setHasNextPage] = useState('');
+    const [trigger, setTrigger] = useState(0);
+
+    // state can update inside useEffect
+    useEffect(() => {
+   
+        if ( data == undefined ){
+            console.log('data in useEffect is undefined');
+            return;
+        }  
+
+        console.log('data in useEffect--> ', data, allPosts);
+        
+        if (props.taxSlug=='search') {
+            setAllPosts(data['allPosts_search'].edges);
+            setHasNextPage(data['allPosts_search'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_search'].pageInfo.endCursor);
+        }else if (props.taxSlug=='tag') {
+            setAllPosts(data['allPosts_tag'].edges);
+            setHasNextPage(data['allPosts_tag'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_tag'].pageInfo.endCursor);
+        }else if(props.taxSlug=='category'){
+            console.log(data);
+            setAllPosts(data['allPosts_cat'].edges);
+            setHasNextPage(data['allPosts_cat'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_cat'].pageInfo.endCursor);
+        }else{
+            setAllPosts(data.allPosts.edges);
+            setHasNextPage(data.allPosts.pageInfo.hasNextPage);
+            setEndCursor(data.allPosts.pageInfo.endCursor);
+        }
+        
+    }, [trigger]);
+
+
+
+    // use later in button action
+    const client = useApolloClient();
 
     const { slug } = useParams();
 
@@ -17,9 +58,78 @@ const SectionBlog = (props) => {
 
     const handleMorePosts = (event) => {
         event.preventDefault();
-        // logVar(allPosts.pageInfo.endCursor);
-        // fetchMore({ variables: { after: allPosts.pageInfo.endCursor } });
-        // logVar('handleNextPosts');
+        
+        
+        let BRING_MORE_POSTS_QUERY = '';
+        
+
+        if (props.taxSlug=='search') {
+            // fetchPolicy = 'network-only';
+            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE0
+            {
+                ${GraphQLQueries.queries.getBlogPosts(slug ,'' ,'' ,BLOG_POST_PER_PAGE ,endCursor )}
+            }`;
+        }else if (props.taxSlug=='tag') {
+            // fetchPolicy = 'network-only';
+            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE1 
+            {
+                ${GraphQLQueries.queries.getBlogPosts('' ,'' ,props.taxonomyName ,BLOG_POST_PER_PAGE ,endCursor )}
+            }`;
+        }else if(props.taxSlug=='category'){
+            // fetchPolicy = 'network-only';
+            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE2 
+            {
+                ${GraphQLQueries.queries.getBlogPosts('' ,props.taxonomyName ,'' ,BLOG_POST_PER_PAGE ,endCursor )}
+            }`;
+        }else{
+            // fetchPolicy = "cache";
+            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE3
+            {
+                ${GraphQLQueries.queries.getBlogPosts('' ,'' ,'' ,BLOG_POST_PER_PAGE ,endCursor)}
+            }`;
+        }
+
+        client.query({
+            fetchPolicy: 'network-only',
+            query: BRING_MORE_POSTS_QUERY
+        }).then(result_data => {
+           
+            if (props.taxSlug=='search') {
+                setHasNextPage(result_data.data['allPosts_search'].pageInfo.hasNextPage);
+                setEndCursor(result_data.data['allPosts_search'].pageInfo.endCursor);
+                if (Object.keys(allPosts).length != 0)
+                    setAllPosts([...allPosts, ...result_data.data['allPosts_search'].edges]);
+                else
+                    setAllPosts([...result_data.data['allPosts_search'].edges]);
+            }else if (props.taxSlug=='tag') {logVar(result_data);
+                setHasNextPage(result_data.data['allPosts_tag'].pageInfo.hasNextPage);
+                setEndCursor(result_data.data['allPosts_tag'].pageInfo.endCursor);
+                if (Object.keys(allPosts).length != 0)
+                    setAllPosts([...allPosts, ...result_data.data['allPosts_tag'].edges]);
+                else
+                    setAllPosts([...result_data.data['allPosts_tag'].edges]);
+            }else if(props.taxSlug=='category'){
+                setHasNextPage(result_data.data['allPosts_cat'].pageInfo.hasNextPage);
+                setEndCursor(result_data.data['allPosts_cat'].pageInfo.endCursor);
+                if (Object.keys(allPosts).length != 0)
+                    setAllPosts([...allPosts, ...result_data.data['allPosts_cat'].edges]);
+                else
+                    setAllPosts([...result_data.data['allPosts_cat'].edges]);
+            }else{
+                setHasNextPage(result_data.data.allPosts.pageInfo.hasNextPage);
+                setEndCursor(result_data.data.allPosts.pageInfo.endCursor);
+                if (Object.keys(allPosts).length != 0)
+                    setAllPosts([...allPosts, ...result_data.data.allPosts.edges]);
+                else
+                    setAllPosts([...result_data.data.allPosts.edges]);
+            }
+            // logVar('0000');
+
+
+        })
+        .catch(error => {
+            logVar(error);
+        });
     }
 
     let GET_POSTS_QUERY = '';
@@ -53,7 +163,6 @@ const SectionBlog = (props) => {
         {
             ${GraphQLQueries.queries.getBlogPosts('' ,props.taxonomyName ,'' ,BLOG_POST_PER_PAGE ,'')}
         }`;
-        
     }else{
         fetchPolicy = "cache";
         GET_POSTS_QUERY = gql`query GET_POSTS_QUERY3
@@ -70,100 +179,46 @@ const SectionBlog = (props) => {
         fetchPolicy: fetchPolicy,
     });
 
-    if (loading) { logVar('loading from SectionBlog'); return }
+    if (loading) { logVar('--------------------------- loading from SectionBlog ---------------------------'); return }
     if (error) { logVar('error from SectionBlog'); return }
     if (!data) { logVar('!data from SectionBlog'); return }
 
-    // logVar(data);
 
-    let allPosts = null;
+    console.log('[useQuery] --->', data, fetchPolicy);
 
-    if (props.taxSlug=='search') {
-        allPosts = data['allPosts_search'];
-    }else if (props.taxSlug=='tag') {
-        allPosts = data['allPosts_tag'];
-    }else if(props.taxSlug=='category'){
-        allPosts = data['allPosts_cat'];
-    }else{
-        allPosts = data.allPosts;
-    }
-     
-    const hasNextPage = allPosts.pageInfo.hasNextPage;
+    // trigger useEffect after having the data, do not need to in caching cases
+    if (trigger==0 &&  fetchPolicy == 'network-only') setTrigger(1);
 
-    // logVar(allPosts);
+    if (Object.keys(allPosts).length == 0 && props.taxSlug !='search' ) return <div>Loading...</div>;
 
     return (
+ 
         <section className="blog-page-section" key={"blog-" + props.taxSlug + "-" + props.taxonomyName}>
             <div className="auto-container">
-                <div className="row clearfix">
+                <div className="row clearfix" id="main-content" >
                     {
-                         allPosts.edges.length === 0 ? (
+                        Object.keys(allPosts).length == 0 && props.taxSlug =='search' 
+                        ?
                             <div className="col-lg-12 col-md-12 col-sm-12">
                                 <div className="sec-title centered">
                                     <h2>No results found</h2>
                                 </div>
                             </div>
-                        ) 
                         : 
-                        allPosts.edges.map( (post, index) => {
-
-                            let parser = new DOMParser();
-                            let parsedDocument = parser.parseFromString(post.node.excerpt, "text/html");
-                            let excerptText = parsedDocument.getElementsByTagName("p")[0].innerText;
-
-                            let postCategories = post.node.categories.edges;
-                            let postTags = post.node.tags.edges;
-
-                            return (
-                                    <div className="news-block col-lg-4 col-md-6 col-sm-12" key={"post-" + props.taxSlug + "-" + props.taxonomyName + "-" + index} >
-                                        <div className="inner-box wow fadeInLeft animated" data-wow-delay="0ms" data-wow-duration="1500ms" style={{"visibility":"visible","animationDuration":"1500ms","animationDelay":"0ms","animationName":"fadeInLeft"}}>
-                                            <div className="image">
-                                                <Link to={"/blog" + post.node.uri} ><img src={post.node.featuredImage.node.sourceUrl} alt="" /></Link>
-                                            </div>
-                                            <div className="lower-content">
-                                                <h6><Link to={"/blog" + post.node.uri } >{post.node.title}</Link></h6>
-                                                <div className="post-date">{excerptText}</div>
-                                                <div className="clearfix">
-                                                    <div className="pull-left blog-tile">
-                                                        <div className="author">
-                                                            <div className="r1" >
-                                                            {/* <div className="image"><img src={author3} alt="" /></div> */}
-                                                            {
-                                                                
-                                                                postCategories.map( (category, index) => {
-                                                                    return (
-                                                                        <Link to={category.node.uri} key={"category-" + index} >{category.node.name}</Link>
-                                                                    )
-                                                                })
-                                                            }
-                                                            </div>
-                                                            <div className="r2" >
-                                                            {
-                                                                postTags.map( (tag, index) => {
-                                                                    return (
-                                                                        <Link to={tag.node.uri} key={"tag-" + index} >{tag.node.name}</Link>
-                                                                    )
-                                                                })
-                                                            }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="pull-right">
-                                                        <ul className="post-info">
-                                                            {/* <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li> */}
-                                                            <li><Link to="#"><span className="icon flaticon-share"></span></Link></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                            )
+                        allPosts?.map( (post, index) => {
+                                return (
+                                    <_BlogBoxes 
+                                        key={"BlogBox-" + post.node.databaseId} 
+                                        post={post}
+                                        index={index}
+                                        taxSlug={props.taxSlug}
+                                        taxonomyName={props.taxonomyName}
+                                    />
+                                )
                         })
                     }
                 </div>
-
-                { /* <!--Post Share Options--> */ }
+                {/* More Button */}
                 {
                     hasNextPage ? (
                         <div className="styled-pagination text-center">

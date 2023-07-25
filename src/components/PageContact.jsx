@@ -7,6 +7,7 @@ import { GraphQLQueries } from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
 
 
+
 // key (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAGVaO98MUQVVHjKgI48l3E_5b7lh
 // secret (content.webinsite.gr & localhost & webinsite & www.webinsite): 6LdFG00nAAAAAFcV_4UZHqWA8BTptROZE__msd0u
  
@@ -89,7 +90,7 @@ const PageContact = (props) => {
                 const SEND_EMAIL = gql`query SEND_EMAIL($form_name: String, $form_email: String, $form_phone: String, $form_message: String, $form_google_token: String){
                     ${GraphQLQueries.queries.emailSent}
                 } `;
-
+                
                 client.query({
                     fetchPolicy: 'network-only',
                     query: SEND_EMAIL,
@@ -149,7 +150,7 @@ const PageContact = (props) => {
 
     return (
         <>
-            <_BannerTop title={contactData.title} /> 
+            <_BannerTop title={contactData.title} seoFields={props.seoFields} /> 
             {/* <!-- Contact Section --> */}
             <section className="contact-page-section">
                 <div className="auto-container">

@@ -4,12 +4,12 @@ import React, { Suspense, lazy } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { GraphQLQueries} from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
-import { _BannerTop } from "./";
+
+
 
 const TemplatePage = (props) => {
  
- 
-
+    const _BannerTop = lazy ( () => import( './_BannerTop' ) );
     const pageSlug = props.pageSlug;
     const pageSlug_withoutslash = props.pageSlug.replaceAll('/', '');
     const PAGE_CONTENT = gql`query PAGE_CONTENT_${pageSlug_withoutslash}
@@ -39,7 +39,7 @@ const TemplatePage = (props) => {
 
     return (
         <>
-             <_BannerTop title={pageTitle} key={"banner-top-1"} />  
+            <Suspense fallback={<div>Loading...</div>}> <_BannerTop seoFields={props.seoFields} title={pageTitle} key={"banner-top-1"} /> </Suspense>
             {/* <_BannerTop title={pageTitle} key={"banner-top-2"} />  */}
             {
                 componentArray.map( (Component, index) => {

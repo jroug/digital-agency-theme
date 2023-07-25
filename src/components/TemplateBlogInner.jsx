@@ -7,7 +7,7 @@ import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 const _BannerTop = lazy ( () => import( './_BannerTop' ) );
 
-const TemplateBlogInner = () => {
+const TemplateBlogInner = (props) => {
 
     let countRecentPosts = 0;
 
@@ -64,7 +64,7 @@ const TemplateBlogInner = () => {
     return (
         <> 
             <Suspense fallback={<div>Loading...</div>} >
-                <_BannerTop parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData == undefined ? "" : postTemplateData.title } />  
+                <_BannerTop seoFields={props.seoFields} parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData == undefined ? "" : postTemplateData.title } />  
             </Suspense>
             <div className="sidebar-page-container">
                 <div className="auto-container">

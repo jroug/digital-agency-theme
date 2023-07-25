@@ -49,7 +49,7 @@ const PagePortfolio = (props) => {
         
     return (
         <>
-            <_BannerTop title={props.title} /> 
+            <_BannerTop title={props.title} seoFields={props.seoFields} /> 
             { /* <!-- Projects Page Section --> */ }
             <section className="projects-page-section">
                 <div className="auto-container">
