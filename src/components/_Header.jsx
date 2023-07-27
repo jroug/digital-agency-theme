@@ -5,6 +5,12 @@ import { logVar } from "./utils/Utils";
 
 const _Header = (props) => {
 
+    const handleMenuClick = () => {
+        document.getElementById('navbarSupportedContent').classList.toggle('show');
+        document.getElementById('navbarSupportedContent1').classList.toggle('show');
+        logVar('handleMenuClick');
+    }
+
     const menuNodes = props.menuNodes;
     const headerLogoUrl = props.headerLogoUrl;
     logVar('--_Header--')
@@ -21,7 +27,7 @@ const _Header = (props) => {
                             {/* <!-- Main Menu --> */}
                             <nav className="main-menu navbar-expand-md">
                                 <div className="navbar-header">
-                                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <button onClick={handleMenuClick} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                         <span className="icon-bar"></span>
                                         <span className="icon-bar"></span>
                                         <span className="icon-bar"></span>
@@ -78,7 +84,7 @@ const _Header = (props) => {
                     </div>
                     <div className="right-col pull-right">
                         <nav className="main-menu navbar-expand-md">
-                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
+                            <button onClick={handleMenuClick} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>

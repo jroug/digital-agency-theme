@@ -96,3 +96,15 @@
 .pull-left.blog-tile{
     width: calc(100% - 30px);
 }
+
+.main-menu .navbar-collapse > .navigation > li > ul{
+    display: block;
+}
+
+.main-menu .navbar-collapse > .navigation > li > ul > li > a{
+    text-indent: 20px;
+}
+
+.main-menu .navigation > li > ul {
+    width: 240px;;
+}

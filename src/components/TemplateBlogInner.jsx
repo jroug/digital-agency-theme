@@ -5,6 +5,8 @@ import { useQuery, gql } from '@apollo/client';
 import { logVar, isValidSlug } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 
+import {InlineShareButtons} from 'sharethis-reactjs';
+
 const _BannerTop = lazy ( () => import( './_BannerTop' ) );
 
 const TemplateBlogInner = (props) => {
@@ -88,10 +90,32 @@ const TemplateBlogInner = (props) => {
                                                 </div>
                                             </div> */}
                                             <div className="pull-right">
-                                                <ul className="post-info">
-                                                    {/* <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li> */}
+                                                <InlineShareButtons 
+                                                    config={{
+                                                        alignment: 'center',  // alignment of buttons (left, center, right)
+                                                        color: 'social',      // set the color of buttons (social, white)
+                                                        enabled: true,        // show/hide buttons (true, false)
+                                                        font_size: 16,        // font size for the buttons
+                                                        labels: 'null',        // button labels (cta, counts, null)
+                                                        language: 'en',       // which language to use (see LANGUAGES)
+                                                        networks: [           // which networks to include (see SHARING NETWORKS)
+                                                            'linkedin',
+                                                            'facebook',
+                                                            'twitter',
+                                                            'sharethis'
+                                                        ],
+                                                        padding: 10,          // padding within buttons (INTEGER)
+                                                        radius: 4,            // the corner radius on each button (INTEGER)
+                                                        show_total: false,
+                                                        size: 40,             // the size of each button (INTEGER)
+
+ 
+                                                    }}
+                                                />
+                                                {/* <ul className="post-info">
+                                                    <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li>
                                                     <li><a href="blog-single.html"><span className="icon flaticon-share"></span></a></li>
-                                                </ul>
+                                                </ul> */}
                                             </div>
                                         </div>
                                     </div>

@@ -6,11 +6,6 @@ import { validateName } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
 
-
-
-
- 
-
 let reCAPTCHA_site_key = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY; // site key - google recaptcha
 
 

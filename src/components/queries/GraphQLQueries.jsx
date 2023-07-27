@@ -321,6 +321,8 @@ const GraphQLQueries = {
 
       emailSent: `emailSent( form_name: $form_name ,  form_phone: $form_phone, form_email: $form_email, form_message: $form_message, form_google_token: $form_google_token )`,
 
+      registerToMailchimp: `registerToMailchimp( first_name: $first_name, last_name: $last_name, email: $email, form_google_token: $form_google_token )`,
+
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
       getGenericPageQuery : (genericPage_SLUG) => {
         return `genericPage_${genericPage_SLUG.replaceAll('/','')}: page( id: "${genericPage_SLUG}", idType: URI ) {

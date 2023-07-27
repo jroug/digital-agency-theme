@@ -47,7 +47,12 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-
+// import './assets/js/jquery.js';
+// import './assets/js/popper.min.js';
+// import './assets/js/bootstrap.min.js';
+// import bootstrap from react bootstrap 
+ 
+ 
 
 
 // const _BannerHome = lazy(() => import('./components/_BannerHome'));

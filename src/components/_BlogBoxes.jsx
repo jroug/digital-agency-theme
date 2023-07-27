@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { InlineShareButtons } from 'sharethis-reactjs';
 
 const _BlogBoxes = (props) => {
 
@@ -48,10 +49,29 @@ const _BlogBoxes = (props) => {
                             </div>
                         </div>
                         <div className="pull-right">
-                            <ul className="post-info">
-                                {/* <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li> */}
+                            <InlineShareButtons 
+                                config={{
+                                    alignment: 'center',  // alignment of buttons (left, center, right)
+                                    color: 'white',      // set the color of buttons (social, white)
+                                    enabled: true,        // show/hide buttons (true, false)
+                                    font_size: 16,        // font size for the buttons
+                                    labels: 'null',        // button labels (cta, counts, null)
+                                    language: 'en',       // which language to use (see LANGUAGES)
+                                    networks: [           // which networks to include (see SHARING NETWORKS)
+                                        'sharethis'
+                                    ],
+                                    padding: 7,          // padding within buttons (INTEGER)
+                                    radius: 4,            // the corner radius on each button (INTEGER)
+                                    show_total: false,
+                                    size: 30,             // the size of each button (INTEGER)
+                                    url: 'https://webinsite.gr' + '/blog' + post.node.uri, // (defaults to current url)
+
+                                }}
+                            />
+                            {/* <ul className="post-info">
+                                <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li>
                                 <li><Link to="#"><span className="icon flaticon-share"></span></Link></li>
-                            </ul>
+                            </ul> */}
                         </div>
                     </div>
                 </div>
