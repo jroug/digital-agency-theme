@@ -108,7 +108,9 @@ const App = () => {
     
     }
 
-    // promote caching
+    // promote caching 
+    // **** SOS **** 
+    // if you want to remove them and disable caching you need to put each one to graphql document with allow 
     const GET_ALL_QUERY = gql`query GET_ALL_QUERY ($first_gbp: Int, $after_gbp: String)
     {
       ${GraphQLQueries.queries.sitemapMenuItems}
