@@ -52,7 +52,7 @@ const SectionBlog = (props) => {
 
     const { slug } = useParams();
 
-    const BLOG_POST_PER_PAGE = process.env.REACT_APP_BLOG_POST_PER_PAGE;
+    const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
 
     //  logVar('slug');
 
@@ -61,37 +61,60 @@ const SectionBlog = (props) => {
         
         
         let BRING_MORE_POSTS_QUERY = '';
-        
+        let variables_more = {};
 
-        if (props.taxSlug=='search') {
-            // fetchPolicy = 'network-only';
-            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE0
-            {
-                ${GraphQLQueries.queries.getBlogPosts(slug ,'' ,'' ,BLOG_POST_PER_PAGE ,endCursor )}
-            }`;
-        }else if (props.taxSlug=='tag') {
-            // fetchPolicy = 'network-only';
-            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE1 
-            {
-                ${GraphQLQueries.queries.getBlogPosts('' ,'' ,props.taxonomyName ,BLOG_POST_PER_PAGE ,endCursor )}
-            }`;
-        }else if(props.taxSlug=='category'){
-            // fetchPolicy = 'network-only';
-            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE2 
-            {
-                ${GraphQLQueries.queries.getBlogPosts('' ,props.taxonomyName ,'' ,BLOG_POST_PER_PAGE ,endCursor )}
-            }`;
-        }else{
-            // fetchPolicy = "cache";
-            BRING_MORE_POSTS_QUERY = gql`query BRING_MORE3
-            {
-                ${GraphQLQueries.queries.getBlogPosts('' ,'' ,'' ,BLOG_POST_PER_PAGE ,endCursor)}
-            }`;
+
+        switch (props.taxSlug) {
+            case 'search':
+                BRING_MORE_POSTS_QUERY = gql`query BRING_MORE_SEARCH ( $search: String, $first_gbs: Int, $after_gbs: String)
+                {
+                    ${GraphQLQueries.queries.getBlogPosts_search}
+                }`;
+                variables_more = {
+                    search : slug,
+                    first_gbs: BLOG_POST_PER_PAGE,
+                    after_gbs: endCursor,
+                }
+                break;
+            case 'tag':
+                BRING_MORE_POSTS_QUERY = gql`query BRING_MORE_TAG ( $tag: String, $first_gbt: Int, $after_gbt: String)
+                {
+                    ${GraphQLQueries.queries.getBlogPosts_tag}
+                }`;
+                variables_more = {
+                    tag : props.taxonomyName,
+                    first_gbt: BLOG_POST_PER_PAGE,
+                    after_gbt: endCursor,
+                }
+                break;
+            case 'category':
+                BRING_MORE_POSTS_QUERY = gql`query BRING_MORE_CAT ( $categoryName: String, $first_gbc: Int, $after_gbc: String)
+                {
+                    ${GraphQLQueries.queries.getBlogPosts_cat}
+                }`;
+                variables_more = {
+                    categoryName : props.taxonomyName,
+                    first_gbc: BLOG_POST_PER_PAGE,
+                    after_gbc: endCursor,
+                }
+                break;
+            default:
+                BRING_MORE_POSTS_QUERY = gql`query BRING_MORE_POSTS_QUERY ($first_gbp: Int, $after_gbp: String)
+                {
+                    ${GraphQLQueries.queries.getBlogPosts}
+                }`;
+                variables_more = {
+                    first_gbp: BLOG_POST_PER_PAGE,
+                    after_gbp: endCursor,
+                }
+                break;
         }
+ 
 
         client.query({
             fetchPolicy: 'network-only',
-            query: BRING_MORE_POSTS_QUERY
+            query: BRING_MORE_POSTS_QUERY,
+            variables: variables_more
         }).then(result_data => {
            
             if (props.taxSlug=='search') {
@@ -142,33 +165,56 @@ const SectionBlog = (props) => {
     // tag/term
     // search/slug
 
+    let variables = {};
 
-    if (props.taxSlug=='search') {
-        fetchPolicy = 'network-only';
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY0
-        {
-            ${GraphQLQueries.queries.getBlogPosts(slug ,'' ,'' ,BLOG_POST_PER_PAGE ,'')}
-        }`;
-
-    }else if (props.taxSlug=='tag') {
-        fetchPolicy = 'network-only';
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY1 
-        {
-            ${GraphQLQueries.queries.getBlogPosts('' ,'' ,props.taxonomyName ,BLOG_POST_PER_PAGE ,'')}
-        }`;
-
-    }else if(props.taxSlug=='category'){
-        fetchPolicy = 'network-only';
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY2 
-        {
-            ${GraphQLQueries.queries.getBlogPosts('' ,props.taxonomyName ,'' ,BLOG_POST_PER_PAGE ,'')}
-        }`;
-    }else{
-        fetchPolicy = "cache";
-        GET_POSTS_QUERY = gql`query GET_POSTS_QUERY3
-        {
-            ${GraphQLQueries.queries.getBlogPosts('' ,'' ,'' ,BLOG_POST_PER_PAGE ,'')}
-        }`;
+    switch (props.taxSlug) {
+        case 'search':
+            fetchPolicy = 'network-only';
+            GET_POSTS_QUERY = gql`query GET_POSTS_QUERY_SEARCH ( $search: String, $first_gbs: Int, $after_gbs: String)
+            {
+                ${GraphQLQueries.queries.getBlogPosts_search}
+            }`;
+            variables = {
+                search : slug,
+                first_gbs: BLOG_POST_PER_PAGE,
+                after_gbs: '',
+            }
+            break;
+        case 'tag':
+            fetchPolicy = 'network-only';
+            GET_POSTS_QUERY = gql`query GET_POSTS_QUERY_TAG ( $tag: String, $first_gbt: Int, $after_gbt: String)
+            {
+                ${GraphQLQueries.queries.getBlogPosts_tag}
+            }`;
+            variables = {
+                tag : props.taxonomyName,
+                first_gbt: BLOG_POST_PER_PAGE,
+                after_gbt: '',
+            }
+            break;
+        case 'category':
+            fetchPolicy = 'network-only';
+            GET_POSTS_QUERY = gql`query GET_POSTS_QUERY_CAT ( $categoryName: String, $first_gbc: Int, $after_gbc: String)
+            {
+                ${GraphQLQueries.queries.getBlogPosts_cat}
+            }`;
+            variables = {
+                categoryName : props.taxonomyName,
+                first_gbc: BLOG_POST_PER_PAGE,
+                after_gbc: '',
+            }
+            break;
+        default:
+            fetchPolicy = "cache";
+            GET_POSTS_QUERY = gql`query GET_POSTS_QUERY ($first_gbp: Int, $after_gbp: String)
+            {
+                ${GraphQLQueries.queries.getBlogPosts}
+            }`;
+            variables = {
+                first_gbp: BLOG_POST_PER_PAGE,
+                after_gbp: '',
+            }
+            break;
     }
 
     // cache policy network-only causes rerenders to app.js
@@ -177,6 +223,7 @@ const SectionBlog = (props) => {
 
     const { data, loading, error } = useQuery(GET_POSTS_QUERY,{
         fetchPolicy: fetchPolicy,
+        variables: variables
     });
 
     if (loading) { logVar('--------------------------- loading from SectionBlog ---------------------------'); return }

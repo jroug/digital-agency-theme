@@ -323,6 +323,181 @@ const GraphQLQueries = {
 
       registerToMailchimp: `registerToMailchimp( first_name: $first_name, last_name: $last_name, email: $email, form_google_token: $form_google_token )`,
 
+      getBlogPostTemplateQuery : `blogPost: post( id: $slg, idType: URI ) {
+            id
+            title
+            content
+            postExtraFields{
+              mainImage{
+                sourceUrl
+              }
+            }
+        }`,
+
+      getBlogPosts : `allPosts: posts( first: $first_gbp, after:$after_gbp ) {
+              pageInfo {
+                hasPreviousPage
+                hasNextPage
+                endCursor
+              }
+              edges{
+                node{
+                  categories {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  tags {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  id
+                  databaseId
+                  title
+                  uri
+                  excerpt
+                  featuredImage {
+                    node {
+                      id
+                      sourceUrl
+                    }
+                  }
+                }
+              }
+            }`,
+
+      getBlogPosts_cat : `allPosts_cat: posts( where:{ categoryName: $categoryName }, first: $first_gbc, after:$after_gbc ) {
+              pageInfo {
+                hasPreviousPage
+                hasNextPage
+                endCursor
+              }
+              edges{
+                node{
+                  categories {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  tags {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  id
+                  databaseId
+                  title
+                  uri
+                  excerpt
+                  featuredImage {
+                    node {
+                      id
+                      sourceUrl
+                    }
+                  }
+                }
+              }
+            }`,
+
+      getBlogPosts_tag : `allPosts_tag: posts( where:{ tag: $tag }, first: $first_gbt, after:$after_gbt ) {
+              pageInfo {
+                hasPreviousPage
+                hasNextPage
+                endCursor
+              }
+              edges{
+                node{
+                  categories {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  tags {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  id
+                  databaseId
+                  title
+                  uri
+                  excerpt
+                  featuredImage {
+                    node {
+                      id
+                      sourceUrl
+                    }
+                  }
+                }
+              }
+            }`,
+
+      getBlogPosts_search : `allPosts_search: posts( where:{ search: $search }, first: $first_gbs, after:$after_gbs ) {
+              pageInfo {
+                hasPreviousPage
+                hasNextPage
+                endCursor
+              }
+              edges{
+                node{
+                  categories {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  tags {
+                    edges {
+                      node {
+                        id
+                        name
+                        uri
+                      }
+                    }
+                  }
+                  id
+                  databaseId
+                  title
+                  uri
+                  excerpt
+                  featuredImage {
+                    node {
+                      id
+                      sourceUrl
+                    }
+                  }
+                }
+              }
+            }`,
+
       ///////////////////////////////////////////// functions queries /////////////////////////////////////////////
       getGenericPageQuery : (genericPage_SLUG) => {
         return `genericPage_${genericPage_SLUG.replaceAll('/','')}: page( id: "${genericPage_SLUG}", idType: URI ) {
@@ -382,77 +557,6 @@ const GraphQLQueries = {
         }`;
       },
 
-      getBlogPostTemplateQuery : (postPage_SLUG) => {
-        return `blogPost: post( id: "${postPage_SLUG.replace('blog/', '')}", idType: URI ) {
-            id
-            title
-            content
-            postExtraFields{
-              mainImage{
-                sourceUrl
-              }
-            }
-        }`
-      },
-      getBlogPosts : (search='', cat='', tag='',  first=10000, after='') => {
-     
-        let where = '';
-        let suffix = '';
-        if (cat!=''){
-          where = `where:{ categoryName: "${cat}" }`;
-          suffix = '_cat';
-        }else if (tag!=''){
-          where = `where:{ tag: "${tag}" }`;
-          suffix = '_tag';
-        }else if (search!='') {
-          where = `where:{ search: "${search}" }`;
-          suffix = '_search';
-        }
-
-       
-        let q = `allPosts${suffix}: posts( ${where},  first: ${first}, after:"${after}" ) {
-          pageInfo {
-            hasPreviousPage
-            hasNextPage
-            endCursor
-          }
-          edges{
-            node{
-              categories {
-                edges {
-                  node {
-                    id
-                    name
-                    uri
-                  }
-                }
-              }
-              tags {
-                edges {
-                  node {
-                    id
-                    name
-                    uri
-                  }
-                }
-              }
-              id
-              databaseId
-              title
-              uri
-              excerpt
-              featuredImage {
-                node {
-                  id
-                  sourceUrl
-                }
-              }
-            }
-          }
-        }`;
-        // console.log(q);
-        return q;
-      },
       getAllPosts : (limit = 1000) => {
         return `allPosts: posts( first: ${limit} ) {
           pageInfo {

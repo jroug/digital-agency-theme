@@ -33,15 +33,17 @@ const TemplateBlogInner = (props) => {
 	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
     // const pageSlug = pagePathName.slice(1, -1);
 	// chech for sql injection in the pageSlug variable
-	const GET_POST_QUERY = gql`query GET_POST_QUERY_11
+	const GET_POST_QUERY = gql`query GET_POST_QUERY ($slg: ID!)
     {
-      ${GraphQLQueries.queries.getBlogPostTemplateQuery(pageSlug)}
+      ${GraphQLQueries.queries.getBlogPostTemplateQuery}
       ${GraphQLQueries.queries.allPostCategories}
       ${GraphQLQueries.queries.allPostTags}
       ${GraphQLQueries.queries.getAllPosts(4)}
     }`;
 
-    const { data, loading, error } = useQuery(GET_POST_QUERY);
+    const { data, loading, error } = useQuery(GET_POST_QUERY,{
+        variables:{slg: pageSlug.replace('blog/', '')}
+    });
 
     if (loading) { logVar('loading from Post'); return }
     if (error) { logVar('error from Post'); return }

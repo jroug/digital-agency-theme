@@ -76,7 +76,7 @@ const _BannerTop = lazy(() => import('./components/_BannerTop'));
 
 // const _Footer = lazy(() => import('./components/_Footer'));
 
-const BLOG_POST_PER_PAGE = process.env.REACT_APP_BLOG_POST_PER_PAGE;
+const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
 
 const App = () => {
 
@@ -109,7 +109,7 @@ const App = () => {
     }
 
     // promote caching
-    const GET_ALL_QUERY = gql`query GET_ALL_QUERY
+    const GET_ALL_QUERY = gql`query GET_ALL_QUERY ($first_gbp: Int, $after_gbp: String)
     {
       ${GraphQLQueries.queries.sitemapMenuItems}
       ${GraphQLQueries.queries.primaryMenuItems}
@@ -142,7 +142,7 @@ const App = () => {
       ${GraphQLQueries.queries.getServiceTemplateQuery('services/hosting/')}
       ${GraphQLQueries.queries.allServices}
 
-      ${GraphQLQueries.queries.getBlogPosts('' ,'' ,'' ,BLOG_POST_PER_PAGE ,'')}
+      ${GraphQLQueries.queries.getBlogPosts}
 
       ${GraphQLQueries.queries.options}
 
@@ -157,7 +157,12 @@ const App = () => {
 
     }`;
 
-    const { data, loading, error } = useQuery(GET_ALL_QUERY);
+    const { data, loading, error } = useQuery(GET_ALL_QUERY,{
+        variables: {
+            first_gbp: BLOG_POST_PER_PAGE,
+            after_gbp: '',
+        }
+    });
 
     if (loading) { logVar('menus query loading'); return }
     if (error) { logVar(error); return }

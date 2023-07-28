@@ -56,12 +56,7 @@ const _Footer = (props) => {
                                             <Link to="/"><img src={footerLogoUrl} alt="" /></Link>
                                         </div>
                                         <div className="text">{footerText}</div>
-                                        <ul className="list-style-one footer-links-wb">
-                                            <li><span>Address: </span> <Link target="_blank" to={footerAddressLink} >{footerAddress}</Link></li>
-                                            <li><span>Email:</span> <Link to={"mailto:" + footerEmail} >{footerEmail}</Link></li>
-                                            <li><span>Phone:</span> <Link to={"tel:" + footerPhone1} >{footerPhone1}</Link></li>
-                                            <li><span>Phone:</span> <Link to={"tel:" + footerPhone2} >{footerPhone2}</Link></li>
-                                        </ul>
+
                                     </div>
                                 </div>
                                 {/* <!--Footer Column--> */}
@@ -102,22 +97,14 @@ const _Footer = (props) => {
                                 {/* <!--Footer Column--> */}
                                 <div className="footer-column col-lg-6 col-md-6 col-sm-12">
                                     <div className="footer-widget gallery-widget">
-                                        <h4>Gallery</h4>
+                                        <h4>Contact</h4>
                                         <div className="widget-content">
-                                            <div className="images-outer clearfix">
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/1.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/2.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/3.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/4.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/1.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                                {/* <!--Image Box--> */}
-                                                <figure className="image-box"><a href="images/gallery/2.jpg" className="lightbox-image" data-fancybox="footer-gallery" title="Image Title Here" data-fancybox-group="footer-gallery"><img src={thumb} alt="" /></a></figure>
-                                            </div>
+                                            <ul className="list-style-one footer-links-wb">
+                                                <li><Link target="_blank" to={footerAddressLink} >{footerAddress}</Link></li>
+                                                <li><span>E:</span> <Link to={"mailto:" + footerEmail} >{footerEmail}</Link></li>
+                                                <li><span>M:</span> <Link to={"tel:" + footerPhone1} >{footerPhone1}</Link></li>
+                                                <li><span>T:</span> <Link to={"tel:" + footerPhone2} >{footerPhone2}</Link></li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
