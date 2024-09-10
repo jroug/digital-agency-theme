@@ -49,7 +49,7 @@ const _BannerTop = (props) => {
                         </div>
                         <div className="pull-right">
                             <ul className="bread-crumb clearfix">
-                                <li><Link to="/">Αρχική</Link></li>
+                                <li><Link to="/">Home</Link></li>
                                 {
                                     props.parentTitle === undefined || props.parentLink === undefined
                                     ? 

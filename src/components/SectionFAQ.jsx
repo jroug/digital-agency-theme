@@ -53,7 +53,14 @@ const SectionFAQ = () => {
                                 <h2>{sectionFaqData.mainTitle}</h2>
                             </div>
                             <div className="text">{sectionFaqData.mainText}</div>
-                            <Link to={sectionFaqData.buttonLink} className="theme-btn btn-style-two"><span className="txt">{sectionFaqData.buttonText}</span></Link>
+                            {
+                                sectionFaqData.buttonLink && sectionFaqData.buttonText 
+                                ?
+                                <Link to={sectionFaqData.buttonLink} className="theme-btn btn-style-two"><span className="txt">{sectionFaqData.buttonText}</span></Link>
+                                :
+                                null
+                            }
+                            
                         </div>
                     </div>
                     {/* <!-- Accordian Column --> */}
