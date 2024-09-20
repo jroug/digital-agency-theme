@@ -109,7 +109,7 @@ const PagePortfolio = (props) => {
             </section>
  
             { /* <!-- End Projects Page Section --> */ }
-            <SectionSubscribeToNL />
+            {/* <SectionSubscribeToNL /> */}
         </>
     );
 };
