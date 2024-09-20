@@ -11,6 +11,14 @@ const _Header = (props) => {
         logVar('handleMenuClick');
     }
 
+    const handleMenuItemClick = () => {
+        setTimeout(function(){
+            document.getElementById('navbarSupportedContent').classList.remove('show');
+            document.getElementById('navbarSupportedContent1').classList.remove('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },400)
+    }
+
     const menuNodes = props.menuNodes;
     const headerLogoUrl = props.headerLogoUrl;
     logVar('--_Header--')
@@ -40,7 +48,7 @@ const _Header = (props) => {
                                             menuNodes.map( (menuItem, index) => {
                                                 return (
                                                     <li className={menuItem.childItems.nodes.length > 0 ? "dropdown" : ""} key={"primaryMenuNode" + index}>
-                                                        <Link to={menuItem.uri}>{menuItem.label}</Link>
+                                                        <Link to={menuItem.uri} onClick={handleMenuItemClick} >{menuItem.label}</Link>
                                                         {
                                                             menuItem.childItems.nodes.length > 0 
                                                             ?
@@ -51,7 +59,7 @@ const _Header = (props) => {
                                                                             // map the cpt_services to services
                                                                             // it is custom post types slug
                                                                             let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
-                                                                            return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri}>{menuItemInner.label}</Link></li> )
+                                                                            return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri} onClick={handleMenuItemClick}>{menuItemInner.label}</Link></li> )
                                                                         }   
                                                                     })
                                                                 }
@@ -82,7 +90,7 @@ const _Header = (props) => {
                     <div className="logo pull-left">
                         <Link to="/"><img src={headerLogoUrl} alt="" title="" /></Link>
                     </div>
-                    <div className="right-col pull-right">
+                    <div className="right-col">
                         <nav className="main-menu navbar-expand-md">
                             <button onClick={handleMenuClick} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="icon-bar"></span>
@@ -95,7 +103,7 @@ const _Header = (props) => {
                                     menuNodes.map( (menuItem, index) => {
                                         return (
                                             <li className={menuItem.childItems.nodes.length > 0 ? "dropdown" : ""} key={"primaryMenuNode" + index}>
-                                                <Link to={menuItem.uri}>{menuItem.label}</Link>
+                                                <Link to={menuItem.uri} onClick={handleMenuItemClick} >{menuItem.label}</Link>
                                                 {
                                                     menuItem.childItems.nodes.length > 0 
                                                     ?
@@ -106,7 +114,7 @@ const _Header = (props) => {
                                                                     // map the cpt_services to services
                                                                     // it is custom post types slug
                                                                     let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
-                                                                    return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri}>{menuItemInner.label}</Link></li> )
+                                                                    return ( <li className="" key={"primaryMenuNodeInner" + idx}  ><Link to={_uri} onClick={handleMenuItemClick} >{menuItemInner.label}</Link></li> )
                                                                 }   
                                                             })
                                                         }

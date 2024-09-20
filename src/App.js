@@ -200,7 +200,7 @@ const App = () => {
                     :
                     <></>
                 } */}
-                <Suspense fallback={<span style={{fontSize:'40px'}}>Loading</span>} >
+                <Suspense fallback={<span style={{fontSize:'40px', height:'100%'}}>Loading</span>} >
                     <Routes >
                         <Route element={<_AnimationLayout />}  >
                             <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />

@@ -175,12 +175,12 @@
         right: 0px;
     }
     .banner-section-two {
-        padding-top: 100px;
+        padding-top: 240px;
         background-color: #2a12a9;
-        background-image: none !important;
+        /* background-image: none !important; */
     }
     .main-header {
-        position: relative;
+        /* position: relative; */
         background-color: #222222;
     }
     .main-header .header-upper .outer-box {
@@ -401,6 +401,11 @@
 }
 
 @media only screen and (max-width: 767px) {
+
+    .banner-section-two {
+        padding-top: 160px !important;
+    }
+
     .main-menu .navigation > li.has-mega-menu,
     .mobile-menu .navigation li.has-mega-menu {
         display: none;
@@ -427,7 +432,7 @@
         display: block;
     }
     .main-menu .navbar-collapse {
-        max-height: 300px;
+        max-height: 700px;
         max-width: none;
         overflow: auto;
         float: none !important;
@@ -551,7 +556,7 @@
     .main-menu .navbar-collapse > .navigation > li > ul > li > a,
     .main-menu .navbar-collapse > .navigation > li > ul > li > ul > li > a {
         padding: 10px 10px !important;
-        line-height: 22px;
+        line-height: 17px;
         color: #ffffff;
         background: #2c2c2c;
         text-align: left;
