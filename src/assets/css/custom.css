@@ -108,3 +108,32 @@
 .main-menu .navigation > li > ul {
     width: 240px;;
 }
+
+.imageFrame370{
+    border: 5px solid var(--blueDarkColor);
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    aspect-ratio: 1;
+}
+
+.imageFrame510{
+    border: 5px solid var(--blueDarkColor);
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    height: 510px;
+}
+
+.service-image img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.wp-block-table table{
+    width:100%;
+}
+
+.project-inner-cats-ul li{
+    margin: 2px 22px;
+    list-style: circle;
+}

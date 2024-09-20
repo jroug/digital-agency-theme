@@ -26,17 +26,17 @@ const TemplatePortfolioInner = (props) => {
 		}
 	});
 
-
 	const pagePathName = window.location.pathname;
 	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
 
- 
 	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
     {
       ${GraphQLQueries.queries.getProjectTemplateQuery(pageSlug)}
       ${GraphQLQueries.queries.getProjects(4)}
     }`;
-
+    
+    // logVar(GET_PROJECT_QUERY);
+    
     const { data, loading, error } = useQuery(GET_PROJECT_QUERY);
 
     if (loading) { logVar('loading from TemplatePortfolioInner'); return }
@@ -52,19 +52,35 @@ const TemplatePortfolioInner = (props) => {
 	}
 
     // logVar(projectTemplateData);
+    const projectTitle = projectTemplateData!=null ? projectTemplateData.title : '';
     const projectContent = projectTemplateData.content;
-    const projectInfo = projectTemplateData.projectExtraFields.projectInfo.split('\n');
+    const projectInfo = projectTemplateData.projectExtraFields.projectInfo;
     const projectMainImage = projectTemplateData.projectExtraFields.mainImage.sourceUrl;
-    const projectSecondImage = projectTemplateData.projectExtraFields.secondImage.sourceUrl;
+    const projectSecondImage = projectTemplateData.projectExtraFields.secondImage !== null ? projectTemplateData.projectExtraFields.secondImage.sourceUrl : null;
+    const projectCategories = projectTemplateData.projectCategories;
+
+// logVar('projectCategories', projectCategories);
+ 
+
 
     const allProjects = data["allProjects_4"];
     let countOfProjects = 0;
-    // logVar(allProjects);
+    // logVar(projectInfo);
     // logVar(data);
+
+    // 
+    let getTitleParts = props.seoFields.title.split(" | ");
+    const seoFieldsForPortfolio = {
+        title: ( projectTemplateData!=null ? projectTemplateData.title : '' ) + " | " + getTitleParts[1] ,
+        description: props.seoFields.description,
+        canonical: props.seoFields.canonical,
+    }
+
+    const projectSecondImageClass = projectSecondImage !== null ?  8 : 12 ;
 
     return (
         <>
-            <_BannerTop seoFields={props.seoFields} title={projectTemplateData!=null ? projectTemplateData.title : '' } parentTitle={"Ιστοσελίδες"} parentLink={"/portfolio/"} />   
+            <_BannerTop seoFields={seoFieldsForPortfolio} title={projectTitle} parentTitle={"Portfolio"} parentLink={"/portfolio/"} />   
 
             { /* <!-- Projects Detail Section --> */ }
             <section className="projects-detail-section">
@@ -73,10 +89,10 @@ const TemplatePortfolioInner = (props) => {
                     <div className="gallery-boxed">
                         <div className="row clearfix">
 
-                            <div className="column col-lg-8 col-md-8 col-sm-12">
+                            <div className={"column col-lg-" + projectSecondImageClass + " col-md-" + projectSecondImageClass + " col-sm-12"}>
                                 <div className="single-item-carousel owl-carousel owl-theme">
                                     <div className="slide">
-                                        <div className="image">
+                                        <div className={  projectSecondImage !== null ? "image imageFrame imageFrame510" : "image imageFrame" }>
                                             <img src={projectMainImage} alt="" />
                                         </div>
                                     </div>
@@ -92,13 +108,17 @@ const TemplatePortfolioInner = (props) => {
                                     </div> */}
                                 </div>
                             </div>
-
-                            <div className="column col-lg-4 col-md-4 col-sm-12">
-                                <div className="image">
-                                    <img src={projectSecondImage} alt="" />
-                                </div>
-                            </div>
-
+                            { 
+                                projectSecondImage!== null 
+                                ?
+                                    <div className="column col-lg-4 col-md-4 col-sm-12">
+                                        <div className="image imageFrame imageFrame510 imageFrameMob">
+                                            <img src={projectSecondImage} alt="" />
+                                        </div>
+                                    </div>
+                                :
+                                    <></>
+                            }
                         </div>
                     </div>
 
@@ -114,12 +134,22 @@ const TemplatePortfolioInner = (props) => {
                                 <h3>Project Info</h3>
                                 <ul className="project-info">
                                     {
-                                        projectInfo.map((info, index) => {
-                                            return (
-                                                <li key={"projectInfo" + index}>{info}</li>
-                                            )
-                                        })
-
+                                        projectInfo === null || projectInfo.trim() === '' 
+                                        ?
+                                            <>
+                                                <li >Client: {projectTitle}</li>
+                                                <li >Project: 
+                                                    <ul className="project-inner-cats-ul">
+                                                        {
+                                                            projectCategories.nodes && projectCategories.nodes.map( (category, index) => (
+                                                                    <li key={"prj_cats_"+index} > {category.uri.replace('/project_cat/','').replace('/','')}</li>
+                                                            ))
+                                                        }  
+                                                    </ul> 
+                                                </li>
+                                            </>
+                                        :
+                                            <li>{projectInfo}</li> 
                                     }
                                 </ul>
                             </div>
@@ -178,7 +208,7 @@ const TemplatePortfolioInner = (props) => {
                                     return (
                                         <div key={"prj"+index} className="gallery-item-two col-lg-4 col-md-6 col-sm-12">
                                             <div className="inner-box">
-                                                <figure className="image-box">
+                                                <figure className="image-box imageFrame370">
                                                     <img src={project.projectExtraFields.listThumb.sourceUrl} alt="" />
                                                     { /* <!--Overlay Box--> */ }
                                                     <div className="overlay-box">

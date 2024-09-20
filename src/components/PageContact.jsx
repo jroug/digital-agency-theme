@@ -195,21 +195,41 @@ const PageContact = (props) => {
             {/* <!-- End Contact Section --> */}
 
             {/* <!-- Map Contact Section --> */}
-            <section className="map-contact-page-section">
+            <section className="map-contact-page-section contact-info-section">
                 <div className="auto-container">
                     <div className="title-box">
                         <h2>{contactFields.secondaryTitle}</h2>
                         <div className="text">{contactFields.secondaryText}</div>
                     </div>
-                    <div className="map-outer">
-                        <div className="map-canvas" dangerouslySetInnerHTML={{__html: contactFields.embedMapCode}}></div>
+                    <div className="row clearfix">
+                        <div className="column col-md-8">
+                            <div className="map-outer">
+                                <div className="map-canvas" dangerouslySetInnerHTML={{__html: contactFields.embedMapCode}}></div>
+                            </div>
+                        </div>
+                        <div className="column col-md-4 mt-5">
+                            <div>
+                            <h3>{contactFields.contactTitle}</h3>
+                            <ul>
+                                <li>A: <Link to={contactFields.contactAddressLink} target="_blank" >{contactFields.contactAddress}</Link></li>
+                                <li>
+                                    T: <Link to={"tel:" + contactFields.contactPhone1.replaceAll(' ','')} >{contactFields.contactPhone1}</Link> 
+                                    <br /> 
+                                    T: <Link to={"tel:" + contactFields.contactPhone2.replaceAll(' ','')}>{contactFields.contactPhone2}</Link>
+                                </li>
+                                <li>E: <Link to={"mailto:" + contactFields.contactEmail} >{contactFields.contactEmail}</Link></li>
+                            </ul>
+                        </div>
+                        </div>
                     </div>
+
+
                 </div>
             </section>
             {/* <!-- End Map Contact Section --> */}
 
             {/* <!-- Contact Info Section --> */}
-            <section className="contact-info-section">
+            {/* <section className="contact-info-section">
                 <div className="auto-container">
                     <div className="row clearfix">
                         <div className="column col-md-6 col-sm-12">
@@ -231,7 +251,7 @@ const PageContact = (props) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             {/* <!-- End Contact Info Section --> */}
         </>
     );

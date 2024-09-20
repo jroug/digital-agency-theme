@@ -35,11 +35,11 @@ const TemplateServiceInner = (props) => {
 	let parser = new DOMParser();
 	let parsedDocument = parser.parseFromString(serviceTemplateData.excerpt, "text/html");
 	let serviceTitle = parsedDocument.getElementsByTagName("p")[0].innerText;
-
+	let serviceImage = serviceTemplateData.featuredImage && serviceTemplateData.featuredImage.node.sourceUrl ? serviceTemplateData.featuredImage.node.sourceUrl : service; 
 
     return (
         <>
-            <_BannerTop seoFields={props.seoFields} title={serviceTemplateData!=null ? serviceTemplateData.title : '' } parentTitle={"Υπηρεσίες"} parentLink={"/services/"} />   
+            <_BannerTop seoFields={props.seoFields} title={serviceTemplateData!=null ? serviceTemplateData.title : '' } parentTitle={"Services"} parentLink={"/services/"} />   
             <div className="sidebar-page-container">
 				<div className="auto-container">
 					<div className="row clearfix">
@@ -82,8 +82,8 @@ const TemplateServiceInner = (props) => {
 						<div className="content-side col-lg-8 col-md-12 col-sm-12">
 							<div className="services-detail">
 								<div className="inner-box">
-									<div className="image">
-										<img src={service} alt="" />
+									<div className="image service-image">
+										<img src={serviceImage} alt="" />
 									</div>
 									<div className="lower-content">
 										<h2>{serviceTitle}</h2>

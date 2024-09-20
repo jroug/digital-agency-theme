@@ -2,7 +2,7 @@
 // we neet to NOT lazy load header footer and PageHome
 // and put PageHome hardcode routing not in wordpress sitemap menu
 
-import React , { Suspense, lazy, useEffect } from 'react';
+import React , { Suspense, lazy, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     _Header, 
@@ -82,7 +82,7 @@ const App = () => {
 
     // logVar('--------- App --------------');
  
-    useEffect(() => {
+    useLayoutEffect(() => {
         window.addEventListener('scroll', handleScroll);
     
         return () => {
@@ -93,17 +93,18 @@ const App = () => {
     const handleScroll = (event) => {
  
 
-        var mainHeader = document.querySelector('.main-header');
+        var mainHeader = document.querySelector('.main-header') || null;
         // var scrollLink = document.querySelector('.scroll-to-top'); 
         var windowpos = window.pageYOffset || document.documentElement.scrollTop;
-        var headerHeight = mainHeader.offsetHeight;
-
-        if (windowpos >= headerHeight) {
-            mainHeader.classList.add('fixed-header');
-            // scrollLink.style.display = 'block';
-        } else {
-            mainHeader.classList.remove('fixed-header');
-            // scrollLink.style.display = 'none';
+        if (mainHeader){
+            var headerHeight = mainHeader.offsetHeight;
+            if (windowpos >= headerHeight) {
+                mainHeader.classList.add('fixed-header');
+                // scrollLink.style.display = 'block';
+            } else {
+                mainHeader.classList.remove('fixed-header');
+                // scrollLink.style.display = 'none';
+            }
         }
     
     }
@@ -212,6 +213,8 @@ const App = () => {
                                     }
                                     let pageSlug = pUri.slice(1);
                                     let seoFields = {};
+
+                                    // in portfolio will be overriden inside component
                                     seoFields.title = page.menuExtraFieldsForSitemap.seoTitle != null ? page.menuExtraFieldsForSitemap.seoTitle : page.label + ' | ' + siteOptions.seoTitleGeneric;
                                     seoFields.description = page.menuExtraFieldsForSitemap.seoDescription != null ? page.menuExtraFieldsForSitemap.seoDescription : siteOptions.seoDescriptionGeneric;
                                     seoFields.canonical = page.menuExtraFieldsForSitemap.seoCanonical != null ? page.menuExtraFieldsForSitemap.seoCanonical : process.env.PUBLIC_URL + pUri;

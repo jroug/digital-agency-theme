@@ -6,10 +6,10 @@ const preloadImage = (image) => {
     }
 }
 
-const logVar = (txt) => {
+const logVar = (...args) => {
  
     if(process.env.NODE_ENV=="development"){
-        console.log(txt);
+        console.log(...args);
     }
     return;
 }

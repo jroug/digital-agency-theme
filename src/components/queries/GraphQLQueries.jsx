@@ -542,6 +542,13 @@ const GraphQLQueries = {
             id
             title
             content
+            projectCategories {
+              nodes {
+                  id
+                  name
+                  uri
+              }
+            }
             projectExtraFields{
               listThumb{
                 sourceUrl
@@ -583,6 +590,12 @@ const GraphQLQueries = {
             title
             content
             excerpt
+            featuredImage {
+              node {
+                id
+                 sourceUrl
+              }
+            }
         }`;
       },
   }

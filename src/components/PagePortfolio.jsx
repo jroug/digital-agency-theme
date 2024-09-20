@@ -81,7 +81,7 @@ const PagePortfolio = (props) => {
                                     return (
                                         <div className={"gallery-item-two mix " + categoriesString + " col-lg-4 col-md-6 col-sm-12"} data-ref="item" key={"project-" + index} >
                                             <div className="inner-box">
-                                                <figure className="image-box">
+                                                <figure className="image-box imageFrame370">
                                                     <img src={project.projectExtraFields.listThumb.sourceUrl} alt="" />
                                                     { /* <!--Overlay Box--> */ }
                                                     <div className="overlay-box">

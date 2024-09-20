@@ -67,7 +67,7 @@ const _Footer = (props) => {
                                             {
                                                 footerMenuNodes1.map( (menuItem, index) => {
                                                     return (
-                                                        <li key={"footerMenuNode2" + index}><a href={menuItem.uri}>{menuItem.label}</a></li>
+                                                        <li key={"footerMenuNode2" + index}><Link to={menuItem.uri}>{menuItem.label}</Link></li>
                                                     )
                                                 })
                                             }
@@ -87,7 +87,7 @@ const _Footer = (props) => {
                                             {
                                                 footerMenuNodes2.map( (menuItem, index) => {
                                                     return (
-                                                        <li key={"footerMenuNode2" + index}><a href={menuItem.uri}>{menuItem.label}</a></li>
+                                                        <li key={"footerMenuNode2" + index}><Link to={menuItem.uri}>{menuItem.label}</Link></li>
                                                     )
                                                 })
                                             }

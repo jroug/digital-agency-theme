@@ -24,12 +24,13 @@ const TemplatePage = (props) => {
     if (!data) { logVar('!data From ' + pageSlug + ' Page' ); return }
 
     const pageTitle = data[ "genericPage_" + pageSlug_withoutslash ].title;
+    const pageContent = data[ "genericPage_" + pageSlug_withoutslash ].content;
     const componentsData = data[ "genericPage_" + pageSlug_withoutslash ].componentsSectionsAllPages.componentsSections;
     
     let componentArray = [];
     let idx = 0;
 
-    componentsData.forEach( (element) => {
+    componentsData && componentsData.forEach( (element) => {
         componentArray[idx++] = lazy ( () => import( './' + element.title.replaceAll(" ", "") ) );
     });
 
@@ -41,6 +42,15 @@ const TemplatePage = (props) => {
         <>
             <Suspense fallback={<div>Loading...</div>}> <_BannerTop seoFields={props.seoFields} title={pageTitle} key={"banner-top-1"} /> </Suspense>
             {/* <_BannerTop title={pageTitle} key={"banner-top-2"} />  */}
+            { 
+                pageContent !== '' || pageContent!== null
+                ?
+                <section class="content-page-section">
+                    <div className="auto-container" dangerouslySetInnerHTML={{__html: pageContent}} ></div>
+                </section>
+                :
+                <></>
+            }
             {
                 componentArray.map( (Component, index) => {
                     return ( <Suspense key={pageSlug + index} fallback={<div>Loading...</div>}><Component /></Suspense> )

@@ -51,7 +51,7 @@ const SectionTestimonials = () => {
                                                 <div className="designation">{excerpt_text}</div>
                                             </div>
                                             <div className="author-image">
-                                                <img src={testimonial.featuredImage.node.sourceUrl} alt="" />
+                                                {/* <img src={testimonial.featuredImage.node.sourceUrl} alt="" /> */}
                                             </div>
                                         </div>
                                         <div className="lower-box">
