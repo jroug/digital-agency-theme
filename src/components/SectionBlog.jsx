@@ -5,7 +5,7 @@ import { GraphQLQueries } from './queries/GraphQLQueries';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-import { _BlogBoxes } from './';
+import { BlogBoxes } from './';
 
 const SectionBlog = (props) => {
 
@@ -14,36 +14,7 @@ const SectionBlog = (props) => {
     const [hasNextPage, setHasNextPage] = useState('');
     const [trigger, setTrigger] = useState(0);
 
-    // state can update inside useEffect
-    useEffect(() => {
-   
-        if ( data == undefined ){
-            console.log('data in useEffect is undefined');
-            return;
-        }  
 
-        console.log('data in useEffect--> ', data, allPosts);
-        
-        if (props.taxSlug=='search') {
-            setAllPosts(data['allPosts_search'].edges);
-            setHasNextPage(data['allPosts_search'].pageInfo.hasNextPage);
-            setEndCursor(data['allPosts_search'].pageInfo.endCursor);
-        }else if (props.taxSlug=='tag') {
-            setAllPosts(data['allPosts_tag'].edges);
-            setHasNextPage(data['allPosts_tag'].pageInfo.hasNextPage);
-            setEndCursor(data['allPosts_tag'].pageInfo.endCursor);
-        }else if(props.taxSlug=='category'){
-            console.log(data);
-            setAllPosts(data['allPosts_cat'].edges);
-            setHasNextPage(data['allPosts_cat'].pageInfo.hasNextPage);
-            setEndCursor(data['allPosts_cat'].pageInfo.endCursor);
-        }else{
-            setAllPosts(data.allPosts.edges);
-            setHasNextPage(data.allPosts.pageInfo.hasNextPage);
-            setEndCursor(data.allPosts.pageInfo.endCursor);
-        }
-        
-    }, [trigger]);
 
 
 
@@ -117,31 +88,31 @@ const SectionBlog = (props) => {
             variables: variables_more
         }).then(result_data => {
            
-            if (props.taxSlug=='search') {
+            if (props.taxSlug === 'search') {
                 setHasNextPage(result_data.data['allPosts_search'].pageInfo.hasNextPage);
                 setEndCursor(result_data.data['allPosts_search'].pageInfo.endCursor);
-                if (Object.keys(allPosts).length != 0)
+                if (Object.keys(allPosts).length !== 0)
                     setAllPosts([...allPosts, ...result_data.data['allPosts_search'].edges]);
                 else
                     setAllPosts([...result_data.data['allPosts_search'].edges]);
-            }else if (props.taxSlug=='tag') {logVar(result_data);
+            }else if (props.taxSlug === 'tag') {logVar(result_data);
                 setHasNextPage(result_data.data['allPosts_tag'].pageInfo.hasNextPage);
                 setEndCursor(result_data.data['allPosts_tag'].pageInfo.endCursor);
-                if (Object.keys(allPosts).length != 0)
+                if (Object.keys(allPosts).length !== 0)
                     setAllPosts([...allPosts, ...result_data.data['allPosts_tag'].edges]);
                 else
                     setAllPosts([...result_data.data['allPosts_tag'].edges]);
-            }else if(props.taxSlug=='category'){
+            }else if(props.taxSlug === 'category'){
                 setHasNextPage(result_data.data['allPosts_cat'].pageInfo.hasNextPage);
                 setEndCursor(result_data.data['allPosts_cat'].pageInfo.endCursor);
-                if (Object.keys(allPosts).length != 0)
+                if (Object.keys(allPosts).length !== 0)
                     setAllPosts([...allPosts, ...result_data.data['allPosts_cat'].edges]);
                 else
                     setAllPosts([...result_data.data['allPosts_cat'].edges]);
             }else{
                 setHasNextPage(result_data.data.allPosts.pageInfo.hasNextPage);
                 setEndCursor(result_data.data.allPosts.pageInfo.endCursor);
-                if (Object.keys(allPosts).length != 0)
+                if (Object.keys(allPosts).length !== 0)
                     setAllPosts([...allPosts, ...result_data.data.allPosts.edges]);
                 else
                     setAllPosts([...result_data.data.allPosts.edges]);
@@ -226,6 +197,37 @@ const SectionBlog = (props) => {
         variables: variables
     });
 
+    // state can update inside useEffect
+    useEffect(() => {
+
+        if ( !data ){
+            logVar('data in useEffect is undefined');
+            return;
+        }  
+
+        logVar('data in useEffect--> ', data, allPosts);
+        
+        if (props.taxSlug === 'search') {
+            setAllPosts(data['allPosts_search'].edges);
+            setHasNextPage(data['allPosts_search'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_search'].pageInfo.endCursor);
+        }else if (props.taxSlug === 'tag') {
+            setAllPosts(data['allPosts_tag'].edges);
+            setHasNextPage(data['allPosts_tag'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_tag'].pageInfo.endCursor);
+        }else if(props.taxSlug === 'category'){
+            logVar(data);
+            setAllPosts(data['allPosts_cat'].edges);
+            setHasNextPage(data['allPosts_cat'].pageInfo.hasNextPage);
+            setEndCursor(data['allPosts_cat'].pageInfo.endCursor);
+        }else{
+            setAllPosts(data.allPosts.edges);
+            setHasNextPage(data.allPosts.pageInfo.hasNextPage);
+            setEndCursor(data.allPosts.pageInfo.endCursor);
+        }
+        
+    }, [data, props.taxSlug, allPosts]);
+
     if (loading) { logVar('--------------------------- loading from SectionBlog ---------------------------'); return }
     if (error) { logVar('error from SectionBlog'); return }
     if (!data) { logVar('!data from SectionBlog'); return }
@@ -234,9 +236,9 @@ const SectionBlog = (props) => {
     console.log('[useQuery] --->', data, fetchPolicy);
 
     // trigger useEffect after having the data, do not need to in caching cases
-    if (trigger==0 &&  fetchPolicy == 'network-only') setTrigger(1);
+    if (trigger === 0 &&  fetchPolicy === 'network-only') setTrigger(1);
 
-    if (Object.keys(allPosts).length == 0 && props.taxSlug !='search' ) return <div>Loading...</div>;
+    if (Object.keys(allPosts).length === 0 && props.taxSlug !== 'search' ) return <div>Loading...</div>;
 
     return (
  
@@ -244,7 +246,7 @@ const SectionBlog = (props) => {
             <div className="auto-container">
                 <div className="row clearfix" id="main-content" >
                     {
-                        Object.keys(allPosts).length == 0 && props.taxSlug =='search' 
+                        Object.keys(allPosts).length === 0 && props.taxSlug === 'search' 
                         ?
                             <div className="col-lg-12 col-md-12 col-sm-12">
                                 <div className="sec-title centered">
@@ -254,7 +256,7 @@ const SectionBlog = (props) => {
                         : 
                         allPosts?.map( (post, index) => {
                                 return (
-                                    <_BlogBoxes 
+                                    <BlogBoxes 
                                         key={"BlogBox-" + post.node.databaseId} 
                                         post={post}
                                         index={index}

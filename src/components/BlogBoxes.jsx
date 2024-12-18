@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { InlineShareButtons } from 'sharethis-reactjs';
 
-const _BlogBoxes = (props) => {
+const BlogBoxes = (props) => {
 
     const post = props.post;
     const index = props.index;
@@ -80,4 +80,4 @@ const _BlogBoxes = (props) => {
     );
 };
 
-export default _BlogBoxes;
+export default BlogBoxes;

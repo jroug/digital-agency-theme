@@ -1,9 +1,9 @@
 
-import _Header from "./Header";
+import Header from "./Header";
 import BannerHome from "./BannerHome";
 import BannerTop from "./BannerTop";
 import BannerTopElements from "./BannerTopElements";
-import _Footer from "./Footer";
+import Footer from "./Footer";
 
 import PageHome from "./PageHome";
 import PagePortfolio from "./PagePortfolio";
@@ -20,17 +20,17 @@ import SectionOurServices from "./SectionOurServices";
 import SectionSubscribeToNL from "./SectionSubscribeToNL";
 import SectionBlog from "./SectionBlog";
 
-import _AnimationLayout from "./AnimationLayout";
-import _BlogBoxes from "./BlogBoxes";
+import AnimationLayout from "./AnimationLayout";
+import BlogBoxes from "./BlogBoxes";
 
 
 export { 
-    _Header,
+    Header,
     BannerHome,
     BannerTop,
     BannerTopElements,
 
-    _Footer,
+    Footer,
 
     PageHome,
     PagePortfolio,
@@ -49,8 +49,8 @@ export {
     SectionSubscribeToNL,
     SectionBlog,
 
-    _AnimationLayout,
+    AnimationLayout,
 
-    _BlogBoxes
+    BlogBoxes
     
 }

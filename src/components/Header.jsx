@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // import logo from '../assets/images/logo-wis.png';
 import { logVar } from "./utils/Utils";
 
-const _Header = (props) => {
+const Header = (props) => {
 
     const handleMenuClick = () => {
         document.getElementById('navbarSupportedContent').classList.toggle('show');
@@ -136,4 +136,4 @@ const _Header = (props) => {
         </header>
     );
 }
-export default _Header;
+export default Header;

@@ -5,11 +5,11 @@
 import React , { Suspense, lazy, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
-    _Header, 
-    // _Footer,
+    Header, 
+    Footer,
     // BannerTop,
     // BannerHome,
-    _AnimationLayout,
+    AnimationLayout,
 
     PageHome,
     // PagePortfolio,
@@ -47,7 +47,7 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-const _Footer = lazy(() => import('./components/Footer'));
+// const Footer = lazy(() => import('./components/Footer'));
 
 const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
 
@@ -164,7 +164,7 @@ const App = () => {
                 <title>WebInSite</title>
             </Helmet>
             <BrowserRouter>
-                <_Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl} key={"header"} />
+                <Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl} key={"header"} />
                 {/* {
                     (process.env.NODE_ENV == 'development') 
                     ?
@@ -173,33 +173,36 @@ const App = () => {
                     <></>
                 } */}
                 <Suspense fallback={<div style={{ display:'block', fontSize:'40px', height:'100vh'}}>Loading</div>} >
-                    <Routes >
-                        <Route element={<_AnimationLayout />}  >
-                            <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />
-                            {
-                                sitemapMenuItems.map((page, index) => {
-                                    let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
-                                    let pUri = page.uri;
-                                    if (pUri.includes('cpt_services')) {
-                                        pUri = pUri.replace('cpt_services', 'services');
-                                    }
-                                    let pageSlug = pUri.slice(1);
-                                    let seoFields = {};
+                    <div style={{ display:'block', minHeight:'100vh'}} >
+                        <Routes >
+                            <Route element={<AnimationLayout />}  >
+                                <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />
+                                {
+                                    sitemapMenuItems.map((page, index) => {
+                                        let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
+                                        let pUri = page.uri;
+                                        if (pUri.includes('cpt_services')) {
+                                            pUri = pUri.replace('cpt_services', 'services');
+                                        }
+                                        let pageSlug = pUri.slice(1);
+                                        let seoFields = {};
 
-                                    // in portfolio will be overriden inside component
-                                    seoFields.title = page.menuExtraFieldsForSitemap.seoTitle != null ? page.menuExtraFieldsForSitemap.seoTitle : page.label + ' | ' + siteOptions.seoTitleGeneric;
-                                    seoFields.description = page.menuExtraFieldsForSitemap.seoDescription != null ? page.menuExtraFieldsForSitemap.seoDescription : siteOptions.seoDescriptionGeneric;
-                                    seoFields.canonical = page.menuExtraFieldsForSitemap.seoCanonical != null ? page.menuExtraFieldsForSitemap.seoCanonical : process.env.PUBLIC_URL + pUri;
-                                    // console.log('<'+page.menuExtraFieldsForSitemap.reactComponent, page.id, pUri, pageSlug,  );
-                                    return (
-                                        <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} seoFields={seoFields} />} />
-                                    )
-                                })
-                            }
-                            <Route key={"page404"} path="*" element={<Page404 title={"404"} seoFields={seoFields404} />} />
-                        </Route>
-                    </Routes>
-                    <_Footer key={"footer"}
+                                        // in portfolio will be overriden inside component
+                                        seoFields.title = page.menuExtraFieldsForSitemap.seoTitle != null ? page.menuExtraFieldsForSitemap.seoTitle : page.label + ' | ' + siteOptions.seoTitleGeneric;
+                                        seoFields.description = page.menuExtraFieldsForSitemap.seoDescription != null ? page.menuExtraFieldsForSitemap.seoDescription : siteOptions.seoDescriptionGeneric;
+                                        seoFields.canonical = page.menuExtraFieldsForSitemap.seoCanonical != null ? page.menuExtraFieldsForSitemap.seoCanonical : process.env.PUBLIC_URL + pUri;
+                                        // console.log('<'+page.menuExtraFieldsForSitemap.reactComponent, page.id, pUri, pageSlug,  );
+                                        return (
+                                            <Route key={page.id} exact path={pUri} element={<PageComponent pageSlug={pageSlug} title={page.label} seoFields={seoFields} />} />
+                                        )
+                                    })
+                                }
+                                <Route key={"page404"} path="*" element={<Page404 title={"404"} seoFields={seoFields404} />} />
+                            </Route>
+                        </Routes>
+                    </div>
+                </Suspense>
+                <Footer key={"footer"}
                         footerLogoUrl={siteOptions.footerLogo.sourceUrl}
                         footerMenu1_name={footerMenu1_name} 
                         footerMenuNodes1={footerMenuNodes1} 
@@ -218,7 +221,6 @@ const App = () => {
                         socialLinkTwitter = {siteOptions.socialLinkTwitter}
                         socialLinkLinkedin = {siteOptions.socialLinkLinkedin}
                     />
-                </Suspense>
             </BrowserRouter>
         </HelmetProvider>
     );

@@ -2,7 +2,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const _AnimationLayout = () => {
+const AnimationLayout = () => {
 
   const { pathname } = useLocation();
   const pageVariants = {
@@ -20,7 +20,7 @@ const _AnimationLayout = () => {
   const pageTransition = {
     type: 'tween',
     ease: 'linear',
-    duration: 0.8
+    duration: 0.3
   };
 
 
@@ -39,4 +39,4 @@ const _AnimationLayout = () => {
 
 };
 
-export default _AnimationLayout;
+export default AnimationLayout;
