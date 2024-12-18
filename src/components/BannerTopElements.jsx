@@ -7,7 +7,7 @@ import i9 from '../assets/images/icons/icon-9.png';
 import i10 from '../assets/images/icons/icon-10.png';
 
 
-const _BannerTopElements = () => {
+const BannerTopElements = () => {
     return (
         <div className="section-icons" >
             {/* <!-- Icon One --> */}
@@ -26,4 +26,4 @@ const _BannerTopElements = () => {
     );
 };
 
-export default _BannerTopElements;
+export default BannerTopElements;

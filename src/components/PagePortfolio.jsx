@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import mixitup from 'mixitup';
 
-import { _BannerTop, SectionSubscribeToNL } from "./";
+import { BannerTop, SectionSubscribeToNL } from "./";
 
 import { gql, useQuery } from '@apollo/client';
 import { logVar } from "./utils/Utils";
@@ -49,7 +49,7 @@ const PagePortfolio = (props) => {
         
     return (
         <>
-            <_BannerTop title={props.title} seoFields={props.seoFields} /> 
+            <BannerTop title={props.title} seoFields={props.seoFields} /> 
             { /* <!-- Projects Page Section --> */ }
             <section className="projects-page-section">
                 <div className="auto-container">

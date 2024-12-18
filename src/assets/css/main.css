@@ -1137,7 +1137,7 @@ img{
 
 .main-menu{
 	position:static;
-	float:left;
+	float:right;
 	-webkit-transition:all 600ms ease;
 	-ms-transition:all 600ms ease;
 	-o-transition:all 600ms ease;
@@ -9070,4 +9070,8 @@ input:focus{
 }
 .text p{
 	color:black !important;
+}
+
+.LoadingScreen{
+	background-color:#000000;
 }

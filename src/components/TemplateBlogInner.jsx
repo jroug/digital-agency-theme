@@ -1,13 +1,13 @@
 import React, { Suspense, useEffect, lazy } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-// import { _BannerTop } from "./";
+// import { BannerTop } from "./";
 import { useQuery, gql } from '@apollo/client';
 import { logVar, isValidSlug } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 import {InlineShareButtons} from 'sharethis-reactjs';
 
-const _BannerTop = lazy ( () => import( './_BannerTop' ) );
+const BannerTop = lazy ( () => import( './BannerTop' ) );
 
 const TemplateBlogInner = (props) => {
 
@@ -68,7 +68,7 @@ const TemplateBlogInner = (props) => {
     return (
         <> 
             <Suspense fallback={<div>Loading...</div>} >
-                <_BannerTop seoFields={props.seoFields} parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData == undefined ? "" : postTemplateData.title } />  
+                <BannerTop seoFields={props.seoFields} parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData === undefined ? "" : postTemplateData.title } />  
             </Suspense>
             <div className="sidebar-page-container">
                 <div className="auto-container">
@@ -144,9 +144,9 @@ const TemplateBlogInner = (props) => {
                                     </div>
                                     <ul className="cat-list">
                                         {
-                                            allPostCategories == undefined ? '' :
+                                            allPostCategories === undefined ? '' :
                                             allPostCategories.nodes.map( (category, index) => {
-                                                let slug = category.uri.replace('/category/','').replace('/','');
+                                                // let slug = category.uri.replace('/category/','').replace('/','');
                                                 return (
                                                     <li key={"category-" + index} ><Link to={category.uri} >{category.name}<span>({category.count})</span></Link></li>
                                                 )
@@ -158,10 +158,10 @@ const TemplateBlogInner = (props) => {
                                 <div className="sidebar-widget popular-posts">
                                     <div className="sidebar-title"><h2>Recent News</h2></div>
                                     {
-                                        allPosts == undefined ? '' :
+                                        allPosts === undefined ? '' :
                                         allPosts.nodes.map( (post, index) => {
 
-                                            if ('/' + pageSlug + '/' == '/blog' + post.uri) return;
+                                            if ('/' + pageSlug + '/' === '/blog' + post.uri) return;
                                             if (countRecentPosts++ >= 3) return;
                                             
                                             let parser = new DOMParser();
@@ -180,9 +180,9 @@ const TemplateBlogInner = (props) => {
                                 <div className="sidebar-widget popular-tags">
                                     <div className="sidebar-title"><h2>Popular Tags</h2></div>
                                     {
-                                        allPostTags == undefined ? '' :
+                                        allPostTags === undefined ? '' :
                                         allPostTags.nodes.map( (tag, index) => {
-                                            let slug = tag.uri.replace('/tag/','').replace('/','');
+                                            // let slug = tag.uri.replace('/tag/','').replace('/','');
                                             return (
                                                 <Link to={tag.uri} key={"tag-" + index} >{tag.name}</Link>
                                             )

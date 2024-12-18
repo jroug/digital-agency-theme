@@ -5,7 +5,7 @@ import { useQuery, gql } from '@apollo/client';
 import {GraphQLQueries} from "./queries/GraphQLQueries";
 import { logVar } from "./utils/Utils";
 
-import { _BannerHome } from "./";
+import { BannerHome } from "./";
 
 const PageHome = (props) => {
 
@@ -49,7 +49,7 @@ const PageHome = (props) => {
  
     return (
        <>
-           <_BannerHome seoFields={props.seoFields} homeHeaderData = { homepageData } />
+           <BannerHome seoFields={props.seoFields} homeHeaderData = { homepageData } />
            {
               componentArray.map( (Component, index) => {
                 // console.log('return', index);

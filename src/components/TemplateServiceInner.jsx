@@ -1,6 +1,6 @@
 import React from 'react';
 import service from '../assets/images/resource/service.jpg';
-import { _BannerTop } from "./";
+import { BannerTop } from "./";
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import { logVar } from "./utils/Utils";
@@ -39,7 +39,7 @@ const TemplateServiceInner = (props) => {
 
     return (
         <>
-            <_BannerTop seoFields={props.seoFields} title={serviceTemplateData!=null ? serviceTemplateData.title : '' } parentTitle={"Services"} parentLink={"/services/"} />   
+            <BannerTop seoFields={props.seoFields} title={serviceTemplateData!=null ? serviceTemplateData.title : '' } parentTitle={"Services"} parentLink={"/services/"} />   
             <div className="sidebar-page-container">
 				<div className="auto-container">
 					<div className="row clearfix">

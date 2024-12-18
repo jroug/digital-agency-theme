@@ -6,9 +6,9 @@ import React , { Suspense, lazy, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     _Header, 
-    _Footer,
-    // _BannerTop,
-    // _BannerHome,
+    // _Footer,
+    // BannerTop,
+    // BannerHome,
     _AnimationLayout,
 
     PageHome,
@@ -47,34 +47,7 @@ import './assets/css/main.css';
 import './assets/css/responsive.css';
 import './assets/css/custom.css';
 
-// import './assets/js/jquery.js';
-// import './assets/js/popper.min.js';
-// import './assets/js/bootstrap.min.js';
-// import bootstrap from react bootstrap 
- 
- 
-
-
-// const _BannerHome = lazy(() => import('./components/_BannerHome'));
-const _BannerTop = lazy(() => import('./components/_BannerTop'));
-
-// const PagePortfolio = lazy(() => import('./components/PagePortfolio'));
-// const PageContact = lazy(() => import('./components/PageContact'));
-
-// const TemplatePage = lazy(() => import('./components/TemplatePage'));
-
-// const SectionAboutUs = lazy(() => import('./components/SectionAboutUs'));
-// const SectionOurServices = lazy(() => import('./components/SectionOurServices'));
-// const SectionSubscribeToNL = lazy(() => import('./components/SectionSubscribeToNL'));
-// const SectionFAQ = lazy(() => import('./components/SectionFAQ'));
-// const SectionTestimonials = lazy(() => import('./components/SectionTestimonials'));
-// const SectionWhyUs = lazy(() => import('./components/SectionWhyUs'));
-// const SectionBlog = lazy(() => import('./components/SectionBlog'));
-
-// const TemplatePortfolioInner = lazy(() => import('./components/TemplatePortfolioInner'));
-// const TemplateServiceInner = lazy(() => import('./components/TemplateServiceInner'));
-
-// const _Footer = lazy(() => import('./components/_Footer'));
+const _Footer = lazy(() => import('./components/Footer'));
 
 const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
 
@@ -143,6 +116,7 @@ const App = () => {
       ${GraphQLQueries.queries.getServiceTemplateQuery('services/ecommerce/')}
       ${GraphQLQueries.queries.getServiceTemplateQuery('services/seo-optimization/')}
       ${GraphQLQueries.queries.getServiceTemplateQuery('services/hosting/')}
+      ${GraphQLQueries.queries.getServiceTemplateQuery('services/development/')}
       ${GraphQLQueries.queries.allServices}
 
       ${GraphQLQueries.queries.getBlogPosts}
@@ -155,8 +129,6 @@ const App = () => {
       ${GraphQLQueries.queries.getProjectTemplateQuery('projects/project-4')}
 
       ${GraphQLQueries.queries.getProjects(4)}
-
-
 
     }`;
 
@@ -200,7 +172,7 @@ const App = () => {
                     :
                     <></>
                 } */}
-                <Suspense fallback={<span style={{fontSize:'40px', height:'100%'}}>Loading</span>} >
+                <Suspense fallback={<div style={{ display:'block', fontSize:'40px', height:'100vh'}}>Loading</div>} >
                     <Routes >
                         <Route element={<_AnimationLayout />}  >
                             <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />
@@ -227,8 +199,7 @@ const App = () => {
                             <Route key={"page404"} path="*" element={<Page404 title={"404"} seoFields={seoFields404} />} />
                         </Route>
                     </Routes>
-                </Suspense>
-                <_Footer key={"footer"}
+                    <_Footer key={"footer"}
                         footerLogoUrl={siteOptions.footerLogo.sourceUrl}
                         footerMenu1_name={footerMenu1_name} 
                         footerMenuNodes1={footerMenuNodes1} 
@@ -247,6 +218,7 @@ const App = () => {
                         socialLinkTwitter = {siteOptions.socialLinkTwitter}
                         socialLinkLinkedin = {siteOptions.socialLinkLinkedin}
                     />
+                </Suspense>
             </BrowserRouter>
         </HelmetProvider>
     );

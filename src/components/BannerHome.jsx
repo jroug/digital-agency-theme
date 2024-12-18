@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-const _BannerHome = (props) => {
-    // console.log('-----------_BannerHome--------');
+const BannerHome = (props) => {
+    // console.log('-----------BannerHome--------');
     const bannerData = props.homeHeaderData;
 
     let seoTitle = props.seoFields.title;
@@ -40,7 +40,7 @@ const _BannerHome = (props) => {
                             </div>
                         </div>
                         {
-                            bannerData.heroImageOverlay == null || bannerData.heroImageOverlay == undefined || bannerData.heroImageOverlay == ""
+                            bannerData.heroImageOverlay === null || bannerData.heroImageOverlay === undefined || bannerData.heroImageOverlay === ""
                             ?
                             ''
                             :
@@ -59,4 +59,4 @@ const _BannerHome = (props) => {
     );
 };
 
-export default _BannerHome;
+export default BannerHome;

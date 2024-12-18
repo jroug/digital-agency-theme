@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { logVar } from './utils/Utils';
-import { _BannerTop } from './';
+import { BannerTop } from './';
 const SectionBlog = lazy ( () => import( './SectionBlog' ) );
 
 const TemplateTaxonomy = (props) => {
@@ -10,7 +10,7 @@ const TemplateTaxonomy = (props) => {
 
     return (
         <>
-            <_BannerTop seoFields={props.seoFields} title={"Blog: " + title} key={"banner-top-1"} />
+            <BannerTop seoFields={props.seoFields} title={"Blog: " + title} key={"banner-top-1"} />
             <Suspense fallback={<div>Loading...</div>} > 
                 <SectionBlog taxonomyName={title} taxSlug={taxSlug}   />
             </Suspense>

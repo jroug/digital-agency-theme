@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-// import { _BannerTop } from ".";
+// import { BannerTop } from ".";
 
 import { useQuery, gql } from '@apollo/client';
 import { GraphQLQueries} from "./queries/GraphQLQueries";
@@ -9,7 +9,7 @@ import { logVar } from "./utils/Utils";
 
 const TemplatePage = (props) => {
  
-    const _BannerTop = lazy ( () => import( './_BannerTop' ) );
+    const BannerTop = lazy ( () => import( './BannerTop' ) );
     const pageSlug = props.pageSlug;
     const pageSlug_withoutslash = props.pageSlug.replaceAll('/', '');
     const PAGE_CONTENT = gql`query PAGE_CONTENT_${pageSlug_withoutslash}
@@ -40,12 +40,12 @@ const TemplatePage = (props) => {
 
     return (
         <>
-            <Suspense fallback={<div>Loading...</div>}> <_BannerTop seoFields={props.seoFields} title={pageTitle} key={"banner-top-1"} /> </Suspense>
-            {/* <_BannerTop title={pageTitle} key={"banner-top-2"} />  */}
+            <Suspense fallback={<div>Loading...</div>}> <BannerTop seoFields={props.seoFields} title={pageTitle} key={"banner-top-1"} /> </Suspense>
+            {/* <BannerTop title={pageTitle} key={"banner-top-2"} />  */}
             { 
                 pageContent !== '' || pageContent!== null
                 ?
-                <section class="content-page-section">
+                <section className="content-page-section">
                     <div className="auto-container" dangerouslySetInnerHTML={{__html: pageContent}} ></div>
                 </section>
                 :

@@ -13,7 +13,7 @@ import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 import { Link } from 'react-router-dom';    
 
-import { _BannerTop, SectionSubscribeToNL } from "./";
+import { BannerTop } from "./";
 
 const TemplatePortfolioInner = (props) => {
 
@@ -80,7 +80,7 @@ const TemplatePortfolioInner = (props) => {
 
     return (
         <>
-            <_BannerTop seoFields={seoFieldsForPortfolio} title={projectTitle} parentTitle={"Portfolio"} parentLink={"/portfolio/"} />   
+            <BannerTop seoFields={seoFieldsForPortfolio} title={projectTitle} parentTitle={"Portfolio"} parentLink={"/portfolio/"} />   
 
             { /* <!-- Projects Detail Section --> */ }
             <section className="projects-detail-section">
@@ -193,7 +193,7 @@ const TemplatePortfolioInner = (props) => {
                                 
                                 allProjects.nodes.map( (project, index) => {
 
-                                    if (project.uri === '/' + pageSlug + '/' || countOfProjects == 3) {
+                                    if (project.uri === '/' + pageSlug + '/' || countOfProjects === 3) {
                                         return null;
                                     }
                                     countOfProjects++;

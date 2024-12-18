@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { _BannerTop } from "./";
+import { BannerTop } from "./";
 import { useApolloClient, gql, useQuery } from '@apollo/client';
 import { validateName } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
@@ -144,7 +144,7 @@ const PageContact = (props) => {
 
     return (
         <>
-            <_BannerTop title={contactData.title} seoFields={props.seoFields} /> 
+            <BannerTop title={contactData.title} seoFields={props.seoFields} /> 
             {/* <!-- Contact Section --> */}
             <section className="contact-page-section">
                 <div className="auto-container">

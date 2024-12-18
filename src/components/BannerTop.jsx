@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import p21 from '../assets/images/background/pattern-21.png';
 import i1 from '../assets/images/icons/banner-icon-1.png';
 import i2 from '../assets/images/icons/banner-icon-2.png';
-import { _BannerTopElements } from './';
+import { BannerTopElements } from './';
 import { logVar } from "./utils/Utils";
 
 import { Helmet } from "react-helmet-async";
 
-const _BannerTop = (props) => {
-    logVar('--_BannerTop--');
+const BannerTop = (props) => {
+    logVar('--BannerTop--');
     
     // console.log(props);
 
@@ -42,7 +42,7 @@ const _BannerTop = (props) => {
                 <div className="patern-layer-two" style={{"backgroundImage":"url(" + i2 + ")"}} ></div>
                 <div className="auto-container" >
                     {/* <!-- Section Icons --> */}
-                    <_BannerTopElements />
+                    <BannerTopElements />
                     <div className="inner-container clearfix">
                         <div className="pull-left">
                             <h1>{props.title}</h1>
@@ -67,4 +67,4 @@ const _BannerTop = (props) => {
     );
 };
 
-export default _BannerTop;
+export default BannerTop;
