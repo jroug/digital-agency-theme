@@ -92,7 +92,7 @@ const PageContact = (props) => {
                 }).then(result_data => {
                     document.getElementById('contact_submit').disabled=false;
                     var result = JSON.parse(result_data.data.emailSent);
-                    if (result.status==200){
+                    if (result.status===200){
                         document.getElementById('form_name').value='';
                         document.getElementById('form_email').value='';
                         document.getElementById('form_phone').value='';

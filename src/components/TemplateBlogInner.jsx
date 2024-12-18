@@ -161,8 +161,8 @@ const TemplateBlogInner = (props) => {
                                         allPosts === undefined ? '' :
                                         allPosts.nodes.map( (post, index) => {
 
-                                            if ('/' + pageSlug + '/' === '/blog' + post.uri) return;
-                                            if (countRecentPosts++ >= 3) return;
+                                            if ('/' + pageSlug + '/' === '/blog' + post.uri) return '';
+                                            if (countRecentPosts++ >= 3) return '';
                                             
                                             let parser = new DOMParser();
                                             let parsedDocument = parser.parseFromString(post.excerpt, "text/html");

@@ -1,5 +1,5 @@
 const preloadImage = (image) => {
-    if (image!==undefined){
+    if (image !== undefined){
         const newImage = new Image();
         newImage.src = image;
         window[image] = newImage;
@@ -8,7 +8,7 @@ const preloadImage = (image) => {
 
 const logVar = (...args) => {
  
-    if(process.env.NODE_ENV=="development"){
+    if(process.env.NODE_ENV === "development"){
         console.log(...args);
     }
     return;
@@ -17,7 +17,7 @@ const logVar = (...args) => {
 const isValidSlug = (pageSlug) => {
     // chech for sql injection in the pageSlug variable
     if (pageSlug.includes('\'')||
-        pageSlug.includes('\"')||
+        pageSlug.includes('"')||
         pageSlug.includes(';')||
         pageSlug.includes('--')||
         pageSlug.includes('/*')||

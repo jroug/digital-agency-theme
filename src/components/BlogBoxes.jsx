@@ -64,7 +64,7 @@ const BlogBoxes = (props) => {
                                     radius: 4,            // the corner radius on each button (INTEGER)
                                     show_total: false,
                                     size: 30,             // the size of each button (INTEGER)
-                                    url: 'https://webinsite.gr' + '/blog' + post.node.uri, // (defaults to current url)
+                                    url: process.env.PUBLIC_URL + '/blog' + post.node.uri, // (defaults to current url)
 
                                 }}
                             />

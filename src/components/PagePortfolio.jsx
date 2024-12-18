@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import mixitup from 'mixitup';
 
-import { BannerTop, SectionSubscribeToNL } from "./";
+import { BannerTop } from "./";
 
 import { gql, useQuery } from '@apollo/client';
 import { logVar } from "./utils/Utils";

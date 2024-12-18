@@ -55,12 +55,13 @@ const Header = (props) => {
                                                             <ul>
                                                                 {
                                                                     menuItem.childItems.nodes.map( (menuItemInner, idx) => {
-                                                                        if (menuItemInner.parentDatabaseId == menuItem.databaseId){
+                                                                        if (menuItemInner.parentDatabaseId === menuItem.databaseId){
                                                                             // map the cpt_services to services
                                                                             // it is custom post types slug
                                                                             let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
                                                                             return ( <li className="" key={"primaryMenuNodeInner" + idx}><Link to={_uri} onClick={handleMenuItemClick}>{menuItemInner.label}</Link></li> )
-                                                                        }   
+                                                                        }
+                                                                        return '';   
                                                                     })
                                                                 }
                                                             </ul>
@@ -110,12 +111,13 @@ const Header = (props) => {
                                                     <ul>
                                                         {
                                                             menuItem.childItems.nodes.map( (menuItemInner, idx) => {
-                                                                if (menuItemInner.parentDatabaseId == menuItem.databaseId){
+                                                                if (menuItemInner.parentDatabaseId === menuItem.databaseId){
                                                                     // map the cpt_services to services
                                                                     // it is custom post types slug
                                                                     let _uri = menuItemInner.uri.includes('cpt_services') ? menuItemInner.uri.replace('cpt_services', 'services') : menuItemInner.uri;
                                                                     return ( <li className="" key={"primaryMenuNodeInner" + idx}  ><Link to={_uri} onClick={handleMenuItemClick} >{menuItemInner.label}</Link></li> )
-                                                                }   
+                                                                }
+                                                                return '';   
                                                             })
                                                         }
                                                     </ul>

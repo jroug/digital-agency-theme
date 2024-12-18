@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 // import logo from '../assets/images/logo-wis.png';
 // import bg4 from '../assets/images/background/4.jpg';
 import { logVar } from "./utils/Utils";
-import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
+// import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
 
 // github copilot is awsome !!
 // what do you say about that??

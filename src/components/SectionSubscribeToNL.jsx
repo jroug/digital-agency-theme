@@ -102,7 +102,7 @@ const SectionSubscribeToNL = () => {
                     document.getElementById('submit-button').disabled=false;
                     // logVar(result_data);
                     var result = JSON.parse(result_data.data.registerToMailchimp);
-                    if (result.status==200){
+                    if (result.status === 200){
                         document.getElementById('first_name').value='';
                         document.getElementById('last_name').value='';
                         document.getElementById('email').value='';
