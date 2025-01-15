@@ -1,13 +1,19 @@
+Redirect 301 /omada/ /about/
+Redirect 301 /ipiresies/ /services/
+Redirect 301 /epikoinonia/ /contact/
+Redirect 301 /ipiresia/development/ /services/development/
+Redirect 301 /ipiresia/web-design/ /services/web-design/
+Redirect 301 /ipiresia/hosting/ /services/hosting/
+Redirect 301 /ipiresia/ecommerce/ /services/ecommerce/
+Redirect 301 /ipiresia/digital-marketing/ /services/digital-marketing/
+Redirect 301 /portfolio/istoselides/ /portfolio/
+Redirect 301 /ipiresia/seo-optimization/ /services/seo-optimization/
+Redirect 301 /portfolio/page/2/ /portfolio/
 
-# BEGIN WordPress
-# Οι ντιρεκτίβες (γραμμές) ανάμεσα `BEGIN WordPress` και`END WordPress` είναι
-# δυναμικά δημιουργημένες, και θα πρέπει να τροποποιούνται μόνο με την χρήση φίλτρων WordPress.
-# Οποιεσδήποτε αλλαγές στις ντιρεκτίβες ανάμεσα στους δείκτες θα επανεγραφεί.
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.html [QSA,L]
 </IfModule>
-
-# END WordPress
+ 
