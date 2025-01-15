@@ -43,8 +43,8 @@ const PageContact = (props) => {
     const handleContactSubmit = (e) => {
         e.preventDefault();
         document.getElementById('contact_submit').disabled=true;
-        alert('code ready but deactivated');
-        return;
+        // alert('code ready but deactivated');
+        // return;
         logVar('button pressed');
 
         window.grecaptcha.ready(_ => {
