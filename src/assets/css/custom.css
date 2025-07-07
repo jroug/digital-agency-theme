@@ -137,3 +137,27 @@
     margin: 2px 22px;
     list-style: circle;
 }
+
+
+@media (max-width: 768px) {
+
+    #CybotCookiebotDialog{
+        bottom: 1px !important;
+        top: unset !important;
+        transform: translate(-50%, -0%) !important;
+    }
+    #CybotCookiebotDialogBodyContent{
+        padding: 5px !important;
+    }
+    #CybotCookiebotDialogBodyContentText{
+        font-size:14px !important;
+        line-height: 18px !important;
+    }
+    .CybotCookiebotDialogBodyLevelButtonWrapper{
+        padding:5px 10px!important;
+    }
+    #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton{
+        padding:7px !important;
+    }
+    
+}
