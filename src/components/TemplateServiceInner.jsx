@@ -4,7 +4,6 @@ import service from '../assets/images/resource/service.jpg';
 import { BannerTop } from "./";
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-import { logVar } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 

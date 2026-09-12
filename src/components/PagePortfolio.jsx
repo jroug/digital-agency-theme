@@ -6,7 +6,6 @@ import mixitup from 'mixitup';
 import { BannerTop } from "./";
 
 import { gql, useQuery } from '@apollo/client';
-import { logVar } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 import { Link } from 'react-router-dom';
 

@@ -9,7 +9,6 @@ import p5 from '../assets/images/background/pattern-5.png';
 import { useQuery, gql } from '@apollo/client';
 
 import {GraphQLQueries} from "./queries/GraphQLQueries";
-import { logVar } from "./utils/Utils";
 
 const SectionWhyUs = () => {
 

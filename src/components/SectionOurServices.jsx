@@ -10,7 +10,6 @@ import i4 from '../assets/images/icons/icon-4.png';
 import { useQuery, gql } from '@apollo/client';
 
 import {GraphQLQueries} from "./queries/GraphQLQueries";
-import { logVar } from "./utils/Utils";
 
 const SectionOurServices = () => {
  

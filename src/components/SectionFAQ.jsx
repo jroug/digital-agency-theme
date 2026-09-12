@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 
 import {GraphQLQueries} from "./queries/GraphQLQueries";
-import { logVar } from "./utils/Utils";
 
 
 const SectionFAQ = () => {

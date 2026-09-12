@@ -2,7 +2,7 @@ import QueryState from './QueryState';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-import { logVar, isValidSlug } from "./utils/Utils";
+import { isValidSlug } from "./utils/Utils";
 import { GraphQLQueries } from "./queries/GraphQLQueries";
 
 // import all images resources

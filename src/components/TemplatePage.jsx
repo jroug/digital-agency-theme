@@ -4,7 +4,6 @@ import React, { Suspense, lazy } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 import { GraphQLQueries} from "./queries/GraphQLQueries";
-import { logVar } from "./utils/Utils";
 
 
 

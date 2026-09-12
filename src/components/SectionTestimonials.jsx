@@ -2,7 +2,6 @@ import QueryState from './QueryState';
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import {GraphQLQueries} from "./queries/GraphQLQueries";
-import { logVar } from "./utils/Utils";
 
 const SectionTestimonials = () => {
 
