@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import {GraphQLQueries} from "./queries/GraphQLQueries";
@@ -10,11 +11,10 @@ const SectionTestimonials = () => {
       ${GraphQLQueries.queries.sectionTestimonials}
     }`;
 
-    const { data, loading, error } = useQuery(TESTIMONIALS_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(TESTIMONIALS_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionTestimonials'); return }
-    if (error) { logVar('error From SectionTestimonials'); return }
-    if (!data) { logVar('!data From SectionTestimonials'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionSectionTestimonialsData = data.sectionTestimonials.sectionTestimonialsFields;
 

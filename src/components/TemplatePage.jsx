@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React, { Suspense, lazy } from 'react';
 // import { BannerTop } from ".";
 
@@ -17,11 +18,10 @@ const TemplatePage = (props) => {
       ${ GraphQLQueries.queries.getGenericPageQuery(pageSlug) }
     }`;
 
-    const { data, loading, error } = useQuery(PAGE_CONTENT);
+    const { data, loading, error, refetch } = useQuery(PAGE_CONTENT);
 
-    if (loading) { logVar('loading From ------Template Page -----------------------------' + pageSlug + ' Page' ); return }
-    if (error) { logVar('error From ' + pageSlug + ' Page' ); return }
-    if (!data) { logVar('!data From ' + pageSlug + ' Page' ); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const pageTitle = data[ "genericPage_" + pageSlug_withoutslash ].title;
     const pageContent = data[ "genericPage_" + pageSlug_withoutslash ].content;

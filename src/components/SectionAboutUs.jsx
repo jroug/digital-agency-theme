@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 
 import i1 from '../assets/images/icons/icon-1.png';
@@ -20,11 +21,10 @@ const SectioAboutUs = () => {
       ${GraphQLQueries.queries.sectionAboutUs}
     }`;
 
-    const { data, loading, error } = useQuery(ABOUTUS_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(ABOUTUS_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionAboutUs'); return }
-    if (error) { logVar('error From SectionAboutUs'); return }
-    if (!data) { logVar('!data From SectionAboutUs'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionAboutUsData = data.sectionAboutUs.sectionAboutUsFields;
 

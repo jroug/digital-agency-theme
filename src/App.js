@@ -1,3 +1,4 @@
+import QueryState from './components/QueryState';
 // in order for rendering to work properly
 // we neet to NOT lazy load header footer and PageHome
 // and put PageHome hardcode routing not in wordpress sitemap menu
@@ -50,7 +51,20 @@ import './assets/css/custom.css';
 
 // const Footer = lazy(() => import('./components/Footer'));
 
-const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE, 10) || 6;
+export const SITE_LAYOUT_QUERY = gql`query SITE_LAYOUT_QUERY {
+    ${GraphQLQueries.queries.sitemapMenuItems}
+    ${GraphQLQueries.queries.primaryMenuItems}
+    ${GraphQLQueries.queries.footerMenuItems1}
+    ${GraphQLQueries.queries.footerMenuItems2}
+    ${GraphQLQueries.queries.options}
+}`;
+
+// Keep lazy component identities stable when shared query data changes.
+const pageComponents = {};
+function getPageComponent(name) {
+    if (!pageComponents[name]) pageComponents[name] = lazy(() => import('./components/' + name));
+    return pageComponents[name];
+}
 
 const App = () => {
 
@@ -83,66 +97,10 @@ const App = () => {
     
     }
 
-    // promote caching 
-    // **** SOS **** 
-    // if you want to remove them and disable caching you need to put each one to graphql document with allow 
-    const GET_ALL_QUERY = gql`query GET_ALL_QUERY ($first_gbp: Int, $after_gbp: String)
-    {
-      ${GraphQLQueries.queries.sitemapMenuItems}
-      ${GraphQLQueries.queries.primaryMenuItems}
-      ${GraphQLQueries.queries.footerMenuItems1}
-      ${GraphQLQueries.queries.footerMenuItems2}
+    const { data, loading, error, refetch } = useQuery(SITE_LAYOUT_QUERY);
 
-      ${GraphQLQueries.queries.homePage}
-      ${GraphQLQueries.queries.contactPage}
-      
-      ${GraphQLQueries.queries.getGenericPageQuery('about/') }
-      ${GraphQLQueries.queries.getGenericPageQuery('about/testimonials/') }
-      ${GraphQLQueries.queries.getGenericPageQuery('services/') }
-      ${GraphQLQueries.queries.getGenericPageQuery('faq/') }
-      ${GraphQLQueries.queries.getGenericPageQuery('blog/') }
-
-      ${GraphQLQueries.queries.getProjects()}
-      ${GraphQLQueries.queries.allProjectCategories}
-
-      ${GraphQLQueries.queries.sectionFAQ}
-      ${GraphQLQueries.queries.sectionOurServices}
-      ${GraphQLQueries.queries.sectionSubscribeToNL}
-      ${GraphQLQueries.queries.sectionTestimonials}
-      ${GraphQLQueries.queries.sectionWhyUs}
-      ${GraphQLQueries.queries.sectionAboutUs}
-      
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/web-design-develpment/')}
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/digital-marketing/')}
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/ecommerce/')}
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/seo-optimization/')}
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/hosting/')}
-      ${GraphQLQueries.queries.getServiceTemplateQuery('services/development/')}
-      ${GraphQLQueries.queries.allServices}
-
-      ${GraphQLQueries.queries.getBlogPosts}
-
-      ${GraphQLQueries.queries.options}
-
-      ${GraphQLQueries.queries.getProjectTemplateQuery('projects/project-1')}
-      ${GraphQLQueries.queries.getProjectTemplateQuery('projects/project-2')}
-      ${GraphQLQueries.queries.getProjectTemplateQuery('projects/project-3')}
-      ${GraphQLQueries.queries.getProjectTemplateQuery('projects/project-4')}
-
-      ${GraphQLQueries.queries.getProjects(4)}
-
-    }`;
-
-    const { data, loading, error } = useQuery(GET_ALL_QUERY,{
-        variables: {
-            first_gbp: BLOG_POST_PER_PAGE,
-            after_gbp: '',
-        }
-    });
-
-    if (loading) { logVar('menus query loading'); return }
-    if (error) { logVar(error); return }
-    if (!data) { logVar('menus query !data'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sitemapMenuItems = data.sitemapMenuItems.nodes;
     const primaryMenuNodes = data.primaryMenuItems.nodes;
@@ -190,14 +148,14 @@ const App = () => {
                     :
                     <></>
                 } */}
-                <Suspense fallback={<div style={{ display:'block', fontSize:'40px', height:'100vh'}}>Loading</div>} >
+                <Suspense fallback={<QueryState loading />} >
                     <div style={{ display:'block', minHeight:'100vh'}} >
                         <Routes >
                             <Route element={<AnimationLayout />}  >
                                 <Route key={"home"} path="/" exact element={<PageHome seoFields={seoFieldsHome} />} />
                                 {
                                     sitemapMenuItems.map((page, index) => {
-                                        let PageComponent = lazy(() => import('./components/' + page.menuExtraFieldsForSitemap.reactComponent));
+                                        const PageComponent = getPageComponent(page.menuExtraFieldsForSitemap.reactComponent);
                                         let pUri = page.uri;
                                         if (pUri.includes('cpt_services')) {
                                             pUri = pUri.replace('cpt_services', 'services');

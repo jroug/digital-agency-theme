@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import { isDemoMode } from '../config';
 import React, { useEffect } from 'react';
 
@@ -159,11 +160,10 @@ const SectionSubscribeToNL = () => {
       ${GraphQLQueries.queries.sectionSubscribeToNL}
     }`;
 
-    const { data, loading, error } = useQuery(SUBNL_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(SUBNL_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionSubscribeToNL'); return }
-    if (error) { logVar('error From SectionSubscribeToNL'); return }
-    if (!data) { logVar('!data From SectionSubscribeToNL'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionSubscribeToNLData = data.sectionSubscribeToNL.sectionSubscribeToNLFields;
 // console.log(sectionSubscribeToNLData);

@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import { isDemoMode } from '../config';
 import React, { Suspense, useEffect, lazy } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -42,13 +43,12 @@ const TemplateBlogInner = (props) => {
       ${GraphQLQueries.queries.getAllPosts(4)}
     }`;
 
-    const { data, loading, error } = useQuery(GET_POST_QUERY,{
+    const { data, loading, error, refetch } = useQuery(GET_POST_QUERY,{
         variables:{slg: pageSlug.replace('blog/', '')}
     });
 
-    if (loading) { logVar('loading from Post'); return }
-    if (error) { logVar('error from Post'); return }
-    if (!data) { logVar('!data from Post'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     postTemplateData = data.blogPost;
 

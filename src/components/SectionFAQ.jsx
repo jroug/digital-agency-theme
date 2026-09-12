@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
@@ -28,11 +29,10 @@ const SectionFAQ = () => {
       ${GraphQLQueries.queries.sectionFAQ}
     }`;
 
-    const { data, loading, error } = useQuery(FAQ_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(FAQ_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionFAQ'); return }
-    if (error) { logVar('error From SectionFAQ'); return }
-    if (!data) { logVar('!data From SectionFAQ'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionFaqData = data.sectionFAQ.sectionFaqFields;
     const faqCases = sectionFaqData.faqCases;

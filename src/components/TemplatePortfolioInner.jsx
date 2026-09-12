@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
@@ -37,11 +38,10 @@ const TemplatePortfolioInner = (props) => {
     
     // logVar(GET_PROJECT_QUERY);
     
-    const { data, loading, error } = useQuery(GET_PROJECT_QUERY);
+    const { data, loading, error, refetch } = useQuery(GET_PROJECT_QUERY);
 
-    if (loading) { logVar('loading from TemplatePortfolioInner'); return }
-    if (error) { logVar('error from TemplatePortfolioInner'); return }
-    if (!data) { logVar('!data from TemplatePortfolioInner'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     projectTemplateData = data["portfolioProject_" + pageSlug.replaceAll('/','').replaceAll('-','')];
 

@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import { isDemoMode } from '../config';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -146,11 +147,10 @@ const PageContact = (props) => {
       ${GraphQLQueries.queries.contactPage}
     }`;
 
-    const { data, loading, error } = useQuery(CONTACT_CONTENT);
+    const { data, loading, error, refetch } = useQuery(CONTACT_CONTENT);
 
-    if (loading) { logVar('loading From Contact_Page'); return }
-    if (error) { logVar('error From Contact_Page'); return }
-    if (!data) { logVar('!data From Contact_Page'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const contactData = data.contactPage;
     const contactFields = contactData.contactFields;

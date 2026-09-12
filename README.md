@@ -69,3 +69,12 @@ Configuration reference: [Vercel project configuration](https://vercel.com/docs/
 
 The committed `.npmrc` enables `legacy-peer-deps` to match the existing lockfile.
 Keep this file in Git so Vercel and local `npm ci` use the same resolution settings.
+
+## Data loading
+
+`App.js` requests only shared menus, route definitions, and site settings.
+Pages and sections request their own content when mounted; Apollo reuses cached
+results. Loading indicators and retry controls keep individual content failures
+visible without removing the shared header and footer. This applies to both
+local demo data and WordPress mode. WordPress installations that restrict allowed
+GraphQL operations must allow the component queries as well as `SITE_LAYOUT_QUERY`.

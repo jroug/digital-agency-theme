@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 import service from '../assets/images/resource/service.jpg';
 import { BannerTop } from "./";
@@ -18,11 +19,10 @@ const TemplateServiceInner = (props) => {
 		${GraphQLQueries.queries.allServices}
     }`;
 
-    const { data, loading, error } = useQuery(GET_SERVICE_QUERY);
+    const { data, loading, error, refetch } = useQuery(GET_SERVICE_QUERY);
 
-    if (loading) { logVar('loading from TemplateServiceInner'); return }
-    if (error) { logVar('error from TemplateServiceInner'); return }
-    if (!data) { logVar('!data from TemplateServiceInner'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const serviceTemplateData = data["serviceTemplate_" + pageSlug.replaceAll('/', '').replaceAll('-', '')];
  

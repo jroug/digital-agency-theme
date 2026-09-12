@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,11 +19,10 @@ const SectionOurServices = () => {
       ${GraphQLQueries.queries.sectionOurServices}
     }`;
 
-    const { data, loading, error } = useQuery(SERVICES_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(SERVICES_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionOurServices'); return }
-    if (error) { logVar('error From SectionOurServices'); return }
-    if (!data) { logVar('!data From SectionOurServices'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionOurServicesData = data.sectionOurServices.sectionOurServicesFields;
 

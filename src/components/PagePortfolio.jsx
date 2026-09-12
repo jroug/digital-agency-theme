@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React, { useEffect } from 'react';
 
 import mixitup from 'mixitup';
@@ -35,11 +36,10 @@ const PagePortfolio = (props) => {
       ${GraphQLQueries.queries.allProjectCategories}
     }`;
 
-    const { data, loading, error } = useQuery(GET_ALLPROJECTS_QUERY);
+    const { data, loading, error, refetch } = useQuery(GET_ALLPROJECTS_QUERY);
 
-    if (loading) { logVar('loading from PagePortfolio'); return }
-    if (error) { logVar('error from PagePortfolio'); return }
-    if (!data) { logVar('!data from PagePortfolio'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const allProjects = data["allProjects_1000"];
     const allCategories = data.allProjectCategories;

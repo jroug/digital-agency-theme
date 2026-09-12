@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React, { useEffect, useState }   from 'react';
 import { logVar } from './utils/Utils';
 import { useApolloClient, useQuery, gql } from '@apollo/client';
@@ -192,7 +193,7 @@ const SectionBlog = (props) => {
     // needed to remove relayStylePagination from index.js
     // if I dont have fetchMore i do not need relayStylePagination
 
-    const { data, loading, error } = useQuery(GET_POSTS_QUERY,{
+    const { data, loading, error, refetch } = useQuery(GET_POSTS_QUERY,{
         fetchPolicy: fetchPolicy,
         variables: variables
     });
@@ -228,9 +229,8 @@ const SectionBlog = (props) => {
 
     }, [data, props.taxSlug]);
 
-    if (loading) { logVar('--------------------------- loading from SectionBlog ---------------------------'); return }
-    if (error) { logVar('error from SectionBlog'); return }
-    if (!data) { logVar('!data from SectionBlog'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
 
     console.log('[useQuery] --->', data, fetchPolicy);

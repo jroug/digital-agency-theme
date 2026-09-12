@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 
 import React, { Suspense, lazy } from "react";
 import { useQuery, gql } from '@apollo/client';
@@ -22,11 +23,10 @@ const PageHome = (props) => {
     //   ${GraphQLQueries.queries.sectionWhyUs}
     // }`;
 
-    const { data, loading, error } = useQuery(HOMEPAGE_CONTENT);
+    const { data, loading, error, refetch } = useQuery(HOMEPAGE_CONTENT);
 
-    if (loading) { logVar('loading From Page_Home'); return }
-    if (error) { logVar('error From Page_Home'); return }
-    if (!data) { logVar('!data From Page_Home'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const homepageData = data.homePage.homepageFields;
     const componentsData = data.homePage.componentsSectionsAllPages.componentsSections;

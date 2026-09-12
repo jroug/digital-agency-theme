@@ -1,3 +1,4 @@
+import QueryState from './QueryState';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -17,11 +18,10 @@ const SectionWhyUs = () => {
       ${GraphQLQueries.queries.sectionWhyUs}
     }`;
 
-    const { data, loading, error } = useQuery(WHYUS_SECTION_CONTENT);
+    const { data, loading, error, refetch } = useQuery(WHYUS_SECTION_CONTENT);
 
-    if (loading) { logVar('loading From SectionWhyUs'); return }
-    if (error) { logVar('error From SectionWhyUs'); return }
-    if (!data) { logVar('!data From SectionWhyUs'); return }
+    if (loading) return <QueryState loading />;
+    if (error || !data) return <QueryState onRetry={refetch} />;
 
     const sectionWhyUsData = data.sectionWhyUs.sectionWhyUsFields;
 
