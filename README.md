@@ -46,3 +46,24 @@ site URL for production. The default GraphQL path is `/content/graphql`.
 If serving `public/sitemap.php` through PHP, set the server environment variable
 `SITEMAP_SOURCE_URL` to your CMS sitemap URL. It returns HTTP 503 until configured.
 The React development server does not execute PHP.
+
+## Vercel deployment
+
+Import this Git repository into Vercel. Set the Root Directory to the folder
+containing this `package.json` and `vercel.json` (the repository root if this
+theme is the whole repository). The committed configuration selects Create React
+App, installs with `npm ci`, runs `npm run build:vercel`, and serves `build`.
+Keep the dashboard build settings aligned with this configuration.
+
+Production and preview deployments always use demo data. The Vercel build script
+forces `REACT_APP_DEMO_MODE=true`, clears WordPress and reCAPTCHA settings, and
+uses root-relative assets even if older project environment variables exist.
+No backend or extra environment variables are needed. Forms remain demo-only.
+The SPA rewrite supports opening and refreshing nested URLs directly.
+
+Run `CI=true npm run build:vercel` to check the same build locally. This removes
+the PHP sitemap proxy from the static output; the original PHP file remains
+available for non-Vercel WordPress hosting. The regular `npm run build` continues
+to respect your demo/WordPress environment setting.
+
+Configuration reference: [Vercel project configuration](https://vercel.com/docs/project-configuration/vercel-json).

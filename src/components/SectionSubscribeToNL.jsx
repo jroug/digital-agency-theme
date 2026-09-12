@@ -59,9 +59,13 @@ const SectionSubscribeToNL = () => {
             window.alert('This form is not configured yet. Please try again later.');
             return;
         }
+        // Keep the unfinished WordPress integration disabled without unreachable code.
+        const newsletterEnabled = false;
+        if (!newsletterEnabled) {
+            window.alert('Newsletter signup is not configured yet. Please try again later.');
+            return;
+        }
         document.getElementById('submit-button').disabled=true;
-        alert('code ready but deactivated / check cases of subscriber status && check accept terms && change email to correct one && id double opt in needed with verification email');
-        return;
         logVar('button pressed');
 
         window.grecaptcha.ready(_ => {
