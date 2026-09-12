@@ -20,6 +20,7 @@ const SectionSubscribeToNL = () => {
     const client = useApolloClient();
 
     useEffect( () => {
+        if (!reCAPTCHA_site_key) return;
         // document.body.classList.add('contact-us');
 
         const script = document.createElement('script');
@@ -46,6 +47,10 @@ const SectionSubscribeToNL = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        if (!reCAPTCHA_site_key || !window.grecaptcha) {
+            window.alert('This form is not configured yet. Please try again later.');
+            return;
+        }
         document.getElementById('submit-button').disabled=true;
         alert('code ready but deactivated / check cases of subscriber status && check accept terms && change email to correct one && id double opt in needed with verification email');
         return;

@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Digital Agency Theme
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React digital agency frontend backed by WordPress and WPGraphQL.
 
-## Available Scripts
+## Branding
 
-In the project directory, you can run:
+Edit `src/brand.js` for the agency name, description, email, and address. The
+header and footer use `src/assets/images/agency-logo.svg`; browser and installation
+icons live in `public/`. Colors are defined in `src/assets/css/custom.css`.
+Additional footer contact and social fields can be configured in `src/App.js`.
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Run `npm install`, copy `.env.example` to `.env.local`, and set the CMS URLs.
+Existing `.env.development.local` and `.env.production.local` files override
+`.env.local`, so update those if present. Run `npm start` for development or
+`npm run build` to generate the production build.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The theme requires the existing WordPress schema (WPGraphQL, custom fields,
+menus, and custom post types defined in `src/components/queries/GraphQLQueries.jsx`).
+It does not include a standalone demo database. Replace CMS page content,
+SEO titles/canonicals, contact-page details, project images, testimonials, and
+menu labels with your agency's content. Global header/footer branding uses the
+local defaults rather than the previous company's CMS options.
 
-### `npm test`
+Configure your own reCAPTCHA site key and backend form handlers before enabling
+contact and newsletter submissions. Add your own consent integration if needed;
+no company-specific consent account is bundled. Set `PUBLIC_URL` to your deployed
+site URL for production. The default GraphQL path is `/content/graphql`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If serving `public/sitemap.php` through PHP, set the server environment variable
+`SITEMAP_SOURCE_URL` to your CMS sitemap URL. It returns HTTP 503 until configured.
+The React development server does not execute PHP.

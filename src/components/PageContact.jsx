@@ -15,6 +15,7 @@ const PageContact = (props) => {
     const client = useApolloClient();
 
     useEffect( () => {
+        if (!reCAPTCHA_site_key) return;
         // document.body.classList.add('contact-us');
 
         const script = document.createElement('script');
@@ -42,6 +43,10 @@ const PageContact = (props) => {
 
     const handleContactSubmit = (e) => {
         e.preventDefault();
+        if (!reCAPTCHA_site_key || !window.grecaptcha) {
+            window.alert('This form is not configured yet. Please try again later.');
+            return;
+        }
         document.getElementById('contact_submit').disabled=true;
         // alert('code ready but deactivated');
         // return;

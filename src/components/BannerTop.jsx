@@ -24,18 +24,6 @@ const BannerTop = (props) => {
                 <title>{seoTitle}</title>
                 <meta name="description" content={seoDescription}/>
                 <link rel="canonical" href={seoCanonical} />
-                
-                {/* <meta property="og:locale" content="el_GR" />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content="Κατασκευή Ιστοσελίδων και Eshop - WebInSite" />
-                <meta property="og:description" content="Κατασκευή Ιστοσελίδων και Eshop. Αναλαμβάνουμε την δημιουργία Website και Eshop, σύμφωνα με τις ανάγκες σας, σε ανταγωνιστικές τιμές." />
-                <meta property="og:url" content="https://webinsite.gr/" />
-                <meta property="og:site_name" content="WebInSite" />
-                <meta property="article:modified_time" content="2022-09-26T11:50:18+00:00" />
-                <meta property="og:image" content="//webinsite.gr/wp-content/plugins/rev-slider/public/assets/assets/dummy.png" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:label1" content="Εκτιμώμενος χρόνος ανάγνωσης" />
-                <meta name="twitter:data1" content="1 λεπτό" /> */}
             </Helmet>
             <section className="page-title page-inner-top-section" style={{"backgroundImage":"url(" + p21 + ")"}} >
                 <div className="patern-layer-one" style={{"backgroundImage":"url(" + i1 + ")"}} ></div>

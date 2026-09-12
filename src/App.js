@@ -2,6 +2,7 @@
 // we neet to NOT lazy load header footer and PageHome
 // and put PageHome hardcode routing not in wordpress sitemap menu
 
+import brand from './brand';
 import React , { Suspense, lazy, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
@@ -150,7 +151,24 @@ const App = () => {
     const footerMenuNodes2 = data.footerMenuItems2.nodes;
     const footerMenu2_name = data.menuName2.nodes[0].name;
 
-    const siteOptions = data.siteOptions.optionsFieds;
+    const siteOptions = {
+        ...data.siteOptions.optionsFieds,
+        seoTitleGeneric: brand.name,
+        seoDescriptionGeneric: brand.description,
+        headerLogo: { sourceUrl: brand.logo },
+        footerLogo: { sourceUrl: brand.logo },
+        footerText: brand.description,
+        footerAddress: brand.address,
+        footerAddressLink: '',
+        footerPhone1: '',
+        footerPhone2: '',
+        footerEmail: brand.email,
+        footerCopyrights: `© ${new Date().getFullYear()} ${brand.name}. All rights reserved.`,
+        socialLinkFacebook: '',
+        socialLinkInstagram: '',
+        socialLinkTwitter: '',
+        socialLinkLinkedin: '',
+    };
 
     // console.log(data);
     logVar('--------------- App.js before return -------------------------');
@@ -161,7 +179,7 @@ const App = () => {
     return (
         <HelmetProvider>
             <Helmet>
-                <title>WebInSite</title>
+                <title>{brand.name}</title>
             </Helmet>
             <BrowserRouter>
                 <Header menuNodes={primaryMenuNodes} headerLogoUrl={siteOptions.headerLogo.sourceUrl} key={"header"} />

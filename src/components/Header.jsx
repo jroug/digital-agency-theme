@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-// import logo from '../assets/images/logo-wis.png';
+import brand from '../brand';
 import { logVar } from "./utils/Utils";
 
 const Header = (props) => {
@@ -29,7 +29,7 @@ const Header = (props) => {
                 <div className="auto-container">
                     <div className="clearfix">
                         <div className="pull-left logo-box">
-                            <div className="logo"><Link to="/"><img src={headerLogoUrl} alt="" title="" /></Link></div>
+                            <div className="logo"><Link to="/"><img src={headerLogoUrl} alt={brand.name} /></Link></div>
                         </div>
                         <div className="nav-outer clearfix">
                             {/* <!-- Main Menu --> */}
@@ -89,7 +89,7 @@ const Header = (props) => {
             <div className="sticky-header">
                 <div className="auto-container clearfix">
                     <div className="logo pull-left">
-                        <Link to="/"><img src={headerLogoUrl} alt="" title="" /></Link>
+                        <Link to="/"><img src={headerLogoUrl} alt={brand.name} /></Link>
                     </div>
                     <div className="right-col">
                         <nav className="main-menu navbar-expand-md">

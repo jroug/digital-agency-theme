@@ -1,20 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import logo from '../assets/images/logo-wis.png';
+import brand from '../brand';
 // import bg4 from '../assets/images/background/4.jpg';
 import { logVar } from "./utils/Utils";
 // import thumb from '../assets/images/gallery/footer-gallery-thumb-1.jpg';
-
-// github copilot is awsome !!
-// what do you say about that??
-// I think it's awsome too
-// I think it's awsome too
-// I think it's awsome too
-// I think it's awsome too
-// I think it's awsome too
-// I think it's awsome too
-// ok we agree on that
-
 
 const _Footer = (props) => {
 
@@ -53,7 +42,7 @@ const _Footer = (props) => {
                                 <div className="footer-column col-lg-7 col-md-6 col-sm-12">
                                     <div className="footer-widget logo-widget">
                                         <div className="logo">
-                                            <Link to="/"><img src={footerLogoUrl} alt="" /></Link>
+                                            <Link to="/"><img src={footerLogoUrl} alt={brand.name} /></Link>
                                         </div>
                                         <div className="text">{footerText}</div>
 
@@ -100,10 +89,10 @@ const _Footer = (props) => {
                                         <h4>Contact</h4>
                                         <div className="widget-content">
                                             <ul className="list-style-one footer-links-wb">
-                                                <li><Link target="_blank" to={footerAddressLink} >{footerAddress}</Link></li>
+                                                <li>{footerAddressLink ? <Link target="_blank" to={footerAddressLink}>{footerAddress}</Link> : footerAddress}</li>
                                                 <li><span>E:</span> <Link to={"mailto:" + footerEmail} >{footerEmail}</Link></li>
-                                                <li><span>M:</span> <Link to={"tel:" + footerPhone1} >{footerPhone1}</Link></li>
-                                                <li><span>T:</span> <Link to={"tel:" + footerPhone2} >{footerPhone2}</Link></li>
+                                                {footerPhone1 && <li><span>M:</span> <Link to={"tel:" + footerPhone1} >{footerPhone1}</Link></li>}
+                                                {footerPhone2 && <li><span>T:</span> <Link to={"tel:" + footerPhone2} >{footerPhone2}</Link></li>}
                                             </ul>
                                         </div>
                                     </div>
@@ -125,11 +114,11 @@ const _Footer = (props) => {
                             {/* <!-- Social Column --> */}
                             <div className="social-column col-lg-6 col-md-6 col-sm-12">
                                 <ul>
-                                    <li className="follow">Follow us: </li>
-                                    <li><Link to={socialLinkFacebook}><span className="fa fa-facebook-square"></span></Link></li>
-                                    <li><Link to={socialLinkInstagram}><span className="fa fa-instagram"></span></Link></li>
-                                    <li><Link to={socialLinkTwitter}><span className="fa fa-twitter-square"></span></Link></li>
-                                    <li><Link to={socialLinkLinkedin}><span className="fa fa-linkedin-square"></span></Link></li>
+                                    {(socialLinkFacebook || socialLinkInstagram || socialLinkTwitter || socialLinkLinkedin) && <li className="follow">Follow us: </li>}
+                                    {socialLinkFacebook && <li><Link to={socialLinkFacebook}><span className="fa fa-facebook-square"></span></Link></li>}
+                                    {socialLinkInstagram && <li><Link to={socialLinkInstagram}><span className="fa fa-instagram"></span></Link></li>}
+                                    {socialLinkTwitter && <li><Link to={socialLinkTwitter}><span className="fa fa-twitter-square"></span></Link></li>}
+                                    {socialLinkLinkedin && <li><Link to={socialLinkLinkedin}><span className="fa fa-linkedin-square"></span></Link></li>}
      
                                 </ul>
                             </div>
