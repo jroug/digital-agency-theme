@@ -1,3 +1,4 @@
+import { isDemoMode } from '../config';
 import React, { Suspense, useEffect, lazy } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 // import { BannerTop } from "./";
@@ -30,8 +31,8 @@ const TemplateBlogInner = (props) => {
     }
 
 	const pagePathName = window.location.pathname;
-	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
-    // const pageSlug = pagePathName.slice(1, -1);
+	const pageSlug = isValidSlug(pagePathName) ? pagePathName.replace(/^\/+|\/+$/g, '') : '404'; // trim slash from the beginning and the end
+    // const pageSlug = pagePathName.replace(/^\/+|\/+$/g, '');
 	// chech for sql injection in the pageSlug variable
 	const GET_POST_QUERY = gql`query GET_POST_QUERY ($slg: ID!)
     {
@@ -66,9 +67,9 @@ const TemplateBlogInner = (props) => {
     // logVar(allPostCategories);
 
     return (
-        <> 
+        <>
             <Suspense fallback={<div>Loading...</div>} >
-                <BannerTop seoFields={props.seoFields} parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData === undefined ? "" : postTemplateData.title } />  
+                <BannerTop seoFields={props.seoFields} parentTitle={"Blog"} parentLink={"/blog/"} title={postTemplateData === undefined ? "" : postTemplateData.title } />
             </Suspense>
             <div className="sidebar-page-container">
                 <div className="auto-container">
@@ -92,7 +93,7 @@ const TemplateBlogInner = (props) => {
                                                 </div>
                                             </div> */}
                                             <div className="pull-right">
-                                                <InlineShareButtons 
+                                                {!isDemoMode && <InlineShareButtons
                                                     config={{
                                                         alignment: 'center',  // alignment of buttons (left, center, right)
                                                         color: 'social',      // set the color of buttons (social, white)
@@ -111,9 +112,9 @@ const TemplateBlogInner = (props) => {
                                                         show_total: false,
                                                         size: 40,             // the size of each button (INTEGER)
 
- 
+
                                                     }}
-                                                />
+                                                />}
                                                 {/* <ul className="post-info">
                                                     <li><a href="blog-single.html"><span className="icon flaticon-chat-comment-oval-speech-bubble-with-text-lines"></span></a></li>
                                                     <li><a href="blog-single.html"><span className="icon flaticon-share"></span></a></li>
@@ -163,7 +164,7 @@ const TemplateBlogInner = (props) => {
 
                                             if ('/' + pageSlug + '/' === '/blog' + post.uri) return '';
                                             if (countRecentPosts++ >= 3) return '';
-                                            
+
                                             let parser = new DOMParser();
                                             let parsedDocument = parser.parseFromString(post.excerpt, "text/html");
                                             let excerptText = parsedDocument.getElementsByTagName("p")[0].innerText;

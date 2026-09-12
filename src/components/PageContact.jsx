@@ -1,3 +1,4 @@
+import { isDemoMode } from '../config';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BannerTop } from "./";
@@ -15,7 +16,7 @@ const PageContact = (props) => {
     const client = useApolloClient();
 
     useEffect( () => {
-        if (!reCAPTCHA_site_key) return;
+        if (isDemoMode || !reCAPTCHA_site_key) return;
         // document.body.classList.add('contact-us');
 
         const script = document.createElement('script');
@@ -43,6 +44,13 @@ const PageContact = (props) => {
 
     const handleContactSubmit = (e) => {
         e.preventDefault();
+        if (isDemoMode) {
+            const form = e.currentTarget;
+            if (!form.reportValidity()) return;
+            form.querySelector('[role="status"]').textContent = 'Demo confirmation: thank you! Nothing was sent or saved.';
+            form.reset();
+            return;
+        }
         if (!reCAPTCHA_site_key || !window.grecaptcha) {
             window.alert('This form is not configured yet. Please try again later.');
             return;
@@ -186,7 +194,7 @@ const PageContact = (props) => {
                                 </div>
 
                                 <div className="col-lg-12 col-md-12 col-sm-12 text-center form-group">
-                                    <span id="contact-msg" style={{"color":"blue"}}></span>
+                                    <span role="status" aria-live="polite" id="contact-msg" style={{"color":"blue"}}></span>
                                     <span id="contact-msg-error" style={{"color":"red"}}></span>
                                 </div>
 

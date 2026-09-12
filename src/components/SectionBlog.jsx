@@ -9,7 +9,7 @@ import { BlogBoxes } from './';
 
 const SectionBlog = (props) => {
 
-    const [allPosts, setAllPosts] = useState({});
+    const [allPosts, setAllPosts] = useState([]);
     const [endCursor, setEndCursor] = useState('');
     const [hasNextPage, setHasNextPage] = useState('');
     const [trigger, setTrigger] = useState(0);
@@ -23,14 +23,14 @@ const SectionBlog = (props) => {
 
     const { slug } = useParams();
 
-    const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
+    const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE, 10) || 6;
 
     //  logVar('slug');
 
     const handleMorePosts = (event) => {
         event.preventDefault();
-        
-        
+
+
         let BRING_MORE_POSTS_QUERY = '';
         let variables_more = {};
 
@@ -80,14 +80,14 @@ const SectionBlog = (props) => {
                 }
                 break;
         }
- 
+
 
         client.query({
             fetchPolicy: 'network-only',
             query: BRING_MORE_POSTS_QUERY,
             variables: variables_more
         }).then(result_data => {
-           
+
             if (props.taxSlug === 'search') {
                 setHasNextPage(result_data.data['allPosts_search'].pageInfo.hasNextPage);
                 setEndCursor(result_data.data['allPosts_search'].pageInfo.endCursor);
@@ -176,7 +176,7 @@ const SectionBlog = (props) => {
             }
             break;
         default:
-            fetchPolicy = "cache";
+            fetchPolicy = "cache-first";
             GET_POSTS_QUERY = gql`query GET_POSTS_QUERY ($first_gbp: Int, $after_gbp: String)
             {
                 ${GraphQLQueries.queries.getBlogPosts}
@@ -203,10 +203,10 @@ const SectionBlog = (props) => {
         if ( !data ){
             logVar('data in useEffect is undefined');
             return;
-        }  
+        }
 
-        logVar('data in useEffect--> ', data, allPosts);
-        
+        logVar('data in useEffect--> ', data);
+
         if (props.taxSlug === 'search') {
             setAllPosts(data['allPosts_search'].edges);
             setHasNextPage(data['allPosts_search'].pageInfo.hasNextPage);
@@ -225,8 +225,8 @@ const SectionBlog = (props) => {
             setHasNextPage(data.allPosts.pageInfo.hasNextPage);
             setEndCursor(data.allPosts.pageInfo.endCursor);
         }
-        
-    }, [data, props.taxSlug, allPosts]);
+
+    }, [data, props.taxSlug]);
 
     if (loading) { logVar('--------------------------- loading from SectionBlog ---------------------------'); return }
     if (error) { logVar('error from SectionBlog'); return }
@@ -238,26 +238,26 @@ const SectionBlog = (props) => {
     // trigger useEffect after having the data, do not need to in caching cases
     if (trigger === 0 &&  fetchPolicy === 'network-only') setTrigger(1);
 
-    if (Object.keys(allPosts).length === 0 && props.taxSlug !== 'search' ) return <div>Loading...</div>;
+
 
     return (
- 
+
         <section className="blog-page-section" key={"blog-" + props.taxSlug + "-" + props.taxonomyName}>
             <div className="auto-container">
                 <div className="row clearfix" id="main-content" >
                     {
-                        Object.keys(allPosts).length === 0 && props.taxSlug === 'search' 
+                        Object.keys(allPosts).length === 0 && props.taxSlug === 'search'
                         ?
                             <div className="col-lg-12 col-md-12 col-sm-12">
                                 <div className="sec-title centered">
                                     <h2>No results found</h2>
                                 </div>
                             </div>
-                        : 
+                        :
                         allPosts?.map( (post, index) => {
                                 return (
-                                    <BlogBoxes 
-                                        key={"BlogBox-" + post.node.databaseId} 
+                                    <BlogBoxes
+                                        key={"BlogBox-" + post.node.databaseId}
                                         post={post}
                                         index={index}
                                         taxSlug={props.taxSlug}

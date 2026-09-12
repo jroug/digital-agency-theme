@@ -50,7 +50,7 @@ import './assets/css/custom.css';
 
 // const Footer = lazy(() => import('./components/Footer'));
 
-const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE);
+const BLOG_POST_PER_PAGE = parseInt(process.env.REACT_APP_BLOG_POST_PER_PAGE, 10) || 6;
 
 const App = () => {
 

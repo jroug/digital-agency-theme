@@ -27,7 +27,7 @@ const TemplatePortfolioInner = (props) => {
 	});
 
 	const pagePathName = window.location.pathname;
-	const pageSlug = isValidSlug(pagePathName) ? pagePathName.slice(1, -1) : '404'; // trim slash from the beginning and the end
+	const pageSlug = isValidSlug(pagePathName) ? pagePathName.replace(/^\/+|\/+$/g, '') : '404'; // trim slash from the beginning and the end
 
 	const GET_PROJECT_QUERY = gql`query GET_PROJECT_QUERY
     {
