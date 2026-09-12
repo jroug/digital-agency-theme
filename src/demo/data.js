@@ -59,6 +59,11 @@ export const primaryMenu = [route('/', 'Home'), ...routes.slice(0, 5)].map((r, i
             parentDatabaseId: i + 1,
             uri: service.uri,
             label: service.title,
-        })) : [],
+        })) : r.uri === '/about/' ? [{
+            databaseId: 200,
+            parentDatabaseId: i + 1,
+            uri: '/about/testimonials/',
+            label: 'Testimonials',
+        }] : [],
     },
 }));
