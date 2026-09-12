@@ -27,8 +27,7 @@ newsletter handler remains disabled pending its existing integration setup.
 ## WordPress setup
 
 Run `npm install`, copy `.env.example` to `.env.local`, and set the CMS URLs.
-Existing `.env.development.local` and `.env.production.local` files override
-`.env.local`, so update those if present. Run `npm start` for development or
+Run `npm start` for development or
 `npm run build` to generate the production build.
 
 The theme requires the existing WordPress schema (WPGraphQL, custom fields,
@@ -67,3 +66,6 @@ available for non-Vercel WordPress hosting. The regular `npm run build` continue
 to respect your demo/WordPress environment setting.
 
 Configuration reference: [Vercel project configuration](https://vercel.com/docs/project-configuration/vercel-json).
+
+The committed `.npmrc` enables `legacy-peer-deps` to match the existing lockfile.
+Keep this file in Git so Vercel and local `npm ci` use the same resolution settings.
