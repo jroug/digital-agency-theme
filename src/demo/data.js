@@ -39,7 +39,7 @@ export const pages = {
 };
 const box = (title, text, link = '/contact/') => ({ boxIconClass: 'fa fa-lightbulb-o', boxTitle: title, boxText: text, boxLink: link });
 export const components = {
-    sectionourservices: { sectionOurServicesFields: { smallTitleTop: 'WHAT WE DO', mainTitle: 'Everything your digital presence needs', ...Object.fromEntries(services.slice(0, 5).map((s, i) => [`box${i + 1}`, box(s.title, s.excerpt.replace(/<[^>]*>/g, ''), s.uri)])) } },
+    sectionourservices: { sectionOurServicesFields: { smallTitleTop: 'WHAT WE DO', mainTitle: 'Digital Services', ...Object.fromEntries(services.slice(0, 5).map((s, i) => [`box${i + 1}`, box(s.title, s.excerpt.replace(/<[^>]*>/g, ''), s.uri)])) } },
     sectionaboutus: { sectionAboutUsFields: { smallTitleTop: 'MEET YOUR DIGITAL PARTNER', mainTitle: 'Creative thinking. Practical results.', mainText: '<p>We bring curious minds and complementary skills to every project. From the first conversation to launch day, we keep the process clear and collaborative.</p>', personName: 'Alex Morgan', personTitle: 'Creative Director · Demo team', personImage: image(about), mainImage: image(about) } },
     sectionwhyus: { sectionWhyUsFields: { smallTitleTop: 'WHY WORK WITH US', mainTitle: 'A team invested in your next step', mainSubTitle: 'We connect business goals with thoughtful digital experiences.', featuresTitle: 'A clear process from start to finish', features: 'Strategy before execution\nDesign with your customers in mind\nOpen communication at every stage\nSupport beyond launch', featuresButtonText: 'Start a conversation', featuresButtonLink: '/contact/', box1: box('Understand', 'We listen, research, and define what success looks like.'), box2: box('Create', 'We turn a shared direction into clear, useful experiences.'), box3: box('Improve', 'We test, learn, and refine as your business grows.') } },
     sectionsubscribetonl: { sectionSubscribeToNLFields: { mainImage: image(subscribe), mainTitle: 'Fresh ideas for your digital journey' } },
@@ -49,4 +49,16 @@ export const components = {
 Object.entries(components).forEach(([id, value]) => Object.assign(value, { __typename: 'Component', id, title: id }));
 const route = (uri, label, reactComponent = 'TemplatePage') => ({ id: `route-${uri}`, uri, label, menuExtraFieldsForSitemap: { reactComponent, seoTitle: `${label} | ${brand.name}`, seoDescription: brand.description, seoCanonical: null } });
 export const routes = [route('/about/', 'About'), route('/services/', 'Services'), route('/portfolio/', 'Portfolio', 'PagePortfolio'), route('/blog/', 'Blog'), route('/contact/', 'Contact', 'PageContact'), route('/faq/', 'FAQ'), route('/about/testimonials/', 'Testimonials'), ...services.map(s => route(s.uri, s.title, 'TemplateServiceInner')), route('/projects/:slug/', 'Project', 'TemplatePortfolioInner'), route('/blog/:slug/', 'Article', 'TemplateBlogInner'), route('/category/insights/', 'Insights', 'TemplateTaxonomy'), route('/tag/strategy/', 'Strategy', 'TemplateTaxonomy'), route('/search/:slug/', 'Search', 'TemplateTaxonomy')];
-export const primaryMenu = [route('/', 'Home'), ...routes.slice(0, 5)].map((r, i) => ({ ...r, databaseId: i + 1, parentDatabaseId: 0, childItems: { nodes: [] } }));
+export const primaryMenu = [route('/', 'Home'), ...routes.slice(0, 5)].map((r, i) => ({
+    ...r,
+    databaseId: i + 1,
+    parentDatabaseId: 0,
+    childItems: {
+        nodes: r.uri === '/services/' ? services.map((service, index) => ({
+            databaseId: 100 + index,
+            parentDatabaseId: i + 1,
+            uri: service.uri,
+            label: service.title,
+        })) : [],
+    },
+}));

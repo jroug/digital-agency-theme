@@ -106,7 +106,22 @@
 }
 
 .main-menu .navigation > li > ul {
-    width: 240px;;
+    width: 240px;
+}
+
+/* Keep long desktop dropdown labels stable when hovered or focused. */
+@media (min-width: 768px) {
+    .main-menu .navigation > li > ul {
+        width: max-content;
+        min-width: 240px;
+    }
+
+    .main-menu .navbar-collapse > .navigation > li > ul > li > a {
+        text-indent: 0;
+        padding: 12px 18px;
+        white-space: nowrap;
+        transition: color 200ms ease, background-color 200ms ease;
+    }
 }
 
 .imageFrame370{
